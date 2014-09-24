@@ -1,0 +1,86 @@
+---
+layout: page
+title: Actions and Controllers
+---
+
+# Actions and Controllers
+
+Play web services are made up of *controllers*, *actions*, and *routes*. In this section we will see what each building block does, and how to wire them together.
+
+This section uses sample code in the `hello-world` branch of the template project. To run the code type the following:
+
+~~~ bash
+cd essential-play
+git checkout hello-world
+sbt run
+~~~
+
+To view the resulting web application, open `http://localhost:9000` in your favorite web browser.
+
+# Defining Actions and Controllers
+
+*Actions* are objects that handle web requests. They are the fundamental building blocks of a Play web application. Each `Action` has an `apply` method that accepts an HTTP request as a parameter and returns an HTTP response (or `Result` in Play nomenclature).
+
+Controllers are essentially a convenience layered on top of actions. These are singleton objects containing sets of `Action`-producing methods. We define controllers for two reasons: to group sets of related actions together in a single place, and to gain access to a whole load of useful library code.
+
+The example app contains a single controller defined in `app/controllers/HelloWorld.scala`:
+
+~~~ scala
+package controllers
+
+import play.api.mvc.{ Action, Controller }
+
+object HelloWorld extends Controller {
+  def index = Action { request =>
+    Ok("H! You found the action at " + request.uri)
+  }
+}
+~~~
+
+Let's dissect this code:
+
+The library code we're using comes from two places:
+
+ - the [play.api.mvc] package;
+ - the [play.api.mvc.Controller] trait (via inheritance).
+
+We define a controller called `HelloWorld` of type [play.api.mvc.Controller]. The controller contains a single action method called `index`.
+
+We specify our Action using a function that accepts a parameter of type [play.api.mvc.Request] and returns a value of type [play.api.mvc.Result].
+
+We construct our result using an `apply` method on a convenience object called `Ok`. `Ok` is inherited from the `Controller` trait and allows us to quickly construct a result with HTTP status 200. The actual return value is an object of class [play.api.mvc.Result].
+
+Because the argument to `Ok` is a `String`, Play intelligently sets the `Content-Type` of the result to `text/plain`. We'll see how to customise this behaviour and create results of different types later on.
+
+[play.api.mvc]:            https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.package
+[play.api.mvc.Controller]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Controller
+[play.api.mvc.Action]:     https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Action
+[play.api.mvc.Request]:    https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Request
+[play.api.mvc.Result]:     https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Result
+
+# Routing Requests
+
+Once we have defined an action, we can associate it with a URL using a *routing table* defined in the file `conf/routes`. Here's a simple example:
+
+~~~
+GET /    controllers.HelloWorld.index
+~~~
+
+This example contains a single rule that sends all `GET` requests to URI `/` to our `index` action.
+
+The Play build system compiles the `routes` file into a global request router for our web application. The router analyses each incoming request and sends it to the appropriate action. If the router can't find an action, it returns a 404 response instead.
+
+Try running the sample app to see this routes file in action:
+
+ - run the sample code;
+ - open your web browser and navigate to [http://localhost:9000/]();
+ - to see a 404 response, try navigating to [http://localhost:9000/foo]().
+
+We can associate as many URLs as we want with a given action. Let's update the `routes` file to bind `index` to two different URLs:
+
+~~~
+GET /       controllers.HelloWorld.index
+GET /foo    controllers.HelloWorld.index
+~~~
+
+Now refresh your browser. You should find that [http://localhost:9000/]() and [http://localhost:9000/foo]() produce a *hello world* response. Any other URI will produce a 404 response.

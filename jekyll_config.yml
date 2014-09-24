@@ -1,0 +1,38 @@
+# Table of Contents
+# -----------------
+
+toc:
+  - head: /index.html
+    body: []
+
+  - head: /basics/index.html
+    body:
+     - /basics/actions.html
+     - /basics/routes.html
+     - /basics/requests.html
+     - /basics/results.html
+
+# Jekyll Configuration
+# --------------------
+
+url         : http://underscore.io
+
+source      : src/pages
+posts       : ../posts
+layouts     : ../layouts
+includes    : ../includes
+
+destination : essential-play-services
+plugins     : jekyll_plugins
+
+keep_files  : [ 'css', 'js', 'images' ]
+
+permalink   : /:categories/:year/:month/:day/:title
+
+safe        : false
+highlighter : true
+markdown    : kramdown
+markdown_ext: foo
+
+kramdown:
+  parse_block_html: true
