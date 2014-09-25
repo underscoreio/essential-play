@@ -90,7 +90,7 @@ object RequestDemo extends Controller {
 [play.api.mvc.Headers]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Headers
 [play.api.mvc.Cookies]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Cookies
 
-### Request Bodies
+<h3 id="bodies">Request Bodies</h3>
 
 Up to this point we have been eliding an important implementation detail: [play.api.mvc.Request] is actually a *generic* type, `Request[A]`.
 
@@ -144,3 +144,7 @@ For more information see Play's [documentation on body parsers].
 
 [play.api.mvc.BodyParser]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.BodyParser
 [documentation on body parsers]: https://www.playframework.com/documentation/2.3.x/ScalaBodyParsers
+
+## Take Home Points
+
+TODO

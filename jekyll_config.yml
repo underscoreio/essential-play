@@ -12,6 +12,12 @@ toc:
      - /basics/requests.html
      - /basics/results.html
 
+  - head: /json/index.html
+    body:
+     - /json/types.html
+     - /json/formats1.html
+     - /json/formats2.html
+
 # Jekyll Configuration
 # --------------------
 

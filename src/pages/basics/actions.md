@@ -84,3 +84,7 @@ GET /foo    controllers.HelloWorld.index
 ~~~
 
 Now refresh your browser. You should find that [http://localhost:9000/]() and [http://localhost:9000/foo]() produce a *hello world* response. Any other URI will produce a 404 response.
+
+## Take Home Points
+
+TODO

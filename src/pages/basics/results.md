@@ -96,3 +96,7 @@ Once we have created a result, we have access to a variety of methods to tweak i
 The API documentation for [play.api.mvc.Result] contains all of the necessary details.
 
 [play.api.mvc.Result]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Result
+
+## Take Home Points
+
+TODO

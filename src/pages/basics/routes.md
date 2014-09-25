@@ -160,3 +160,7 @@ but the canonical route is GET /.
 The first line of our output prints the method/URL we visited in our browser (`GET /foo`), while the second line always reports the "canonical" URL as `GET /`. This is because `/` and `/foo` are mapped to the same action in our routes file and `/` precedes `/foo`.
 
 [play.api.mvc.Call]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Call
+
+## Take Home Points
+
+TODO
