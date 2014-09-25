@@ -32,7 +32,7 @@ import play.api.mvc.{ Action, Controller }
 
 object HelloWorld extends Controller {
   def index = Action { request =>
-    Ok("H! You found the action at " + request.uri)
+    Ok("Hi! You found the action at " + request.uri)
   }
 }
 ~~~
