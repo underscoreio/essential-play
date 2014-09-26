@@ -21,7 +21,7 @@ final case object JsNull extends JsValue
 
 Each of these types allows us to *wrap up* one or more Scala values to describe its representation in JSON. For example, the `String` `"Dave"` can be converted to JSON by wrapping it in a `JsString`. We have to implement mappings for more complex types ourselves.
 
-`JsValues` can be converted to and from JSON strings, which can be passed around in `Requests` and `Results`. The typical lifecycle of a JSON HTTP request is therefore:
+`JsValue`s can be converted to and from JSON strings, which can be passed around in `Requests` and `Results`. The typical lifecycle of a JSON HTTP request is therefore:
 
  - receive a `Request`;
  - extract its body as a `JsValue`;
@@ -30,7 +30,7 @@ Each of these types allows us to *wrap up* one or more Scala values to describe 
  - convert the result of our business logic into a second `JsValue`;
  - wrap the `JsValue` in a `Result`.
 
-This section describes how to construct, traverse, and deconstruct `JsValues` by hand, which is useful for ad hoc operations on JSON data. The next two sections describe how to create mappings between `JsValues` and domain objects, and use them to validate the JSON we receive in `Requests`.
+This section describes how to construct, traverse, and deconstruct `JsValue`s by hand, which is useful for ad hoc operations on JSON data. The next two sections describe how to create mappings between `JsValue`s and domain objects, and use them to validate the JSON we receive in `Requests`.
 
 [play.api.libs.json.JsValue]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsValue
 [JSON specification]: http://json.org
