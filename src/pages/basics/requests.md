@@ -98,7 +98,7 @@ The type parameter `A` indicates the *type* of the request body. Play contains a
 
 This begs a question: what type does `request.body` return in the examples we have seen so far? We haven't indicated the type of body we are expecting anywhere in our code. Play *cannot* know the content-type of a future request at compilation, so how is this handled?
 
-The answer is quite clever: by default our actions accept an argument of type `Request[AnyContent]`. [play.api.mvc.AnyContent] is Play's way of allowing us to choose how the request should be parsed -- it contains methods to parse the body in any of the formats discussed. Each method returns `None` if the request is empty or of of the wrong `Content-Type`:
+The answer is quite clever: by default our actions accept an argument of type `Request[AnyContent]`. [play.api.mvc.AnyContent] is Play's way of allowing us to choose how the request should be parsed -- it contains methods to parse the body in any of the formats discussed. Each method returns `None` if the request is empty or of the wrong `Content-Type`:
 
 |--------------------------------+---------------------------------------------------------------------|
 | Method of `AnyContent`         | Return type                        | Works on `Content-Type`        |
