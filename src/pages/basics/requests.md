@@ -40,7 +40,7 @@ object RequestDemo extends Controller {
     val uri: String = request.uri
 
     // The path of the URI, without the query string:
-    val path: String = request.uri
+    val path: String = request.path
 
     // The query string, split into name/values pairs:
     val query: Map[String, Seq[String]] = request.queryString
