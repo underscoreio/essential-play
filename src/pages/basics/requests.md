@@ -118,8 +118,8 @@ The answer is quite clever: by default our actions accept an argument of type `R
 [scala.xml.NodeSeq]: https://github.com/scala/scala-xml/blob/master/src/main/scala/scala/xml/NodeSeq.scala
 [play.api.mvc.RawBuffer]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.RawBuffer
 
-<div class="callout callout-info">
-#### Sidebar: Custom Body Parsers
+<div class="callout callout-warning">
+#### Advanced: Custom Body Parsers
 
 The `AnyContent` mechanism is a convenient way to parse request bodies in a type-safe fashion. However, it suffers from two drawbacks:
 

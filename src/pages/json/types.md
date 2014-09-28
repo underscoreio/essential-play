@@ -1,9 +1,9 @@
 ---
 layout: page
-title: Modelling JSON Data
+title: Modelling JSON
 ---
 
-# Modelling JSON Data
+# Modelling JSON
 
 Play models JSON data using instances of a sealed trait called [play.api.libs.json.JsValue]. There are five subtypes of `JsValue`, each representing one of the types in the [JSON specification]:
 

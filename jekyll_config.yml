@@ -15,8 +15,11 @@ toc:
   - head: /json/index.html
     body:
      - /json/types.html
-     - /json/formats1.html
-     - /json/formats2.html
+     - /json/writes.html
+     - /json/reads.html
+     - /json/formats.html
+     - /json/custom.html
+     - /json/oformats.html
 
 # Jekyll Configuration
 # --------------------

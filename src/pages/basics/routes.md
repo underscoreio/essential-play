@@ -101,7 +101,7 @@ GET /todo/complete    controllers.Todo.complete(item: Seq[Int])
 ~~~
 
 <div class="callout callout-info">
-#### Advanced Typed Parameters
+#### Advanced: Custom Parameter Types
 
 Play supports typed URL parameters using the *type class* pattern. It searches for implicit values of two type classes to see if it can decode an argument of a particular type:
 
