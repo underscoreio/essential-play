@@ -11,6 +11,7 @@ toc:
      - /basics/routes.html
      - /basics/requests.html
      - /basics/results.html
+     - /basics/failure.html
 
   - head: /json/index.html
     body:
@@ -20,6 +21,15 @@ toc:
      - /json/formats.html
      - /json/custom.html
      - /json/oformats.html
+     - /json/failure.html
+
+  - head: /async/index.html
+    body:
+     - /async/futures.html
+     - /async/executioncontexts.html
+     - /async/actions.html
+     - /async/failure.html
+     - /async/ws.html
 
 # Jekyll Configuration
 # --------------------
@@ -31,7 +41,7 @@ posts       : ../posts
 layouts     : ../layouts
 includes    : ../includes
 
-destination : essential-play-services
+destination : essential-play
 plugins     : jekyll_plugins
 
 keep_files  : [ 'css', 'js', 'images' ]

@@ -9,7 +9,7 @@ The previous section dealt with the first stage of handling an HTTP request: par
 
 ## Setting The Status Code
 
-We can construct results using a convenient DSL defined in the [play.api.mvc.Results] trait, of which [play.api.mvc.Controller] is a subtype:
+We can construct results using a set of convenient factory objects defined in the [play.api.mvc.Results] trait, of which [play.api.mvc.Controller] is a subtype:
 
 |----------------------------+-----------------------------------------|
 | Constructur                | HTTP status code                        |
@@ -75,18 +75,6 @@ def action = Action { request =>
 [play.api.http.Writeable]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.http.Writeable
 </div>
 
-<!--
-## Sending a File
-
-As an alternative to calling `apply`, we can call `sendFile` to create a result that efficiently streams a file off disk:
-
-~~~ scala
-Ok.sendFile(new java.io.File(/* ... */))
-~~~
-
-`sendFile` automatically sets the `Content-Disposition` header based on the filename and the `Content-Type` header based on the filename extension.
--->
-
 ## Tweaking the Result
 
 Once we have created a result, we have access to a variety of methods to tweak its contents:
@@ -107,4 +95,16 @@ The API documentation for [play.api.mvc.Result] contains all of the necessary de
 
 ## Take Home Points
 
-TODO
+Play actions return instances of [play.api.mvs.Result].
+
+`Results` are created using factory objects defined in [play.api.mvs.Results], which is inherited by [play.api.mvc.Controller].
+
+We can populate a `Result` with any data for which we have an implicit instance of [play.api.http.Writeable]. Play provides default instances for `String` (plain text), `JsValue` (JSON), `NodeSeq` (XML), and [play.twirl.api.Content] (output from Play templates).
+
+`Result` contains methods for adding further parameters such as headers and cookies.
+
+[play.api.mvc.Results]:    https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Results
+[play.api.mvc.Controller]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Controller
+[play.api.mvc.Result]:     https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Result
+[play.api.http.Writeable]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.http.Writeable
+[play.twirl.api.Content]:  https://www.playframework.com/documentation/2.3.x/ScalaTemplates

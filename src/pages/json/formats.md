@@ -43,4 +43,9 @@ Json.fromJson(Json.obj(
 
 ## Take Home Points
 
-TODO
+`Format[A]` is a subtype of `Reads[A]` and `Writes[A]` that provides both sets of functionality and can be used with `Json.toJson` and `Json.fromJson`.
+
+Play provides the `Json.format` macro that defines `Formats` for case classes.
+
+It is often convenient to use `Formats` to define reading and writing functionality in one go. However, it is sometimes necessary or convenient to define `Reads` and `Writes` separately.
+

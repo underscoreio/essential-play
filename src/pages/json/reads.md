@@ -110,4 +110,14 @@ def index = Action { request =>
 
 ## Take Home Points
 
-TODO
+We convert Scala data to JSON using instances of [play.api.libs.json.Reads].
+
+Play provides a convenient macro, `Json.reads`, to define a `Reads` for any case class.
+
+When reading JSON data we have to deal with the possibility of formatting errors. Instances of `Reads[A]` return values of type `JsResult[A]` that either contain the successful result or the read, or a machine-readable list of read errors.
+
+`Reads` is a *type class* used by the `Json.fromJson` method. The recommended recipe for its use is as follows:
+
+ 1. Define an `implicit` instances of `Reads[A]`.
+ 2. Place the instance in the companion object for `A`, or in a separate object containing relevant `Implicits`.
+ 3. Read a call `Json.fromJson(myValue)` ensuring the implicit `Reads` is in scope.

@@ -137,4 +137,12 @@ Now that we know `Writes` is a type class, we can apply the type class pattern t
 
 ## Take Home Points
 
-TODO
+We convert Scala data to JSON using instances of [play.api.libs.json.Writes].
+
+Play provides a convenient macro, `Json.writes`, to define a `Writes` for any case class.
+
+`Writes` is a *type class* used by the `Json.toJson` method. The recommended recipe for its use is as follows:
+
+ 1. Define an `implicit` instances of `Writes[A]`.
+ 2. Place the instance in the companion object for `A`, or in a separate object containing relevant `Implicits`.
+ 3. Write a call `Json.toJson(myValue)` ensuring the implicit `Writes` is in scope.

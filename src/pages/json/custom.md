@@ -191,4 +191,18 @@ implicit val dateTimeFormat: Format[DateTime] = (
 
 ## Take Home Points
 
-TODO
+Play provides three traits that govern mappings between JSON and Scala data:
+
+ - instances of `Reads[A]` accept parameters of type `JsValue` and attempt to convert them to Scala type `A`;
+ - instances of `Writes[A]` accept parameters of type `A` and attempt to convert them to `JsValues`;
+ - instances of `Format[A]` can perform both `Reads` and `Writes` functionality.
+
+Play gives us three macros -- `Json.reads`, `Json.writes`, and `Json.format` -- that automatically generate `Reads`, `Writes`, and `Format` instances for case classes. However these do not work in all situations.
+
+There are two ways of generating `Reads`, `Writes`, and `Formats` by hand:
+
+ 1. write the instances ourselves by extending the appropriate type and using JSON manipulation and traversal;
+ 2. use the reads/writes/format DSL provided by Play.
+
+The two approaches are convenient in different situations. Experience indicates the approach 1 tends to be simpler when handling types with no internal structure, while approach 2 tends to be simpler when mapping compound data structures.
+

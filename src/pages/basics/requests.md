@@ -105,10 +105,10 @@ The answer is quite clever: by default our actions accept an argument of type `R
 |--------------------------------+------------------------------------+--------------------------------|
 | `asText`                       | `Option[String]`                   | `text/plain`                   |
 | `asFormUrlEncoded`             | `Option[Map[String, Seq[String]]]` | `application/form-url-encoded` |
-| `asMultipartFormData`          | `Option[[MultipartFormData]]`      | `multipart/form-data`          |
-| `asJson`                       | `Option[[JsValue]]`                | `application/json`             |
-| `asXml`                        | `Option[[NodeSeq]]`                | `application/xml`              |
-| `asRaw`                        | `Option[[RawBuffer]]`              | any                            |
+| `asMultipartFormData`          | `Option[MultipartFormData]`        | `multipart/form-data`          |
+| `asJson`                       | `Option[JsValue]`                  | `application/json`             |
+| `asXml`                        | `Option[NodeSeq]`                  | `application/xml`              |
+| `asRaw`                        | `Option[RawBuffer]`                | any                            |
 |======================================================================================================|
 {: .table .table-bordered .table-responsive }
 
@@ -147,4 +147,10 @@ For more information see Play's [documentation on body parsers].
 
 ## Take Home Points
 
-TODO
+Incoming web requests are represented by objects of type `Request[A]`.
+
+`Requests` contain methods to access all parts of the HTTP request: URI, request parameters, headers, cookies, and so on.
+
+The type parameter on `Request[A]` refers to the type of the request body. This defaults to a type `AnyContent`, which contains methods to read the request body in a variety of content types.
+
+Reading the body may succeed or fail depending on whether the content type matches the type we expect. The various `body.asFoo` methods return `Options` to force us to deal with the possibility of failure.

@@ -16,5 +16,5 @@ Thumbs.db
 /node_modules/
 
 # Built copy of the site:
-/essential-play-services
+/essential-play
 *.sublime-workspace
