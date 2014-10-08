@@ -13,6 +13,12 @@ toc:
      - /basics/results.html
      - /basics/failure.html
 
+  - head: /html/index.html
+    body:
+     - /html/templates.html
+     - /html/forms.html
+     - /html/form-templates.html
+
   - head: /json/index.html
     body:
      - /json/types.html
