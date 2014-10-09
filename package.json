@@ -9,15 +9,15 @@
     "grunt-contrib-less": "~0.6.4",
     "grunt-bower-task": "~0.3.0"
   },
-  "name": "core-scala",
-  "description": "Tutorial for Scala.",
+  "name": "essential-play",
+  "description": "Tutorial for Play Framework.",
   "version": "0.0.0",
   "main": "dist/index.html",
   "dependencies": {
   },
   "repository": {
     "type": "git",
-    "url": "git@ungit:projects/core-scala"
+    "url": "bitbucket.org:underscoreio/essential-play.git"
   },
   "author": "Dave Gurnell and Noel Welsh"
 }
