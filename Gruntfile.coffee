@@ -21,13 +21,13 @@ module.exports = (grunt) ->
           ]
           yuicompress: true
         files:
-          "essential-play-services/css/screen.css": "src/css/screen.less"
-          "essential-play-services/css/print.css" : "src/css/print.less"
+          "essential-play/css/screen.css": "src/css/screen.less"
+          "essential-play/css/print.css" : "src/css/print.less"
 
     uglify:
       site:
         files:
-          "essential-play-services/js/site.js": [
+          "essential-play/js/site.js": [
             "bower_components/jquery/jquery.js"
             "bower_components/bootstrap/js/collapse.js"
             "bower_components/bootstrap/js/scrollspy.js"
@@ -43,14 +43,14 @@ module.exports = (grunt) ->
           expand: true
           cwd: "bower_components/bootstrap/img/"
           src: ["**"]
-          dest: "essential-play-services/images/"
+          dest: "essential-play/images/"
         }]
       images:
         files: [{
           expand: true
           cwd: "src/images"
           src: ["**"]
-          dest: "essential-play-services/images/"
+          dest: "essential-play/images/"
         }]
 
     exec:
@@ -61,7 +61,7 @@ module.exports = (grunt) ->
       deploy:
         cmd: 'echo "Deployment not implemented. Search for this text in gruntfile.coffee and replace it with your own deployment command."'
       bundle:
-        cmd: 'tar zcvf essential-play-services.tar.gz essential-play-services'
+        cmd: 'tar zcvf essential-play.tar.gz essential-play'
 
     bower:
       install: {}
@@ -103,7 +103,7 @@ module.exports = (grunt) ->
       server:
         options:
           port: 4000
-          base: 'essential-play-services'
+          base: 'essential-play'
 
   grunt.registerTask "build", [
     "less"

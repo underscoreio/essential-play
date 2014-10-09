@@ -101,7 +101,7 @@ GET /todo/complete    controllers.Todo.complete(item: Seq[Int])
 ~~~
 
 <div class="callout callout-info">
-#### Advanced Typed Parameters
+#### Advanced: Custom Parameter Types
 
 Play supports typed URL parameters using the *type class* pattern. It searches for implicit values of two type classes to see if it can decode an argument of a particular type:
 
@@ -163,4 +163,10 @@ The first line of our output prints the method/URL we visited in our browser (`G
 
 ## Take Home Points
 
-TODO
+*Routes*, defined in the `conf/routes` file, provide a bi-directional mapping between URLs and `Action`-producing fields and methods within `Controllers`.
+
+Routes are written in a DSL that is compiled to Scala code. Each route specifies an HTTP method and a URL pattern and the corresponding controller code.
+
+Routes can contain *path* and *query parameters* that are extracted and converted to typed values before being passed to the `Controller`.
+
+*Reverse routes* map controller calls back to URLs. These generated on compile and placed in a synthetic `routes` package.

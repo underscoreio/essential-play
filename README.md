@@ -1,7 +1,6 @@
 The following should get you up and running:
 
-npm  install
-sudo bundle install
+npm install
 bower install
-grunt serve
-
+bundle install
+grunt serve watch
