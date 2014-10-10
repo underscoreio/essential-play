@@ -19,7 +19,7 @@ To view the resulting web application, open `http://localhost:9000` in your favo
 
 # Defining Actions and Controllers
 
-*Actions* are objects that handle web requests. They are the fundamental building blocks of a Play web application. Each `Action` has an `apply` method that accepts an HTTP request as a parameter and returns an HTTP response (or `Result` in Play nomenclature).
+*Actions* are objects that handle web requests. They are the fundamental building blocks of a Play web application. Each `Action` has an `apply` method that accepts an HTTP request as a parameter and returns an HTTP response (`Result` in Play nomenclature).
 
 Controllers are essentially a convenience layered on top of actions. These are singleton objects containing sets of `Action`-producing methods. We define controllers for two reasons: to group sets of related actions together in a single place, and to gain access to a whole load of useful library code.
 
@@ -39,10 +39,7 @@ object HelloWorld extends Controller {
 
 Let's dissect this code:
 
-The library code we're using comes from two places:
-
- - the [play.api.mvc] package;
- - the [play.api.mvc.Controller] trait (via inheritance).
+The library code we're using comes from two traits [play.api.mvc.Action] and [play.api.mvc.Controller].
 
 We define a controller called `HelloWorld` of type [play.api.mvc.Controller]. The controller contains a single action method called `index`.
 
