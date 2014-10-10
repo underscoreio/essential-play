@@ -1,89 +1,108 @@
 ---
 layout: page
-title: Routing Requests
+title: Routes in Depth
 ---
 
-# Routing Requests
+# Routes in Depth
 
-The previous section introduced actions and controllers, and associated them with URLs using a simple routes file. In this section we take a closer look at routes and the various things we can do with them.
+The previous section introduced actions, controllers, and routes. Actions and controllers are standard Scala code, but routes are something new and specific to Play.
 
-# Path Parameters
+We define Play routes using a special DSL that compiles to Scala code. The DSL provides both a convenient way of mapping URIs to method calls, and a way of mapping method calls *back* to URIs. In this section we will take a deeper look at Play's routing DSL, including the various ways we can extract parameters from URIs.
 
-The example route from the previous section associates a single URL with a single action:
+## Path Parameters
 
-~~~ coffee
-GET /    controllers.HelloWorld.index
-~~~
-
-Routes are more flexibile than this -- they actually associate *URL patterns* with *action-producing method calls*. This allows us to specify *parameters* to be extracted from the URL and passed to our controller code. Here are some examples:
+Routes associate *URI patterns* with *action-producing method calls*. We can specify *parameters* to extract from the URI and pass to our controllers. Here are some examples:
 
 ~~~ coffee
-# A static route with a fixed URL (no parameters):
-GET /hello/world                   controllers.HelloWorld.index
+# Fixed route (no parameters):
+GET /hello              controllers.HelloController.hello
 
-# A route with a single parameter:
-GET /send/:message                 controllers.Notification.send(message: String)
+# Single parameter:
+GET /hello/:name        controllers.HelloController.helloTo(name: String)
 
-# A route with two parameters:
-GET /send/:message/to/:username    controllers.Notification.sendTo(message: String, username: String)
+# Multiple parameters:
+GET /send/:msg/to/:user controllers.ChatController.send(msg: String, user: String)
 
-# A route with a rest-style parameter:
-GET /download/*filename            controllers.Download.file(filename: String)
+# Rest-style parameter:
+GET /download/*filename controllers.DownloadController.file(filename: String)
 ~~~
 
-The first example assocates a fixed URL with the `index` method we defined earlier. It matches the URL `/hello/world` and routes it to the `index` method in the `HelloWorld` controller.
+The first example assocates a single URL with a parameterless method. The match must be exact -- only `GET` requests to `/hello` will be routed. Even a trailing slash in the URI (`/hello/`) will cause a mismatch.
 
-The second and third examples assocate URLs of the form `/send/...` and `/send/.../to/...` with the methods `send` and `sendTo` in the `Notification` controller. The `:` prefix means the parameters only match single path segments. So, for example:
+The second example introduces a *single-segment parameter*, written using a leading colon (':'). Single-segment parameters match any continuous set of characters *excluding* forward slashes ('/'). The parameter is extracted and passed to the method call -- the rest of the URI must match exactly.
 
- - the URL `/send/hi` would result in the method call `controllers.Notification.send("hi")`;
- - the URL `/send/bye` would result in the method call `controllers.Notification.send("bye")`;
- - the URL `/send/hi/to/dave` would result in the method call `controllers.Notification.sendTo("hi", "dave")`;
- - the following URLs would not match either rule, causing Play to continue processing the rest of the routes file:
-    - `/send/hi/dave`
-    - `/send/hi/to`
-    - `/send/hello/there/to/dave`
+The third example uses two single-segment parameters to extract two parts of the URI. Again, the rest of the URI must match exactly.
 
-The fourth and final example assocates URLs of the form `/download/...` with the method `Download.file`. The `*` prefix on the `*filename` parameter means it can match any sequence of characters, including `/` characters. So, for example, the URL `/download/my/file.txt` would result in the method call `controllers.Download.file("my/file.txt").
+The final example uses a *rest-parameter*, written using a leading asterisk ('*'). Rest-style parameters match all remaining characters in the URI, including forward slashes.
 
-Methods referenced in the routes file must accept the same parameters as the route and return `Action` objects. Here is the controller code for `Notification` and `Download`:
+## Matching Requests to Routes
 
-~~~ scala
-object Notification extends Controller {
-  def send(message: String) = Action { request =>
-    // ...
-  }
+When a request comes in, Play attempts to route it to an action. It examines each route in turn until it finds a match. If no routes match, it returns a 404 response.
 
-  def sendTo(message: String, username: String) = Action { request =>
-    // ...
-  }
-}
+Routes match if the HTTP method has the relevant value and the URI matches the shape of the pattern. Play supports all eight HTTP methods: `OPTIONS`, `GET`, `HEAD`, `POST`, `PUT`, `DELETE`, `TRACE`, and `CONNECT`.
 
-object Download extends Controller {
-  def file(filename: String) = Action { request =>
-    // ...
-  }
-}
+Here are some examples by way of illustration:
+
+|---------------------------------------------------------------------------------------------------------|
+| HTTP method  | URI                          | Resulting method call                                     |
+|---------------------------------------------------------------------------------------------------------|
+| `GET`   | `/hello`                          | `controllers.HelloController.hello`                       |
+| `GET`   | `/hello/dave`                     | `controllers.HelloController.helloTo("dave")`             |
+| `GET`   | `/send/hello/to/dave`             | `controllers.ChatController.send("hello", "dave")`        |
+| `GET`   | `/download/path/to/file.txt`      | `controllers.DownloadController.file("path/to/file.txt")` |
+| `GET`   | `/hello/`                         | None -- 404 (trailing slash)                              |
+| `POST`  | `/hello`                          | None -- 404 (POST request)                                |
+| `GET`   | `/send/to/dave`                   | None -- 404 (missing path segment)                        |
+| `GET`   | `/send/a/message/to/dave`         | None -- 404 (extra path segment)                          |
+|=========================================================================================================|
+{: .table .table-bordered .table-responsive }
+
+<div class="callout callout-info">
+#### Coping with Routing Strictness
+
+Play's strict adherance to its routing rules can sometimes be problematic. Failing to match the URI `/hello/`, for example, may seem overzealous. We can work around this issue easily by mapping multiple routes to a single method call:
+
+~~~ coffee
+GET  /hello  controllers.HelloController.hello # no trailing slash
+GET  /hello/ controllers.HelloController.hello # trailing slash
+POST /hello/ controllers.HelloController.hello # POST request
+# and so on...
 ~~~
+</div>
 
 # Query Parameters
 
-If we specify a parameter in the method-call section of a route but not in the URL pattern, Play extracts it from the query parameters of the URL instead. For example:
+We can specify parameters in the method-call section of a route without declaring them in the URI. When we do this Play extracts the values from the query string instead:
 
 ~~~ coffee
-GET /send    controllers.Notification.sendTo(message: String, username: String)
+GET /send  controllers.Notification.sendTo(message: String, username: String)
 ~~~
 
-This route will match URLs of the form `/send?message=...&username=...` and convert them to method calls. If either query parameter is missing, the route fails to match and play proceeds processing the rest of the routes file.
+We sometimes want to make query string parameters optional. To do this, we just have to define them as `Optional` types. Play will pass `Some(value)` if the URI contains the parameter and `None` if it does not:
+
+~~~ coffee
+GET /send  controllers.Notification.sendTo(message: Option[String], username: Option[String])
+~~~
+
+We can mix and match required and optional query parameters as we see fit. However, path parameters are always required. The following route fails with a compilation error:
+
+~~~ coffee
+GET /hello/:name controllers.Notification.sendTo(name: Option[String])
+
+# Fails to compile with the following error:
+#     [error] conf/routes:1: No URL path binder found for type Option[String].
+#     Try to implement an implicit PathBindable for this type.
+~~~
 
 # Typed Parameters
 
-In addition to specifying parameters of type `String`, we can also specify parameters of other types by simply changing the type annotations in the route:
+We can extract path and query parameters of types other thatn `String`. Play has built-in support for `Int`, `Double`, `Long`, `Boolean`, `UUID`, and `Optional` and `Seq` variants:
 
 ~~~ coffee
-GET /add/:a/to/:b    controllers.Calculator.add(a: Int, b: Int)
+GET /add/:a/to/:b controllers.Calculator.add(a: Int, b: Int)
 ~~~
 
-This allows us to write action methods that take parameters of sane types:
+This allows us to define `Actions` using well-typed arguments without messy parsing code:
 
 ~~~ scala
 object Calculator extends Controller {
@@ -93,80 +112,71 @@ object Calculator extends Controller {
 }
 ~~~
 
-Play provides built-in support for parameters of type `java.lang.String`, `Int`, `Double`, `Long`, `Boolean`, and `java.util.UUID`. It also supports query parameters of `Option` and `Seq` variants of these types:
-
-~~~ coffee
-# Matches URLs of the form /todo/complete?item=1&item=2&item=3...
-GET /todo/complete    controllers.Todo.complete(item: Seq[Int])
-~~~
+If Play cannot extract values of the correct type for each parameter in a route, it returns a *400 Bad Request* response to the client. It doesn't consider any other routes lower in the file.
 
 <div class="callout callout-info">
 #### Advanced: Custom Parameter Types
 
-Play supports typed URL parameters using the *type class* pattern. It searches for implicit values of two type classes to see if it can decode an argument of a particular type:
+Play parses route parameters using instances of two different *type classes*:
 
- - path parameters are extracted using instances of [play.api.mvc.PathBindable];
- - query parameters are extracted using instances of [play.api.mvc.QueryStringBindable].
+ - [play.api.mvc.PathBindable] to extract path parameters;
+ - [play.api.mvc.QueryStringBindable] to extract query parameters.
 
-We can implement any type of URL parameter by creating an implicit value of one of these type classes and making it available in the compiled routes file. See the linked Scaladocs for more information.
+We can implement custom parameter types by creating implicit values these type classes. See the linked Scaladocs for more information.
 
 [play.api.mvc.PathBindable]:        https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.PathBindable
 [play.api.mvc.QueryStringBindable]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.QueryStringBindable
 </div>
 
-# Request Methods
-
-Play supports all eight HTTP methods: `OPTIONS`, `GET`, `HEAD`, `POST`, `PUT`, `DELETE`, `TRACE`, and `CONNECT`.
-
-A rule only matches a request if the method is as specified. For example, the following routes file sends all `GET` requests to `Example.handleGet`, all `POST` requests to `Example.handlePost`, and responds with a 404 to any other method:
-
-~~~ coffee
-GET  /*path controllers.Example.handleGet(path: String)
-POST /*path controllers.Example.handlePost(path: String)
-~~~
-
 # Reverse Routing
 
-In addition to creating a router for our application, Play also creates a set of *reverse route* objects that we can use to generate URLs for specific calls from our routes file. These are useful when writing RESTful web services in which result data must contain links to related resources.
-
-By default, reverse route objects are placed in a top-level package called `routes` and structured as follows:
+*Reverse routes* are objects that we can use to generate URLs from method calls. Play generates these for us and places them in a top-level `routes` package that is accessible from our Scala code.
 
 ~~~ scala
-routes.ControllerName.methodName(methodArgs...)
+import play.api.mvc.Call
+
+val methodAndUri: Call = routes.HelloController.helloTo("dave")
+
+methodAndUri.method // "GET"
+methodAndUrl.url    // "/hello/dave"
 ~~~
 
-Reverse routes return objects of type [play.api.mvc.Call], which is a lightweight wrapper for a method and URL. Here is an example to demonstrate:
+Play generates reverse routes for each controller and action referenced in our routes file. The routes return [play.api.mvc.Call] objects that holding the HTTP method and URI from the route. Here is some pseudo-code based on example above to illustrate:
 
 ~~~ scala
-object HelloWorld extends Controller {
+package routes
 
-  def index = Action { request =>
-    val reverse: Call = routes.HelloWorld.index
+import play.api.mvc.Call
 
-    Ok(s"Hi! You found the action at ${request.method} ${request.uri},\n" +
-       s"but the canonical route is ${reverse.method} ${reverse.url}.")
-  }
+object HelloController {
+  def hello: Call =
+    Call("GET", /hello")
 
+  def helloTo(name: String): Call =
+    Call("GET", "/hello/" + encodeURIComponent(name))
+}
+
+object ChatController {
+  def send(msg: String, user: String): Call =
+    Call("GET", "/send/" + encodeURIComponent(msg) + "/to/" + encodeURIComponent(user))
+}
+
+object DownloadController {
+  def file(filename: String): Call =
+    Call("GET", "/download/" + encodeURI(filename))
 }
 ~~~
-
-If we go to [http://localhost:9000/foo](), we get the following response:
-
-~~~
-Hi! You found the action at GET /foo,
-but the canonical route is GET /.
-~~~
-
-The first line of our output prints the method/URL we visited in our browser (`GET /foo`), while the second line always reports the "canonical" URL as `GET /`. This is because `/` and `/foo` are mapped to the same action in our routes file and `/` precedes `/foo`.
 
 [play.api.mvc.Call]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Call
 
 ## Take Home Points
 
-*Routes*, defined in the `conf/routes` file, provide a bi-directional mapping between URLs and `Action`-producing fields and methods within `Controllers`.
+*Routes* provide bi-directional mapping between URLs and `Action`-producing methods within `Controllers`.
 
-Routes are written in a DSL that is compiled to Scala code. Each route specifies an HTTP method and a URL pattern and the corresponding controller code.
+We rite routes using a Play-specific DSL that compiles to Scala code. Each route comprises an HTTP method, a URL pattern, and a corresponding method call. Patterns can contain *path* and *query parameters* that are extracted and used in the method call.
 
-Routes can contain *path* and *query parameters* that are extracted and converted to typed values before being passed to the `Controller`.
+We can *type* the path and query parameters in routes to simplify the parsing code in our controllers and actions. Play supports many types out of the box, but we can also write code to map our own types.
 
-*Reverse routes* map controller calls back to URLs. These generated on compile and placed in a synthetic `routes` package.
+Play also generates *reverse routes* that map method calls back to URIs. These are placed in a synthetic `routes` package that we can access from our Scala code.
+
+Now we have seen what we can do with routes, let's look at the `Request`- and `Result`-handling code we can write in our actions. This will arm us with all the knowledge we need to start dealing with HTML in the next chapter.
