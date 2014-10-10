@@ -7,7 +7,7 @@ title: The Basics
 
 In this chapter we will introduce five fundamental concepts used to process web requests in Play: *actions*, *controllers*, *routes*, *requests*, and *results*. With these concepts we will be able to:
 
- - write simple *actions* that responds to *requests* and produces corresponding *results*;
+ - write simple *actions* that respond to *requests* and produce corresponding *results*;
  - bundle *actions* together into convenient modules called *controllers*;
  - associate *actions* with URLs using *routes*;
  - inspect *requests* to extract useful information such as URIs, headers, and content;
