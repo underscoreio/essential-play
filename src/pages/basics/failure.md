@@ -5,32 +5,31 @@ title: Handling Failure
 
 # Handling Failure
 
-In this chapter we've learned how to set up routes, actions, and controllers to handle simple HTTP request/response cycles. What happens, however, when something does wrong? How does Play handle failure?
+At this point we have covered all the basics for this chapter. We have learned how to set up routes, write `Actions`, handle `Requests`, and create `Results`.
 
-In each chapter of the course, we will spend one section discussing error handling and recovery. In this section we will see Play's default error handling behaviour; in future chapters we will see how to customise this behaviour and replace it with our own designs.
+In this final section of the chapter we will take a first look at a theme that runs throughout the course -- failures and error handling. In future chapters we will look at how to generate good error messages for our users. In this section we will see what error messages Play provides for us.
 
 ## Compilation Errors
 
-Play provides a useful mechanism for reporting compilation errors during development. We start Play in development mode using the `run` command in SBT. SBT responds by starting a development web server on `localhost:9000`:
+Play reports compilation errors in two places: on the SBT console, and via 500 error pages. If you've been following the exercises so far, you will have seen this already. When we run a development web server using `sbt run` and make a mistake in our code, Play responds with an error page:
 
-~~~
-[hello] $ run
-[info] Updating {file:/Users/dave/dev/projects/essential-play-blank/}hello...
-[info] Resolving jline#jline;2.12 ...
-[info] Done updating.
+![Internal error: Play's compilation error 500 page](compile-error.png)
 
---- (Running the application from SBT, auto-reloading is enabled) ---
+While this behaviour is useful, we should be aware of two drawbacks:
 
-[info] play - Listening for HTTP on /0:0:0:0:0:0:0:0:9000
+ 1. The web page only reports the *first* error from the SBT console. A single typo in Scala code can create several compiler errors, so we often have to look at the complete output from SBT to trace down a bug.
 
-(Server started, use Ctrl+D to stop and go back to the console...)
-~~~
+ 2. When we use `sbt run`, Play only recompiles our code when we refresh the web page. This sometimes slows down development because we have to constantly switch back and forth between editor and browser.
 
-Whenever we access a URL on `localhost`, SBT inspects our source code and recompiles any files that have recently changed. If there are any compilation errors we get error messages *in the web page* as well as on the console:
+    We can write and debug code faster if we use SBT's *continuous compilation* mode instead of `sbt run`. To start continuous compilation, type `~compile` on the SBT console:
 
-![Compile error](compile-error.png)
+    ~~~
+    [hello-world] $ ~compile
+    [success] Total time: 0 s, completed 11-Oct-2014 11:46:28
+    1. Waiting for source changes... (press enter to interrupt)
+    ~~~
 
-Note that the web page only reports the *first* error form the console. It is not uncommon for a single programming error to yield mulitple compiler errors, so the message we see on the web page may not always point to the root cause of the problem.
+    In continuous compilation mode, SBT recompiles our code every time we change a file. However, we have to go back to `sbt run` to see the changes in a browser.
 
 ## Runtime Errors
 
@@ -40,14 +39,17 @@ If our code compiles but fails at runtime, we get a similar error page that poin
 
 ## Routing Errors
 
-Play also generates a 404 page if it can't find an appropriate route for an incoming request. This error *doesn't* appear on the console:
+Play generates a 404 page if it can't find an appropriate route for an incoming request. This error *doesn't* appear on the console:
 
-![Not found: Play's default 404 page](not-found-error.png)
+![Not found: Play's 404 routing error page](not-found-error.png)
+
+If Play finds a route but can't parse the parameters from the path and query string, it issues a similar-looking 400 response:
+
+![Bad request: Play's 400 routing error page](bad-request-error.png)
+
 
 ## Take Home Points
 
-Play ships with default 404 and 500 pages out of the box. We get useful error messages for compile errors, runtime errors, and routing errors.
+Play ships with a default 500 error page out of the box. It gives us nice error messages for compile errors and exceptions during development. Similarly, Play provides default 404 and 400 pages for routing errors.
 
-Internal errors are reported on the SBT console as well as on the web.
-
-Although these error messages are useful in development, we need to switch them off when moving our applications into production. We will see how to do this at the end of the next chapter.
+These error messages are useful during development, but we should remember to disable it before we put code into production. We will see this next chapter when we create our own HTML and learn how to handle form data.
