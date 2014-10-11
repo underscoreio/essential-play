@@ -15,5 +15,6 @@ Thumbs.db
 /core-scala.zip
 /node_modules/
 
-core-scala.sublime-workspace
-
+# Built copy of the site:
+/essential-play
+*.sublime-workspace
