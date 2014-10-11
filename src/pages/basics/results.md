@@ -5,11 +5,13 @@ title: Constructing Results
 
 # Constructing Results
 
-The previous section dealt with the first stage of handling an HTTP request: parsing the request and extracting useful Scala data from it. This section discusses the complimentary process of converting Scala data back into a result to send back to the client.
+In the previous section we saw how to extract well-typed Scala values from an incoming request. The should always be the first step in any `Action`. If we tame incoming data using the type system, we remove a lot of complexity and possibility of error from our business logic.
+
+Once we have finished our business logic, the final step of any `Action` is to convert the result into a `Result` object. In this section we will see how to create `Results`, populate them with content, and add headers and cookies.
 
 ## Setting The Status Code
 
-We can construct results using a set of convenient factory objects defined in the [play.api.mvc.Results] trait, of which [play.api.mvc.Controller] is a subtype:
+Play provides a convenient set of factory objects for creating `Results`. These are defined in the [play.api.mvc.Results] trait and inherited by [play.api.mvc.Controller]:
 
 |----------------------------+-----------------------------------------|
 | Constructur                | HTTP status code                        |
@@ -22,7 +24,13 @@ We can construct results using a set of convenient factory objects defined in th
 |======================================================================|
 {: .table .table-bordered .table-responsive }
 
-Each of the expressions in the table above creates an empty [play.api.mvc.Result] with a specified status code by no content. We can add content in a variety of ways.
+Each factory has an `apply` method that creates a `Result` with a different HTTP status code. `Ok.apply` creates 200 responses, `NotFound.apply` creates 404 responses, and so on. The `Status` object is different: it allows us to specify the status as an `Int` parameter. The end result in each case is a `Result` that we can return from our `Action`:
+
+~~~ scala
+val result1: Result = Ok("Success!")
+val result2: Result = NotFound("Is it behind the fridge?")
+val result3: Result = Status(401)("Access denied, Dave.")
+~~~
 
 [play.api.mvc.Results]:    https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Results
 [play.api.mvc.Controller]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Controller
@@ -30,78 +38,95 @@ Each of the expressions in the table above creates an empty [play.api.mvc.Result
 
 ## Adding Content
 
-The usual way of adding content is to call the `apply` method. This sets both the content and content type of the result. For example, `Ok("Hello world!")` creates a 200 response of type `text/plain` containing the text *Hello world!*.
+Play adds `Content-Type` headers to our `Results` based on the type of data we provide. In the examples above we provide `String` data. creating three results of `Content-Type: text/plain`.
 
-The `apply` method accepts arguments of a similar set of types described in *Request Bodies* in the previous section. Here are the most important ones:
+We can create `Results` using values of other Scala types, provided Play understands how to serialize them. Play even sets the `Content-Type` header for us as a convenience. Here are some examples:
 
-|---------------------------------------------------------+------------------------------------------------------|
-| Argument type to `apply`                                | Resulting `Content-Type`                             |
-|---------------------------------------------------------+------------------------------------------------------|
-| `String`                                                | `text/plain`                                         |
-| `JsValue`                                               | `application/json`                                   |
-| `NodeSeq`                                               | `application/xml`                                    |
-| [play.twirl.api.Content] -- output of a [play template] | appropriate content type for the template[^template] |
-|=========================================================+======================================================|
+|----------------------------------------------+----------------------------|
+| Using this Scala type...                     | Yields this result type... |
+|----------------------------------------------+----------------------------|
+| `String`                                     | `text/plain`               |
+| [play.twirl.api.Html] (see Chapter 2)        | `text/html`                |
+| [play.api.libs.json.JsValue] (see Chapter 3) | `application/json`         |
+| `scala.xml.NodeSeq`                          | `application/xml`          |
+| `Array[Byte]`                                | `application/octet-stream` |
+|==============================================+============================|
 {: .table .table-bordered .table-responsive }
 
-[play.twirl.api.Content]: https://github.com/playframework/twirl/blob/master/api/src/main/scala/play/twirl/api/Content.scala
-[play template]:          https://www.playframework.com/documentation/2.3.x/ScalaTemplates
+[play.twirl.api.Html]: https://github.com/playframework/twirl/blob/master/api/src/main/scala/play/twirl/api/Formats.scala
+[play.api.libs.json.JsValue]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsValue
 
-[^template]: As this course is primarily about web *services*, we won't cover Play templates here. See the linked documentation for more information.
+The process of creating a `Result` is type-safe -- Play determines the method of serialization based on the *type* we give it. If it understands what to do with our data, we get a working `Result`. If it doesn't understand the type we give it, we get a compilation error. As a consequence, the final steps in an `Action` tend to be:
+
+ 1. convert the result of our business logic to a type Play can serialize:
+    - HTML using a Twirl template, or;
+    - a `JsValue` to return the data as JSON, or;
+    - a Scala `NodeSeq` to return the data as XML, or;
+    - a `String` or `Array[Byte]`.
+
+ 2. use the serializable data to create a `Result`;
+
+ 3. tweak HTTP headers and so on;
+
+ 4. return the `Result`.
 
 <div class="callout callout-warning">
 #### Advanced: Custom Result Types
 
-The `apply` methods used to add content to results actually accept two parameters -- the content to add to the result and an implicit [play.api.http.Writeable] that specifies how to serialize that content:
+Play understands a limited set of result content types out-of-the-box. We can add support for our own types by defining instances of the [play.api.http.Writeable] type class. See the Scaladocs for more information:
 
 ~~~ scala
-def apply[C](content: C)(implicit writeable: Writeable[C]): Result
-~~~
+// We have a custom library for manipulating iCal calendar files:
+case class ICal(/* ... */)
 
-We can add support for our own result types by implementing a custom [play.api.http.Writeable] for the given type and making it available in implicit score. Here's an example:
-
-~~~ scala
-implicit object MyDataWriteable extends Writeable[MyData] {
+// We implement an implicit `Writeable[ICal]`:
+implicit object ICalWriteable extends Writeable[ICal] {
   // ...
 }
 
+// Now our actions can serialize `ICal` results:
 def action = Action { request =>
-  val data: MyData = // ...
+  val myCal: ICal = ICal(/* ... */)
 
-  Ok(data) // Scala implicitly inserts MyDataWriteable as a second parameter
+  Ok(myCal) // Play uses `ICalWriteable` to serialize `myCal`
 }
 ~~~
+
+The intention of `Writeable` is to support general data formats. We wouldn't create a `Writeable` to serialize a specific class from our business model, for example, but we might write one to support a format such as XLS, Markdown, or iCal.
 
 [play.api.http.Writeable]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.http.Writeable
 </div>
 
 ## Tweaking the Result
 
-Once we have created a result, we have access to a variety of methods to tweak its contents:
+Once we have created a `Result`, we have access to a variety of methods to alter its contents. The API documentation for [play.api.mvc.Result] documents the options available:
 
- - we can change the `Content-Type` using the `as` method;
+ - we can change the `Content-Type` header (without changing the content) using the `as` method;
  - we can add and/or alter HTTP headers using `withHeaders`;
  - we can add and/or alter cookies using `withCookies`.
 
-Here's a short example:
+These methods can be chained, allowing us to create the `Result`, tweak it, and return it in a single expression:
 
 ~~~ scala
-Ok("KTHXBAI").as("text/lolspeak").withHeaders(...).withCookies(...) // etc...
+def ohai = Action { request =>
+  Ok("OHAI").
+    as("text/lolspeak").
+    withHeaders(/* ... */).
+    withCookies(/* ... */)
+}
 ~~~
-
-The API documentation for [play.api.mvc.Result] contains all of the necessary details.
 
 [play.api.mvc.Result]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Result
 
 ## Take Home Points
 
-Play actions return instances of [play.api.mvs.Result].
+The final step of an `Actions` is to create and return a [play.api.mvs.Result].
 
-`Results` are created using factory objects defined in [play.api.mvs.Results], which is inherited by [play.api.mvc.Controller].
+We create `Results` using factory objects provided by [play.api.mvc.Controller]. Each factory creates `Results` with a specific HTTP status code.
 
-We can populate a `Result` with any data for which we have an implicit instance of [play.api.http.Writeable]. Play provides default instances for `String` (plain text), `JsValue` (JSON), `NodeSeq` (XML), and [play.twirl.api.Content] (output from Play templates).
+We can `Results` with a variety of data types. Play provides built-in support for `String`, `JsValue`, `NodeSeq`, and `Html`. We can add our own data types by writing instances of the [play.api.http.Writeable] type class.
 
-`Result` contains methods for adding further parameters such as headers and cookies.
+Once we have created a `Result`, we can tweak headers and cookies before returning it.
 
 [play.api.mvc.Results]:    https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Results
 [play.api.mvc.Controller]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Controller

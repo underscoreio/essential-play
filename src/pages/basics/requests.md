@@ -5,64 +5,93 @@ title: Parsing Requests
 
 # Parsing Requests
 
-As we saw in the previous section, when we create an `Action`, we typically do so by specifying a function of type `Request => Result`. We typically split this function into three stages:
+So far we have seen how to create `Actions` and map them to URIs using *routes*. In the rest of this chapter we will take a closer look at the code we write in the actions themselves.
 
- 1. parse the `Request` into one or more Scala domain objects;
- 2. perform our business logic using our domain objects;
- 3. convert the result of our business logic into a `Result`.
+The first job of any `Action` is to extract data from the HTTP request and turn it into well-typed, validated Scala values. We have already seen how *routes* allow us to extract information from the URI. In this section we will see the other tools Play provides for the rest of the `Request`.
 
-This section covers the implementation of step 1 of this process: parsing requests.
+<h3 id="bodies">Request Bodies</h3>
 
-## What's in a Request?
+The most important source of request data comes from the *body*. Clients can `POST` or `PUT` data in a huge range of formats, the most common being JSON, XML, and form data. Our first task is to identify the content type and parse the body.
 
-Clients can encode data into HTTP requests in a number of ways:
-
- - choice of HTTP method (GET, POST, etc);
- - path or query parameters in the URL;
- - headers and cookies;
- - request bodies.
-
-The [play.api.mvc.Request] objects that Play passes to our actions contain methods for accessing all of this information.
-
-[play.api.mvc.Request]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Request
-
-### Methods and URIs
-
-The suggested way of extracting this information is with a routes file. However, the `Request` object also contains methods for convenience:
+Confession time. Up to this point we've been telling a white lie about `Request` -- it is actually a generic type, `Request[A]`. The parameter `A` indicates the type of body, which we can retrieve via the `body` method:
 
 ~~~ scala
-object RequestDemo extends Controller {
-  def methodAndUri = Action { request =>
-    // The HTTP method ("GET", "POST", etc):
-    val method: String = request.method
-
-    // The URI, including path and query string:
-    val uri: String = request.uri
-
-    // The path of the URI, without the query string:
-    val path: String = request.uri
-
-    // The query string, split into name/values pairs:
-    val query: Map[String, Seq[String]] = request.queryString
-
-    Ok(Seq(
-      s"Method: $method",
-      s"URI: $uri",
-      s"Path: $path",
-      s"Query: $query"
-    ) mkString "\n")
-  }
+def index = Action { request =>
+  val body: ??? = request.body
+  // ... what type is `body`? ...
 }
 ~~~
 
-### Headers
+Play contains an number of *body parsers* that we can use to parse the request, returning a `body` of an appropriate Scala type.
 
-[play.api.mvc.Request] contains two methods for inspecting HTTP headers:
+So what type does `request.body` return in the examples we've seen so far? We haven't chosen a body parser, nor have we indicated the type of body anywhere in our code. Play *cannot* know the content-type of a request at compile time, so how is this handled? The answer is quite clever -- by default our actions handle requests of type `Request[AnyContent]`.
+
+[play.api.mvc.AnyContent] allows us to *choose* how to read the request in our `Action` code. It reads the request body into a buffer and provides methods to parse it in a handful of common formats. Each method has an `Optional` result, returning `None` if the request is empty or has the wrong `Content-Type`:
+
+|--------------------------------+---------------------------------------------------------------------|
+| Method of `AnyContent`         | Return type                        | Works on `Content-Type`        |
+|--------------------------------+------------------------------------+--------------------------------|
+| `asText`                       | `Option[String]`                   | `text/plain`                   |
+| `asFormUrlEncoded`             | `Option[Map[String, Seq[String]]]` | `application/form-url-encoded` |
+| `asMultipartFormData`          | `Option[MultipartFormData]`        | `multipart/form-data`          |
+| `asJson`                       | `Option[JsValue]`                  | `application/json`             |
+| `asXml`                        | `Option[NodeSeq]`                  | `application/xml`              |
+| `asRaw`                        | `Option[RawBuffer]`                | any                            |
+|======================================================================================================|
+{: .table .table-bordered .table-responsive }
+
+[play.api.mvc.AnyContent]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.AnyContent
+[play.api.mvc.MultipartFormData]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.MultipartFormData
+[play.api.libs.json.JsValue]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsValue
+[scala.xml.NodeSeq]: https://github.com/scala/scala-xml/blob/master/src/main/scala/scala/xml/NodeSeq.scala
+[play.api.mvc.RawBuffer]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.RawBuffer
+
+<div class="callout callout-warning">
+#### Advanced: Custom Body Parsers
+
+`AnyContent` is a convenient way to parse common types of request bodies. However, it suffers from two drawbacks:
+
+ - it only caters for a fixed set of common data types;
+ - with the exception of multipart form data, requests must be read entirely into memory before parsing.
+
+If we are certain about the data type we want in a particular `Action`, we can specify a *body parser* to restrict it to a specific type. Play returns a *400 Bad Request* response to the client if it cannot parse the request as the relevant type:
+
+~~~ scala
+import play.api.mvc.BodyParsers.parse
+
+def index = Action(parse.json) { request =>
+  val body: JsValue = request.body
+  // ...
+}
+~~~
+
+If the situation demands, we can even implement our own *custom body parsers* to parse exotic formats:
+
+~~~ scala
+object myDataParser new BodyParser[MyData] {
+  // ...
+}
+
+def action = Action(myDataParser) { request =>
+  val body: MyData = request.body
+  // ...
+}
+~~~
+
+See Play's [documentation on body parsers] for more information.
+
+[play.api.mvc.BodyParser]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.BodyParser
+[documentation on body parsers]: https://www.playframework.com/documentation/2.3.x/ScalaBodyParsers
+</div>
+
+## Headers and Cookies
+
+`Request` contains two methods for inspecting HTTP headers:
 
  - the `headers` method returns a [play.api.mvc.Headers] object for inspecting general headers;
  - and `cookies` method returns a [play.api.mvc.Cookies] object for inspecting the `Cookies` header.
 
-The APIs take care of common scenarios: missing headers, upper- and lower-case names, and so on. Here is a synopsis:
+These take care of common error scenarios: missing headers, upper- and lower-case names, and so on. Values are treated as `Strings` throughout -- Play doesn't attempt to parse headers as dedicated Scala types. Here is a synopsis:
 
 ~~~ scala
 object RequestDemo extends Controller {
@@ -90,67 +119,30 @@ object RequestDemo extends Controller {
 [play.api.mvc.Headers]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Headers
 [play.api.mvc.Cookies]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Cookies
 
-<h3 id="bodies">Request Bodies</h3>
+## Methods and URIs
 
-Up to this point we have been eliding an important implementation detail: [play.api.mvc.Request] is actually a *generic* type, `Request[A]`.
-
-The type parameter `A` indicates the *type* of the request body. Play contains an number of built-in *body parsers* for handling common types of request. These parsers conveniently type values for further processing in Scala.
-
-This begs a question: what type does `request.body` return in the examples we have seen so far? We haven't indicated the type of body we are expecting anywhere in our code. Play *cannot* know the content-type of a future request at compile, so how is this handled?
-
-The answer is quite clever: by default our actions accept an argument of type `Request[AnyContent]`. [play.api.mvc.AnyContent] is Play's way of allowing us to choose how the request should be parsed -- it contains methods to parse the body in any of the formats discussed. Each method returns `None` if the request is empty or of of the wrong `Content-Type`:
-
-|--------------------------------+---------------------------------------------------------------------|
-| Method of `AnyContent`         | Return type                        | Works on `Content-Type`        |
-|--------------------------------+------------------------------------+--------------------------------|
-| `asText`                       | `Option[String]`                   | `text/plain`                   |
-| `asFormUrlEncoded`             | `Option[Map[String, Seq[String]]]` | `application/form-url-encoded` |
-| `asMultipartFormData`          | `Option[MultipartFormData]`        | `multipart/form-data`          |
-| `asJson`                       | `Option[JsValue]`                  | `application/json`             |
-| `asXml`                        | `Option[NodeSeq]`                  | `application/xml`              |
-| `asRaw`                        | `Option[RawBuffer]`                | any                            |
-|======================================================================================================|
-{: .table .table-bordered .table-responsive }
-
-[play.api.mvc.AnyContent]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.AnyContent
-[play.api.mvc.MultipartFormData]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.MultipartFormData
-[play.api.libs.json.JsValue]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsValue
-[scala.xml.NodeSeq]: https://github.com/scala/scala-xml/blob/master/src/main/scala/scala/xml/NodeSeq.scala
-[play.api.mvc.RawBuffer]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.RawBuffer
-
-<div class="callout callout-warning">
-#### Advanced: Custom Body Parsers
-
-The `AnyContent` mechanism is a convenient way to parse request bodies in a type-safe fashion. However, it suffers from two drawbacks:
-
- - it only caters for a fixed set of common data types;
- - with the exception of multipart form data, requests must be read entirely into memory before parsing.
-
-If the situation demands it, we can implement our own instances of [play.api.mvc.BodyParser] and use them in our actions as follows:
+Routes are the recommended way of extracting information from a method or URI. However, the `Request` object also provides methods that are of occasional use:
 
 ~~~ scala
-object myDataParser new BodyParser[MyData] {
-  // ...
-}
+// The HTTP method ("GET", "POST", etc):
+val method: String = request.method
 
-def action = Action(myDataParser) { request: Request[MyData] =>
-  val body: MyData = request.body
-  // ...
-}
+// The URI, including path and query string:
+val uri: String = request.uri
+
+// The path of the URI, without the query string:
+val path: String = request.path
+
+// The query string, split into name/value pairs:
+val query: Map[String, Seq[String]] = request.queryString
 ~~~
-
-For more information see Play's [documentation on body parsers].
-</div>
-
-[play.api.mvc.BodyParser]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.BodyParser
-[documentation on body parsers]: https://www.playframework.com/documentation/2.3.x/ScalaBodyParsers
 
 ## Take Home Points
 
-Incoming web requests are represented by objects of type `Request[A]`.
+Incoming web requests are represented by objects of type `Request[A]`. The type parameter `A` indicates the type of the request body.
 
-`Requests` contain methods to access all parts of the HTTP request: URI, request parameters, headers, cookies, and so on.
-
-The type parameter on `Request[A]` refers to the type of the request body. This defaults to a type `AnyContent`, which contains methods to read the request body in a variety of content types.
+By default, Play represents bodies using a type called `AnyContent` that allows us to parse bodies a set of common data types.
 
 Reading the body may succeed or fail depending on whether the content type matches the type we expect. The various `body.asFoo` methods return `Options` to force us to deal with the possibility of failure.
+
+`Request` also contains methods to access HTTP headers, cookies, and various parts of the HTTP method and URI.
