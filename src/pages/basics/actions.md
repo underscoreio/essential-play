@@ -1,53 +1,75 @@
 ---
 layout: page
-title: Actions and Controllers
+title: "Actions, Controllers, and Routes"
 ---
 
-# Actions and Controllers
+# Actions, Controllers, and Routes
 
-Play web services are made up of *controllers*, *actions*, and *routes*. In this section we will see what each building block does, and how to wire them together.
+We create Play web applications from *actions*, *controllers*, and *routes*. In this section we will see what each part does and how to wire them together.
 
-This section uses sample code in the `hello-world` branch of the template project. To run the code type the following:
+# Hello, World!
 
-~~~ bash
-cd essential-play
-git checkout hello-world
-sbt run
+*Actions* are objects that handle web requests. They have an `apply` method that accepts a [play.api.mvc.Request] and returns a [play.api.mvc.Result]:
+
+~~~ scala
+Action { request =>
+  Ok("Hello, world!")
+}
 ~~~
 
-To view the resulting web application, open `http://localhost:9000` in your favorite web browser.
-
-# Defining Actions and Controllers
-
-*Actions* are objects that handle web requests. They are the fundamental building blocks of a Play web application. Each `Action` has an `apply` method that accepts an HTTP request as a parameter and returns an HTTP response (`Result` in Play nomenclature).
-
-Controllers are essentially a convenience layered on top of actions. These are singleton objects containing sets of `Action`-producing methods. We define controllers for two reasons: to group sets of related actions together in a single place, and to gain access to a whole load of useful library code.
-
-The example app contains a single controller defined in `app/controllers/HelloWorld.scala`:
+We package actions inside `Controllers`. These are singleton objects that contain action-producing methods:
 
 ~~~ scala
 package controllers
 
 import play.api.mvc.{ Action, Controller }
 
-object HelloWorld extends Controller {
-  def index = Action { request =>
-    Ok("Hi! You found the action at " + request.uri)
+object HelloController extends Controller {
+  def hello = Action { request =>
+    Ok("Hello, world!")
+  }
+
+  def helloTo(name: String) = Action { request =>
+    Ok(s"Hello, "$name!")
   }
 }
 ~~~
 
-Let's dissect this code:
+We use *routes* to dispatch incoming requests to `Actions`. They choose `Actions` based on the *HTTP method* and *URI* of the request. We write routes in a Play-specific DSL that is compiled to Scala by SBT -- we'll learn more about this DSL in the next section:
 
-The library code we're using comes from two traits [play.api.mvc.Action] and [play.api.mvc.Controller].
+~~~
+GET /      controllers.HelloController.hello
+GET /:name controllers.HelloController.helloTo(name: String)
+~~~
 
-We define a controller called `HelloWorld` of type [play.api.mvc.Controller]. The controller contains a single action method called `index`.
+By convention we place controllers in the `controllers` package in the `app/controllers` folder, and routes in a `conf/routes` configuration file. This is the structure of a basic Play application:
 
-We specify our Action using a function that accepts a parameter of type [play.api.mvc.Request] and returns a value of type [play.api.mvc.Result].
+~~~ coffeescript
+myProject/
+  build.sbt                 # SBT project configuration
+  project/
+    plugins.sbt             # SBT plugin configuration
+  app/
+    controllers/            # Controllers and actions go here
+      HelloController.scala #
+  conf/
+    routes                  # Routes go here
+~~~
 
-We construct our result using an `apply` method on a convenience object called `Ok`. `Ok` is inherited from the `Controller` trait and allows us to quickly construct a result with HTTP status 200. The actual return value is an object of class [play.api.mvc.Result].
+## The Anatomy of a Controller
 
-Because the argument to `Ok` is a `String`, Play intelligently sets the `Content-Type` of the result to `text/plain`. We'll see how to customise this behaviour and create results of different types later on.
+Let's take a closer look at the controller in the example above. The code in use comes from two places:
+
+ - the [play.api.mvc] package;
+ - the [play.api.mvc.Controller] trait (via inheritance).
+
+The controller, called `HelloWorld`, is a subtype of [play.api.mvc.Controller]. It defines two `Action`-producing methods, `hello` and `helloTo`. Our routes specify which of these methods to call when a request comes in.
+
+Note that `Actions` and `Controllers` have different lifetimes. `Controllers` are created when our application boots and persist until it shuts down. `Actions` are created by method calls and only live long enough to handle a single `Request`. Play passes the parameters from our routes to *the method that creates the `Action`*, not to the action itself.
+
+Each of the example `Actions` creates an `Ok` response containing a simple message. `Ok` is a helper object inherited from `Controller`. It has an `apply` method  that creates `Results` with HTTP status 200. The actual return type of `Ok.apply` is [play.api.mvc.Result].
+
+Play uses the type of the argument to `Ok.apply` to determine the `Content-Type` of the `Result`. The `String` arguments in the example create a `Results` of type `text/plain`. Later on we'll see how to customise this behaviour and create results of different types.
 
 [play.api.mvc]:            https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.package
 [play.api.mvc.Controller]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Controller
@@ -55,38 +77,20 @@ Because the argument to `Ok` is a `String`, Play intelligently sets the `Content
 [play.api.mvc.Request]:    https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Request
 [play.api.mvc.Result]:     https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Result
 
-# Routing Requests
+## Try It
 
-Once we have defined an action, we can associate it with a URL using a *routing table* defined in the file `conf/routes`. Here's a simple example:
-
-~~~
-GET /    controllers.HelloWorld.index
-~~~
-
-This example contains a single rule that sends all `GET` requests to URI `/` to our `index` action.
-
-The Play build system compiles the `routes` file into a global request router for our web application. The router analyses each incoming request and sends it to the appropriate action. If the router can't find an action, it returns a 404 response instead.
-
-Try running the sample app to see this routes file in action:
-
- - run the sample code;
- - open your web browser and navigate to [http://localhost:9000/]();
- - to see a 404 response, try navigating to [http://localhost:9000/foo]().
-
-We can associate as many URLs as we want with a given action. Let's update the `routes` file to bind `index` to two different URLs:
-
-~~~
-GET /       controllers.HelloWorld.index
-GET /foo    controllers.HelloWorld.index
-~~~
-
-Now refresh your browser. You should find that [http://localhost:9000/]() and [http://localhost:9000/foo]() produce a *hello world* response. Any other URI will produce a 404 response.
+TODO: Hello world exercise
 
 ## Take Home Points
 
-Play applications handle web requests using **Actions**, which are effectively functions of type `Request => Result`.
+We create Play web applications from `Actions`, `Controllers`, and *routes*.
 
-We group `Actions` together into singleton objects called `Controllers`. `Actions` can be declared as `vals` or `vars`, or can be generated by methods in the controller.
+ - `Actions` are functions from `Requests` to `Results`;
 
-We route requests to actions using **routes** that map URL patterns to `Action`-generating fields and methods.
+ - `Controllers` are collections of action-producing methods;
 
+ - **Routes** map incoming `Requests` to `Action`-producing method calls on our `Controllers`.
+
+We typically place controllers in a `controllers` package in the `app/controllers` folder. Routes go in the `conf/routes` file (no filename extension).
+
+In the next section we will take a closer look at routes.

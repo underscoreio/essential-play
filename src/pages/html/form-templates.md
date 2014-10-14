@@ -1,9 +1,9 @@
 ---
 layout: page
-title: Forms and HTML
+title: Generating Form HTML
 ---
 
-# Forms and HTML
+# Generating Form HTML
 
 In the previous section we saw how we can use `Forms` to parse incoming response data. In this section, we will look at the opposite side of the form-handling coin, generating HTML.
 
