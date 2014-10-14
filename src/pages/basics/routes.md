@@ -141,7 +141,7 @@ methodAndUri.method // "GET"
 methodAndUrl.url    // "/hello/dave"
 ~~~
 
-Play generates reverse routes for each controller and action referenced in our routes file. The routes return [play.api.mvc.Call] objects that holding the HTTP method and URI from the route. Here is some pseudo-code based on example above to illustrate:
+Play generates reverse routes for each controller and action referenced in our routes file. The routes return [play.api.mvc.Call] objects that hold the HTTP method and URI from the route. Here is some pseudo-code based on example above to illustrate:
 
 ~~~ scala
 package routes
