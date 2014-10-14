@@ -173,7 +173,7 @@ object DownloadController {
 
 *Routes* provide bi-directional mapping between URLs and `Action`-producing methods within `Controllers`.
 
-We rite routes using a Play-specific DSL that compiles to Scala code. Each route comprises an HTTP method, a URL pattern, and a corresponding method call. Patterns can contain *path* and *query parameters* that are extracted and used in the method call.
+We write routes using a Play-specific DSL that compiles to Scala code. Each route comprises an HTTP method, a URL pattern, and a corresponding method call. Patterns can contain *path* and *query parameters* that are extracted and used in the method call.
 
 We can *type* the path and query parameters in routes to simplify the parsing code in our controllers and actions. Play supports many types out of the box, but we can also write code to map our own types.
 
