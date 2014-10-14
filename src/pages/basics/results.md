@@ -120,7 +120,7 @@ def ohai = Action { request =>
 
 ## Take Home Points
 
-The final step of an `Actions` is to create and return a [play.api.mvs.Result].
+The final step of an `Actions` is to create and return a [play.api.mvc.Result].
 
 We create `Result`s using factory objects provided by [play.api.mvc.Controller]. Each factory creates `Result`s with a specific HTTP status code.
 
