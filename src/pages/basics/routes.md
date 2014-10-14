@@ -150,7 +150,7 @@ import play.api.mvc.Call
 
 object HelloController {
   def hello: Call =
-    Call("GET", /hello")
+    Call("GET", "/hello")
 
   def helloTo(name: String): Call =
     Call("GET", "/hello/" + encodeURIComponent(name))
