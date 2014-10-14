@@ -78,7 +78,7 @@ We can specify parameters in the method-call section of a route without declarin
 GET /send  controllers.Notification.sendTo(message: String, username: String)
 ~~~
 
-We sometimes want to make query string parameters optional. To do this, we just have to define them as `Optional` types. Play will pass `Some(value)` if the URI contains the parameter and `None` if it does not:
+We sometimes want to make query string parameters optional. To do this, we just have to define them as `Option` types. Play will pass `Some(value)` if the URI contains the parameter and `None` if it does not:
 
 ~~~ coffee
 GET /send  controllers.Notification.sendTo(message: Option[String], username: Option[String])
