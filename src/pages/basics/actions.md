@@ -63,7 +63,7 @@ Let's take a closer look at the controller in the example above. The code in use
  - the [play.api.mvc] package;
  - the [play.api.mvc.Controller] trait (via inheritance).
 
-The controller, called `HelloWorld`, is a subtype of [play.api.mvc.Controller]. It defines two `Action`-producing methods, `hello` and `helloTo`. Our routes specify which of these methods to call when a request comes in.
+The controller, called `HelloController`, is a subtype of [play.api.mvc.Controller]. It defines two `Action`-producing methods, `hello` and `helloTo`. Our routes specify which of these methods to call when a request comes in.
 
 Note that `Actions` and `Controllers` have different lifetimes. `Controllers` are created when our application boots and persist until it shuts down. `Actions` are created by method calls and only live long enough to handle a single `Request`. Play passes the parameters from our routes to *the method that creates the `Action`*, not to the action itself.
 
