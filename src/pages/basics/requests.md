@@ -26,7 +26,7 @@ Play contains an number of *body parsers* that we can use to parse the request, 
 
 So what type does `request.body` return in the examples we've seen so far? We haven't chosen a body parser, nor have we indicated the type of body anywhere in our code. Play *cannot* know the content-type of a request at compile time, so how is this handled? The answer is quite clever -- by default our actions handle requests of type `Request[AnyContent]`.
 
-[play.api.mvc.AnyContent] allows us to *choose* how to read the request in our `Action` code. It reads the request body into a buffer and provides methods to parse it in a handful of common formats. Each method has an `Optional` result, returning `None` if the request is empty or has the wrong `Content-Type`:
+[play.api.mvc.AnyContent] allows us to *choose* how to read the request in our `Action` code. It reads the request body into a buffer and provides methods to parse it in a handful of common formats. Each method has an `Option` result, returning `None` if the request is empty or has the wrong `Content-Type`:
 
 |--------------------------------+---------------------------------------------------------------------|
 | Method of `AnyContent`         | Return type                        | Works on `Content-Type`        |
