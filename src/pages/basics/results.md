@@ -5,7 +5,7 @@ title: Constructing Results
 
 # Constructing Results
 
-In the previous section we saw how to extract well-typed Scala values from an incoming request. The should always be the first step in any `Action`. If we tame incoming data using the type system, we remove a lot of complexity and possibility of error from our business logic.
+In the previous section we saw how to extract well-typed Scala values from an incoming request. This should always be the first step in any `Action`. If we tame incoming data using the type system, we remove a lot of complexity and possibility of error from our business logic.
 
 Once we have finished our business logic, the final step of any `Action` is to convert the result into a `Result` object. In this section we will see how to create `Results`, populate them with content, and add headers and cookies.
 
