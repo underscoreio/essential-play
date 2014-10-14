@@ -96,7 +96,7 @@ GET /hello/:name controllers.Notification.sendTo(name: Option[String])
 
 # Typed Parameters
 
-We can extract path and query parameters of types other thatn `String`. Play has built-in support for `Int`, `Double`, `Long`, `Boolean`, `UUID`, and `Optional` and `Seq` variants:
+We can extract path and query parameters of types other than `String`. Play has built-in support for `Int`, `Double`, `Long`, `Boolean`, `UUID`, and `Option` and `Seq` variants:
 
 ~~~ coffee
 GET /add/:a/to/:b controllers.Calculator.add(a: Int, b: Int)
