@@ -14,7 +14,7 @@ Once we have finished our business logic, the final step of any `Action` is to c
 Play provides a convenient set of factory objects for creating `Result`s. These are defined in the [play.api.mvc.Results] trait and inherited by [play.api.mvc.Controller]:
 
 |----------------------------+-----------------------------------------|
-| Constructur                | HTTP status code                        |
+| Constructor                | HTTP status code                        |
 |----------------------------+-----------------------------------------|
 | `Ok`                       | 200 Ok                                  |
 | `NotFound`                 | 404 Not Found                           |
