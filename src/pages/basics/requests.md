@@ -5,7 +5,7 @@ title: Parsing Requests
 
 # Parsing Requests
 
-So far we have seen how to create `Action`s and map them to URIs using *routes*. In the rest of this chapter we will take a closer look at the code we write in the actions themselves.
+So far we have seen how to create `Actions` and map them to URIs using *routes*. In the rest of this chapter we will take a closer look at the code we write in the actions themselves.
 
 The first job of any `Action` is to extract data from the HTTP request and turn it into well-typed, validated Scala values. We have already seen how *routes* allow us to extract information from the URI. In this section we will see the other tools Play provides for the rest of the `Request`.
 
@@ -26,7 +26,7 @@ Play contains an number of *body parsers* that we can use to parse the request, 
 
 So what type does `request.body` return in the examples we've seen so far? We haven't chosen a body parser, nor have we indicated the type of body anywhere in our code. Play *cannot* know the content-type of a request at compile time, so how is this handled? The answer is quite clever -- by default our actions handle requests of type `Request[AnyContent]`.
 
-[play.api.mvc.AnyContent] allows us to *choose* how to read the request in our `Action` code. It reads the request body into a buffer and provides methods to parse it in a handful of common formats. Each method has an `Option` result, returning `None` if the request is empty or has the wrong `Content-Type`:
+[play.api.mvc.AnyContent] allows us to *choose* how to read the request in our `Action` code. It reads the request body into a buffer and provides methods to parse it in a handful of common formats. Each method has an `Optional` result, returning `None` if the request is empty or has the wrong `Content-Type`:
 
 |--------------------------------+---------------------------------------------------------------------|
 | Method of `AnyContent`         | Return type                        | Works on `Content-Type`        |
@@ -65,12 +65,7 @@ def index = Action(parse.json) { request =>
 }
 ~~~
 
-<<<<<<< HEAD
-    // The path of the URI, without the query string:
-    val path: String = request.path
-=======
 If the situation demands, we can even implement our own *custom body parsers* to parse exotic formats:
->>>>>>> develop
 
 ~~~ scala
 object myDataParser new BodyParser[MyData] {
@@ -124,49 +119,9 @@ object RequestDemo extends Controller {
 [play.api.mvc.Headers]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Headers
 [play.api.mvc.Cookies]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Cookies
 
-<<<<<<< HEAD
-<h3 id="bodies">Request Bodies</h3>
-
-Up to this point we have been eliding an important implementation detail: [play.api.mvc.Request] is actually a *generic* type, `Request[A]`.
-
-The type parameter `A` indicates the *type* of the request body. Play contains an number of built-in *body parsers* for handling common types of request. These parsers conveniently type values for further processing in Scala.
-
-This begs a question: what type does `request.body` return in the examples we have seen so far? We haven't indicated the type of body we are expecting anywhere in our code. Play *cannot* know the content-type of a future request at compilation, so how is this handled?
-
-The answer is quite clever: by default our actions accept an argument of type `Request[AnyContent]`. [play.api.mvc.AnyContent] is Play's way of allowing us to choose how the request should be parsed -- it contains methods to parse the body in any of the formats discussed. Each method returns `None` if the request is empty or of the wrong `Content-Type`:
-
-|--------------------------------+---------------------------------------------------------------------|
-| Method of `AnyContent`         | Return type                        | Works on `Content-Type`        |
-|--------------------------------+------------------------------------+--------------------------------|
-| `asText`                       | `Option[String]`                   | `text/plain`                   |
-| `asFormUrlEncoded`             | `Option[Map[String, Seq[String]]]` | `application/form-url-encoded` |
-| `asMultipartFormData`          | `Option[MultipartFormData]`        | `multipart/form-data`          |
-| `asJson`                       | `Option[JsValue]`                  | `application/json`             |
-| `asXml`                        | `Option[NodeSeq]`                  | `application/xml`              |
-| `asRaw`                        | `Option[RawBuffer]`                | any                            |
-|======================================================================================================|
-{: .table .table-bordered .table-responsive }
-
-[play.api.mvc.AnyContent]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.AnyContent
-[play.api.mvc.MultipartFormData]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.MultipartFormData
-[play.api.libs.json.JsValue]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsValue
-[scala.xml.NodeSeq]: https://github.com/scala/scala-xml/blob/master/src/main/scala/scala/xml/NodeSeq.scala
-[play.api.mvc.RawBuffer]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.RawBuffer
-
-<div class="callout callout-warning">
-#### Advanced: Custom Body Parsers
-
-The `AnyContent` mechanism is a convenient way to parse request bodies in a type-safe fashion. However, it suffers from two drawbacks:
-
- - it only caters for a fixed set of common data types;
- - with the exception of multipart form data, requests must be read entirely into memory before parsing.
-
-If the situation demands it, we can implement our own instances of [play.api.mvc.BodyParser] and use them in our actions as follows:
-=======
 ## Methods and URIs
 
 Routes are the recommended way of extracting information from a method or URI. However, the `Request` object also provides methods that are of occasional use:
->>>>>>> develop
 
 ~~~ scala
 // The HTTP method ("GET", "POST", etc):
