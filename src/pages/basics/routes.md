@@ -179,4 +179,4 @@ We can *type* the path and query parameters in routes to simplify the parsing co
 
 Play also generates *reverse routes* that map method calls back to URIs. These are placed in a synthetic `routes` package that we can access from our Scala code.
 
-Now we have seen what we can do with routes, let's look at the `Request`- and `Result`-handling code we can write in our actions. This will arm us with all the knowledge we need to start dealing with HTML in the next chapter.
+Now we have seen what we can do with routes, let's look at the `Request` and `Result` handling code we can write in our actions. This will arm us with all the knowledge we need to start dealing with HTML in the next chapter.
