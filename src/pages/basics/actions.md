@@ -30,7 +30,7 @@ object HelloController extends Controller {
   }
 
   def helloTo(name: String) = Action { request =>
-    Ok(s"Hello, "$name!")
+    Ok(s"Hello, $name!")
   }
 }
 ~~~
