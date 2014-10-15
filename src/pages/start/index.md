@@ -1,15 +1,15 @@
 ---
 layout: page
-title: Getting Started
+title: Getting started
 ---
 
-# Getting Started
+# Getting started
 
 TODO:
 
  - This will get SBT installed and get you started
 
-## Code For The Course
+## Code for the course
 
 TODO:
 

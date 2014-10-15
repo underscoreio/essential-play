@@ -1,9 +1,9 @@
 ---
 layout: page
-title: Formats for Type Hierarchies
+title: Formats for type hierarchies
 ---
 
-# Formats for Type Hierarchies
+# Formats for type hierarchies
 
 In this final section, we cover a specific use-case that comes up often when writing JSON serialization -- how to write `Formats` for generalised hierarchies of types.
 
@@ -31,7 +31,7 @@ addressFormat.writes(Address(29, "Acacia Road")) ++ Json.obj("city" -> "Nuttytow
 // == Json.obj("number" -> 29, "street" -> "Acacia Road", "city" -> "Nuttytown")
 ~~~
 
-## Typing the Untyped
+## Typing the untyped
 
 We can use the technique described above of to append a `"type"` field to our JSON to retain type information while the data is on the client. We can use the `"type"` field when we read JSON from a `Request` to decide which `Reads` to use to parse the data.
 
@@ -79,6 +79,6 @@ implicit object animalFormat extends Format[Animal] {
 
 The `writes` method uses the subtype formats to convert the parameter to a `JsObject` and append a `"type"` field. Conversely, the `reads` method inspects the `"type"` field and uses its value to dispatch the JSON to the relevant subtype format.
 
-## Take Home Points
+## Take home points
 
 TODO

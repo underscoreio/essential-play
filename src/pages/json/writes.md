@@ -40,7 +40,7 @@ val json: JsValue = addressWrites.writes(address)
 assert(json == Json.obj("number" -> 29, "street" -> "Acacia Road"))
 ~~~
 
-## Implicit Writes
+## Implicit *Writes*
 
 Let's look at a more complicated example -- what happens when we try to define a `Writes` for a nested data structure?
 
@@ -74,7 +74,7 @@ val personWrites = Json.writes[Person] // now it compiles!
 
 [play.api.libs.json.DefaultWrites]: https://playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.DefaultWrites
 
-## The *Json.toJson* Method
+## The *Json.toJson* method
 
 We can use our new `personWrites` to serialize data just as we did with `addressWrites`:
 
@@ -125,7 +125,7 @@ genericOkResult(Address(29, "Acacia Road"))
 Veterans of *Underscore's Essential Scala* course will recognise this as the stalwart *type class pattern*!
 
 <div class="callout callout-info">
-#### *Writes* Best Practices
+#### *Writes* best practices
 
 Now that we know `Writes` is a type class, we can apply the type class pattern to our web applications:
 
@@ -135,7 +135,7 @@ Now that we know `Writes` is a type class, we can apply the type class pattern t
  - Use implicit parameters (or context bounds) to write generic code that handles a variety of data types.
 </div>
 
-## Take Home Points
+## Take home points
 
 We convert Scala data to JSON using instances of [play.api.libs.json.Writes].
 

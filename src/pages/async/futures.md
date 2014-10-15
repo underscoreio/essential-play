@@ -43,7 +43,7 @@ The answer is 42. Now, what was the question?
 
 When the computation in a future has completed, the resulting value is cached in the future for eventual re-use. We can attach as many callbacks as we like, before or after its completion, and be sure the same result value will be delivered to each.
 
-## Composing Futures
+## Composing futures
 
 The example above uses a *callback* to react to the completion of the future. This is worrying for functional programming purists because it is an *imperative* programming style. Callbacks *aren't functional* -- they don't return a value for use elsewhere in our code. Moreover, callback-driven programming is difficult to read because the order of lines in our code doesn't match the order of execution.
 
@@ -117,7 +117,7 @@ Functional programming enthusiasts will note that the presence of a `flatMap` me
 
 [scala.Option]: http://www.scala-lang.org/api/2.11.2/#scala.Option
 
-### Wait... Future is a Monad? We Can Use For-Comprehensions!
+### Wait... *Future* is a monad? We can use for-comprehensions!
 
 Because `Future` has `map` and `flatMap` methods, we can use it with regular Scala for-comprehensions.
 
@@ -235,7 +235,7 @@ The *create-then-compose* example, by contrast, initiates each of the calls imme
 Both examples are resource-efficient and non-blocking, but *create-then-compose* will typically complete in about one third the time. This is something to watch out for when combining futures using for-comprehensions.
 
 <div class="callout callout-info">
-#### Sequencing Futures using For-Comprehensions
+#### Sequencing *Futures* using for-comprehensions
 
  1. Work out which calculations are dependent on the results of which others:
 
@@ -294,7 +294,7 @@ def totalTraffic(hostnames: Seq[String]): Future[Double] = {
 
 [^sequence]: It actually accepts a `TraversableOnce` of futures, which includes sequences, sets, lazy streams, and many of other types of collection not covered here.
 
-### Take Home Points
+## Take home points
 
 We use `Futures` to represent asynchronous computations.
 

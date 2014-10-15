@@ -1,9 +1,9 @@
 ---
 layout: page
-title: Async and Concurrency
+title: Async and concurrency
 ---
 
-# Async and Concurrency
+# Async and concurrency
 
 There are many long-running operations that may require a web application to wait around for an answer. Examples include complex computations, database access, or remote network access. This is important because modern web applications tend to be implemented as collections of *services* that provide different parts of a system and communicate over HTTP.
 

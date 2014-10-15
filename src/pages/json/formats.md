@@ -1,9 +1,9 @@
 ---
 layout: page
-title: JSON Formats
+title: JSON formats
 ---
 
-# JSON Formats
+# JSON formats
 
 In the previous sections we saw how to use the `Reads` and `Writes` type classes to convert between JSON and well-typed Scala data. In this section we introduce a third type, `Format`, that subsumes both `Reads` and `Writes`.
 
@@ -41,7 +41,7 @@ Json.fromJson(Json.obj(
 
 `Format` is really just a convenience. We can do everything we need to using `Reads` and `Writes` alone, but sometimes it is similar to group both sets of functionality in the same object.
 
-## Take Home Points
+## Take home points
 
 `Format[A]` is a subtype of `Reads[A]` and `Writes[A]` that provides both sets of functionality and can be used with `Json.toJson` and `Json.fromJson`.
 

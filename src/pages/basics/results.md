@@ -1,15 +1,15 @@
 ---
 layout: page
-title: Constructing Results
+title: Constructing results
 ---
 
-# Constructing Results
+# Constructing results
 
 In the previous section we saw how to extract well-typed Scala values from an incoming request. The should always be the first step in any `Action`. If we tame incoming data using the type system, we remove a lot of complexity and possibility of error from our business logic.
 
 Once we have finished our business logic, the final step of any `Action` is to convert the result into a `Result` object. In this section we will see how to create `Results`, populate them with content, and add headers and cookies.
 
-## Setting The Status Code
+## Status codes
 
 Play provides a convenient set of factory objects for creating `Results`. These are defined in the [play.api.mvc.Results] trait and inherited by [play.api.mvc.Controller]:
 
@@ -36,7 +36,7 @@ val result3: Result = Status(401)("Access denied, Dave.")
 [play.api.mvc.Controller]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Controller
 [play.api.mvc.Result]:     https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Result
 
-## Adding Content
+## Result content
 
 Play adds `Content-Type` headers to our `Results` based on the type of data we provide. In the examples above we provide `String` data. creating three results of `Content-Type: text/plain`.
 
@@ -71,7 +71,7 @@ The process of creating a `Result` is type-safe -- Play determines the method of
  4. return the `Result`.
 
 <div class="callout callout-warning">
-#### Advanced: Custom Result Types
+#### Advanced: Custom result types
 
 Play understands a limited set of result content types out-of-the-box. We can add support for our own types by defining instances of the [play.api.http.Writeable] type class. See the Scaladocs for more information:
 
@@ -97,7 +97,7 @@ The intention of `Writeable` is to support general data formats. We wouldn't cre
 [play.api.http.Writeable]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.http.Writeable
 </div>
 
-## Tweaking the Result
+## Tweaking the result
 
 Once we have created a `Result`, we have access to a variety of methods to alter its contents. The API documentation for [play.api.mvc.Result] documents the options available:
 
@@ -118,7 +118,7 @@ def ohai = Action { request =>
 
 [play.api.mvc.Result]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Result
 
-## Take Home Points
+## Take home points
 
 The final step of an `Actions` is to create and return a [play.api.mvs.Result].
 

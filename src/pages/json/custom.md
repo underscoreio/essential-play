@@ -1,15 +1,15 @@
 ---
 layout: page
-title: Formats for Custom Types
+title: Formats for custom types
 ---
 
-# Formats for Custom Types
+# Formats for custom types
 
 So far in this chapter we have seen how to use the `Json.reads`, `Json.writes` and `Json.format` macros to define `Reads`, `Writes` and `Formats` for case classes. In this section, we will see what we can do when we are dealing with types that *aren't* case classes.
 
 The examples in this section will deal with `Formats` as this is the most complicated of the three types. However, all of these approaches also work when implementing `Reads` and `Writes` individually.
 
-## Writing Simple Formats by Hand
+## Writing simple formats by hand
 
 Play's JSON macros don't do anything for hierarchies of types -- we have to implement these formats ourselves. Enumerations are a classic example covered below. There is a separate section at the end of this chapter on extending this pattern to generalized hierarchies of types.
 
@@ -52,7 +52,7 @@ Note the construction of the `JsError`, which mimics the way Play handles intern
 [built-in error codes]: https://github.com/playframework/playframework/blob/2.3.x/framework/src/play/src/main/resources/messages.default#L21-L51
 </div>
 
-## Writing Complex Formats using Play's Format DSL
+## Writing complex formats using the *Format* DSL
 
 In complex cases it can become cumbersome to write `Formats` by hand using regular Scala code. Fortunately, Play provides a comprehensive *format DSL* that simplifies the creation of `Reads`, `Writes`, and `Formats`. The full DSL is described in the [Play documentation] -- what follows is a brief synopsis for completeness.
 
@@ -152,7 +152,7 @@ The `apply` method on `Reads[(Int, String)]` accepts a function `(Int, String) =
 If we were building a `Writes`, we would pass an `unapply` method as a parameter instead of an `apply` method. If we were defining a `Format`, we would pass in *both* methods.
 
 <div class="callout callout-info">
-#### How to use the Format DSL
+#### Recipe for using the format DSL
 
 In summary, the process described as above is as follows:
 
@@ -163,7 +163,7 @@ In summary, the process described as above is as follows:
  5. pass everything into an `apply` or `unapply` method as appropriate (if these methods don't exist, write your own)!
 </div>
 
-### Applying the DSL to a Java Class
+### Applying the DSL to a Java class
 
 We will finish with one last example of using the DSL -- defining a `Format` that extracts the temporal components (hour, minute, day, month, etc) from an instance of [org.joda.time.DateTime] class:
 
@@ -189,7 +189,7 @@ implicit val dateTimeFormat: Format[DateTime] = (
 )(createDateTime, extractDateTimeFields)
 ~~~
 
-## Take Home Points
+## Take home points
 
 Play provides three traits that govern mappings between JSON and Scala data:
 

@@ -1,13 +1,13 @@
 ---
 layout: page
-title: Generating Form HTML
+title: Generating form HTML
 ---
 
-# Generating Form HTML
+# Generating form HTML
 
 In the previous section we saw how we can use `Forms` to parse incoming response data. In this section, we will look at the opposite side of the form-handling coin, generating HTML.
 
-## Forms and Inputs
+## Forms and inputs
 
 Play has several built-in helpers for generating `<form>` and `<input>` tags in the [views.html.helper] package. To use these we must pass a `Form` to a template as a parameter:
 
@@ -57,7 +57,7 @@ Note the `format.boolean` error message -- an uninternationalized message that h
 [views.html.helper]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#views.html.helper.package
 [internationalizing]: https://www.playframework.com/documentation/2.3.x/ScalaI18N
 
-## Pre-Filling Forms
+## Pre-filling forms
 
 Sometimes we want to pre-fill a `Form` with data taken from a database. We can do this with the `fill` method, which returns a new `Form` filled with input values:
 
@@ -68,7 +68,7 @@ val populatedHtml = views.html.catFormTemplate(populatedForm))
 
 The `<inputs>` in the `populatedHtml` here have their `value` attributes set to appropriate starting values.
 
-## Displaying Validation Errors
+## Displaying validation errors
 
 If we use our template with a form that contains parsing or validation errors, the resulting HTML contains error messages telling the user what they did wrong:
 

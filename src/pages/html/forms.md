@@ -1,9 +1,9 @@
 ---
 layout: page
-title: Form Handling
+title: Form handling
 ---
 
-# Form Handling
+# Form handling
 
 Play's forms library centers around objects of type [play.api.data.Form]. These objects represent a combination of mapping information and form data, allowing us to perform four important operations:
 
@@ -16,7 +16,7 @@ We will cover each of these processes in the following sections. This section co
 
 [play.api.data.Form]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.data.Form
 
-## Forms and Mappings
+## *Forms* and *Mappings*
 
 `Forms` define mappings between form data and typed data values. To define a form, we first need to define the *data type* we want to represent:
 
@@ -75,7 +75,7 @@ val catForm = Form(mapping(
 )(Cat.apply)(Cat.unapply))
 ~~~
 
-## Handling Form Data
+## Handling form data
 
 A `Form` is actually a combination of the mappings we defined above and a set of data values. Our initial `catForm` is empty, but we can use it to create a *populated form* from an incoming request. This process is called *binding* the request:
 
@@ -120,7 +120,7 @@ def submitCatForm = Action { request =>
 
 Our failure handler passes the `formContainingErrors` to a template that generates a filled form, complete with error messages. We will discuss how this works in the next section.
 
-## Form Validation
+## Form validation
 
 Binding a request attempts to parse the incoming data, but it can also *validate* once parsed. The `Forms` object contains constructors for various types of validated `Mapping`, and we can add arbitrary validation constraints via `Mapping's` `verifying` method:
 
@@ -142,7 +142,7 @@ Play provides lots of options for parsing and validating, including adding multi
 [play.api.data.Forms]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.data.Forms$
 [play.api.data.validation.Constraints]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.data.validation.Constraints$
 
-## Take Home Points
+## Take home points
 
 In this section we saw how to creaate `Form` objects and use them to parse and validate incoming form data.
 

@@ -1,9 +1,9 @@
 ---
 layout: page
-title: Developing Using SBT
+title: Developing using SBT
 ---
 
-## Developing Using SBT
+## Developing using SBT
 
 TODO:
 
@@ -19,7 +19,7 @@ TODO:
       (as opposed to `sbt run`, where you have to reload the page to compile)
  - Link to SBT documentation
 
-## Publishing Using SBT
+## Publishing using SBT
 
 TODO:
 

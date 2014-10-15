@@ -1,13 +1,13 @@
 ---
 layout: page
-title: "Actions, Controllers, and Routes"
+title: "Actions, controllers, and routes"
 ---
 
-# Actions, Controllers, and Routes
+# Actions, controllers, and routes
 
 We create Play web applications from *actions*, *controllers*, and *routes*. In this section we will see what each part does and how to wire them together.
 
-# Hello, World!
+# Hello, world!
 
 *Actions* are objects that handle web requests. They have an `apply` method that accepts a [play.api.mvc.Request] and returns a [play.api.mvc.Result]:
 
@@ -56,7 +56,7 @@ myProject/
     routes                  # Routes go here
 ~~~
 
-## The Anatomy of a Controller
+## The anatomy of a controller
 
 Let's take a closer look at the controller in the example above. The code in use comes from two places:
 
@@ -77,11 +77,11 @@ Play uses the type of the argument to `Ok.apply` to determine the `Content-Type`
 [play.api.mvc.Request]:    https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Request
 [play.api.mvc.Result]:     https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Result
 
-## Try It
+## Try it
 
 TODO: Hello world exercise
 
-## Take Home Points
+## Take home points
 
 We create Play web applications from `Actions`, `Controllers`, and *routes*.
 
