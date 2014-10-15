@@ -1,6 +1,6 @@
 ---
 layout: page
-title: HTML and forms
+title: HTML and Forms
 ---
 
 # HTML and forms
