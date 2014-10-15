@@ -1,15 +1,15 @@
 ---
 layout: page
-title: Handling failure
+title: Handling Failure
 ---
 
-# Handling failure
+# Handling Failure
 
 At this point we have covered all the basics for this chapter. We have learned how to set up routes, write `Actions`, handle `Requests`, and create `Results`.
 
 In this final section of the chapter we will take a first look at a theme that runs throughout the course -- failures and error handling. In future chapters we will look at how to generate good error messages for our users. In this section we will see what error messages Play provides for us.
 
-## Compilation errors
+## Compilation Errors
 
 Play reports compilation errors in two places: on the SBT console, and via 500 error pages. If you've been following the exercises so far, you will have seen this already. When we run a development web server using `sbt run` and make a mistake in our code, Play responds with an error page:
 
@@ -31,13 +31,13 @@ While this behaviour is useful, we should be aware of two drawbacks:
 
     In continuous compilation mode, SBT recompiles our code every time we change a file. However, we have to go back to `sbt run` to see the changes in a browser.
 
-## Runtime errors
+## Runtime Errors
 
 If our code compiles but fails at runtime, we get a similar error page that points to the source of the exception. The exception is reported on the SBT console as well as on the page:
 
 ![Internal error: Play's default error 500 page](internal-error.png)
 
-## Routing errors
+## Routing Errors
 
 Play generates a 404 page if it can't find an appropriate route for an incoming request. This error *doesn't* appear on the console:
 
@@ -48,7 +48,7 @@ If Play finds a route but can't parse the parameters from the path and query str
 ![Bad request: Play's 400 routing error page](bad-request-error.png)
 
 
-## Take home points
+## Take Home Points
 
 Play ships with a default 500 error page out of the box. It gives us nice error messages for compile errors and exceptions during development. Similarly, Play provides default 404 and 400 pages for routing errors.
 

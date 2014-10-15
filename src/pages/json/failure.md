@@ -1,9 +1,9 @@
 ---
 layout: page
-title: Handling failure
+title: Handling Failure
 ---
 
-# Handling failure
+# Handling Failure
 
 TODO:
 
@@ -12,7 +12,7 @@ TODO:
  - We can override the default behaviour in Globals.scala
  - Let's see some examples
 
-## Routing errors
+## Routing Errors
 
 TODO:
 
@@ -24,7 +24,7 @@ TODO:
 
  - Show Global.scala example
 
-## Take home points
+## Take Home Points
 
 TODO:
 

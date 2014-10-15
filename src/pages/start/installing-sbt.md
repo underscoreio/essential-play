@@ -13,7 +13,7 @@ TODO:
     - Install typesafe activator
  - All three use SBT (Activator == SBT)
 
-## Verifying everything is OK
+## Verifying Everything is OK
 
 TODO:
 

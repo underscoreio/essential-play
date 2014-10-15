@@ -1,15 +1,15 @@
 ---
 layout: page
-title: Routes in depth
+title: Routes in Depth
 ---
 
-# Routes in depth
+# Routes in Depth
 
 The previous section introduced actions, controllers, and routes. Actions and controllers are standard Scala code, but routes are something new and specific to Play.
 
 We define Play routes using a special DSL that compiles to Scala code. The DSL provides both a convenient way of mapping URIs to method calls, and a way of mapping method calls *back* to URIs. In this section we will take a deeper look at Play's routing DSL, including the various ways we can extract parameters from URIs.
 
-## Path parameters
+## Path Parameters
 
 Routes associate *URI patterns* with *action-producing method calls*. We can specify *parameters* to extract from the URI and pass to our controllers. Here are some examples:
 
@@ -35,7 +35,7 @@ The third example uses two single-segment parameters to extract two parts of the
 
 The final example uses a *rest-parameter*, written using a leading asterisk ('*'). Rest-style parameters match all remaining characters in the URI, including forward slashes.
 
-## Matching requests to routes
+## Matching Requests to Routes
 
 When a request comes in, Play attempts to route it to an action. It examines each route in turn until it finds a match. If no routes match, it returns a 404 response.
 
@@ -58,7 +58,7 @@ Here are some examples by way of illustration:
 {: .table .table-bordered .table-responsive }
 
 <div class="callout callout-info">
-#### Routing strictness
+#### Coping with Routing Strictness
 
 Play's strict adherance to its routing rules can sometimes be problematic. Failing to match the URI `/hello/`, for example, may seem overzealous. We can work around this issue easily by mapping multiple routes to a single method call:
 
@@ -70,7 +70,7 @@ POST /hello/ controllers.HelloController.hello # POST request
 ~~~
 </div>
 
-# Query parameters
+# Query Parameters
 
 We can specify parameters in the method-call section of a route without declaring them in the URI. When we do this Play extracts the values from the query string instead:
 
@@ -94,7 +94,7 @@ GET /hello/:name controllers.Notification.sendTo(name: Option[String])
 #     Try to implement an implicit PathBindable for this type.
 ~~~
 
-# Typed parameters
+# Typed Parameters
 
 We can extract path and query parameters of types other thatn `String`. Play has built-in support for `Int`, `Double`, `Long`, `Boolean`, `UUID`, and `Optional` and `Seq` variants:
 
@@ -115,7 +115,7 @@ object Calculator extends Controller {
 If Play cannot extract values of the correct type for each parameter in a route, it returns a *400 Bad Request* response to the client. It doesn't consider any other routes lower in the file.
 
 <div class="callout callout-info">
-#### Advanced: Custom parameter types
+#### Advanced: Custom Parameter Types
 
 Play parses route parameters using instances of two different *type classes*:
 
@@ -128,7 +128,7 @@ We can implement custom parameter types by creating implicit values these type c
 [play.api.mvc.QueryStringBindable]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.QueryStringBindable
 </div>
 
-# Reverse routing
+# Reverse Routing
 
 *Reverse routes* are objects that we can use to generate URLs from method calls. Play generates these for us and places them in a top-level `routes` package that is accessible from our Scala code.
 
@@ -169,7 +169,7 @@ object DownloadController {
 
 [play.api.mvc.Call]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Call
 
-## Take home points
+## Take Home Points
 
 *Routes* provide bi-directional mapping between URLs and `Action`-producing methods within `Controllers`.
 

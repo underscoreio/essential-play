@@ -1,13 +1,13 @@
 ---
 layout: page
-title: Calling remote web services
+title: Calling Remote Web Services
 ---
 
-# Calling remote web services
+# Calling Remote Web Services
 
 In the previous sections we were introduced to `Futures`, and saw how to create *asynchronous actions* to distribute work between threads. In this section we will learn the benefits of *non-blocking I/O* and see Play's non-blocking web services client in action.
 
-## Non-blocking I/O
+## Non-Blocking I/O
 
 The biggest sources of latency in web applications tend to be blocking I/O operations such as database queries, file access, and requests to external web services. Asynchronous actions don't eliminate these sources of inefficiency -- they simply help us distribute them between threads.
 
@@ -25,7 +25,7 @@ This line of configuration gives us access to the [play.api.libs.ws] package in 
 
 [play.api.libs.ws]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.ws.package
 
-### Requests and responses
+### Requests and Responses
 
 Play WS provides a DSL to construct and send requests to remote services. For example:
 
@@ -69,7 +69,7 @@ The `index` method returns as soon as the chain of future operations has been se
 
 At some point later, Play receives a response from the remote server and allocates appropriate resources to handle the response and return a result to complete the action.
 
-### Sequencing requests
+### Sequencing Requests
 
 Let's re-visit our traffic monitoring example from the beginning of the Chapter. We now have enough code to implement a full working solution.
 
@@ -129,6 +129,6 @@ def traffic = Action { request =>
 }
 ~~~
 
-## Take home points
+## Take Home Points
 
 TODO

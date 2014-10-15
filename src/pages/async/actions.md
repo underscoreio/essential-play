@@ -1,13 +1,13 @@
 ---
 layout: page
-title: Asynchronous actions
+title: Asynchronous Actions
 ---
 
-## Asynchronous actions
+## Asynchronous Actions
 
 In the previous section we saw how to create and compose `Futures` to schedule asyncronous tasks. In this section we will see how  to create *asynchronous actions* that use `Futures` to process web requests.
 
-## Synchronous versus asynchronous
+## Synchronous versus Asynchronous Actions
 
 Whenever our web application processes a request, Play allocates a thread from our application's thread pool to run the corresponding action.
 
@@ -61,7 +61,7 @@ The most common causes for long-running actions are blocking I/O operations:
 
 We should be aware that we cannot eliminate blocking by converting a synchronous action to an asynchronous one -- we are simply shifting the work to a different thread. However, by splitting a synchronous chain of blocking operations up into a chain of asynchronous tasks, we may make the work easier to schedule at high load.
 
-## Take home points
+## Take Home Points
 
 **Asyncronous actions** allow us to split up request handlers using `Futures`.
 

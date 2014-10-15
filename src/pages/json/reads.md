@@ -33,7 +33,7 @@ Json.fromJson(Json.obj(
 
 So far so good -- reading JSON data is at least superficially similar to writing it.
 
-## Accepting failure
+## Accepting Failure
 
 The main difference between reading and writing as operations is that reading can *fail*. `Reads` handles this by wrapping return values in an `Either`-like data structure called a [play.api.json.libs.JsResult] that represents the possibilities of success or failure.
 
@@ -108,7 +108,7 @@ def index = Action { request =>
 ~~~
 </div>
 
-## Take home points
+## Take Home Points
 
 We convert Scala data to JSON using instances of [play.api.libs.json.Reads].
 

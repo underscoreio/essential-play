@@ -1,9 +1,9 @@
 ---
 layout: page
-title: Thread pools
+title: Thread Pools
 ---
 
-## Thread pools
+## Thread Pools
 
 In the previous section we saw how `Futures` allow us to sequence and compose asyncronous tasks.
 
@@ -64,7 +64,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 ~~~
 </div>
 
-## Thread pools
+## Thread Pools
 
 Spinning up a new thread for every `Future` we create would incur lots of overhead in terms of claiming and releasing system resources, so most `ExecutionContexts` use *pools* of pre-allocated threads. The execution context itself runs in its own thread, repeatedly running the following loop:
 
@@ -79,7 +79,7 @@ In advanced situations we may decide to create our own execution contexts for so
 
 [documentation on thread pools]: https://www.playframework.com/documentation/2.3.x/ThreadPools
 
-## Take home points
+## Take Home Points
 
 Whenever we create a `Future`, we need to allocate it to a thread pool by providing an implicit `ExecutionContext` parameter.
 

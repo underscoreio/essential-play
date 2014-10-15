@@ -1,15 +1,15 @@
 ---
 layout: page
-title: Parsing requests
+title: Parsing Requests
 ---
 
-# Parsing requests
+# Parsing Requests
 
 So far we have seen how to create `Actions` and map them to URIs using *routes*. In the rest of this chapter we will take a closer look at the code we write in the actions themselves.
 
 The first job of any `Action` is to extract data from the HTTP request and turn it into well-typed, validated Scala values. We have already seen how *routes* allow us to extract information from the URI. In this section we will see the other tools Play provides for the rest of the `Request`.
 
-<h3 id="bodies">Request bodies</h3>
+<h3 id="bodies">Request Bodies</h3>
 
 The most important source of request data comes from the *body*. Clients can `POST` or `PUT` data in a huge range of formats, the most common being JSON, XML, and form data. Our first task is to identify the content type and parse the body.
 
@@ -47,7 +47,7 @@ So what type does `request.body` return in the examples we've seen so far? We ha
 [play.api.mvc.RawBuffer]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.RawBuffer
 
 <div class="callout callout-warning">
-#### Advanced: Custom body parsers
+#### Advanced: Custom Body Parsers
 
 `AnyContent` is a convenient way to parse common types of request bodies. However, it suffers from two drawbacks:
 
@@ -84,7 +84,7 @@ See Play's [documentation on body parsers] for more information.
 [documentation on body parsers]: https://www.playframework.com/documentation/2.3.x/ScalaBodyParsers
 </div>
 
-## Headers and cookies
+## Headers and Cookies
 
 `Request` contains two methods for inspecting HTTP headers:
 
@@ -137,7 +137,7 @@ val path: String = request.path
 val query: Map[String, Seq[String]] = request.queryString
 ~~~
 
-## Take home points
+## Take Home Points
 
 Incoming web requests are represented by objects of type `Request[A]`. The type parameter `A` indicates the type of the request body.
 
