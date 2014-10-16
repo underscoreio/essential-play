@@ -5,7 +5,7 @@ title: Handling Failure
 
 # Handling Failure
 
-At this point we have covered all the basics for this chapter. We have learned how to set up routes, write `Actions`, handle `Requests`, and create `Results`.
+At this point we have covered all the basics for this chapter. We have learned how to set up routes, write `Action`s, handle `Request`s, and create `Result`s.
 
 In this final section of the chapter we will take a first look at a theme that runs throughout the course -- failures and error handling. In future chapters we will look at how to generate good error messages for our users. In this section we will see what error messages Play provides for us.
 

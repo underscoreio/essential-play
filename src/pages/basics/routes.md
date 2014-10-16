@@ -78,7 +78,7 @@ We can specify parameters in the method-call section of a route without declarin
 GET /send  controllers.Notification.sendTo(message: String, username: String)
 ~~~
 
-We sometimes want to make query string parameters optional. To do this, we just have to define them as `Optional` types. Play will pass `Some(value)` if the URI contains the parameter and `None` if it does not:
+We sometimes want to make query string parameters optional. To do this, we just have to define them as `Option` types. Play will pass `Some(value)` if the URI contains the parameter and `None` if it does not:
 
 ~~~ coffee
 GET /send  controllers.Notification.sendTo(message: Option[String], username: Option[String])
@@ -96,13 +96,13 @@ GET /hello/:name controllers.Notification.sendTo(name: Option[String])
 
 # Typed Parameters
 
-We can extract path and query parameters of types other thatn `String`. Play has built-in support for `Int`, `Double`, `Long`, `Boolean`, `UUID`, and `Optional` and `Seq` variants:
+We can extract path and query parameters of types other than `String`. Play has built-in support for `Int`, `Double`, `Long`, `Boolean`, `UUID`, and `Option` and `Seq` variants:
 
 ~~~ coffee
 GET /add/:a/to/:b controllers.Calculator.add(a: Int, b: Int)
 ~~~
 
-This allows us to define `Actions` using well-typed arguments without messy parsing code:
+This allows us to define `Action`s using well-typed arguments without messy parsing code:
 
 ~~~ scala
 object Calculator extends Controller {
@@ -141,7 +141,7 @@ methodAndUri.method // "GET"
 methodAndUrl.url    // "/hello/dave"
 ~~~
 
-Play generates reverse routes for each controller and action referenced in our routes file. The routes return [play.api.mvc.Call] objects that holding the HTTP method and URI from the route. Here is some pseudo-code based on example above to illustrate:
+Play generates reverse routes for each controller and action referenced in our routes file. The routes return [play.api.mvc.Call] objects that hold the HTTP method and URI from the route. Here is some pseudo-code based on example above to illustrate:
 
 ~~~ scala
 package routes
@@ -150,7 +150,7 @@ import play.api.mvc.Call
 
 object HelloController {
   def hello: Call =
-    Call("GET", /hello")
+    Call("GET", "/hello")
 
   def helloTo(name: String): Call =
     Call("GET", "/hello/" + encodeURIComponent(name))
@@ -173,10 +173,10 @@ object DownloadController {
 
 *Routes* provide bi-directional mapping between URLs and `Action`-producing methods within `Controllers`.
 
-We rite routes using a Play-specific DSL that compiles to Scala code. Each route comprises an HTTP method, a URL pattern, and a corresponding method call. Patterns can contain *path* and *query parameters* that are extracted and used in the method call.
+We write routes using a Play-specific DSL that compiles to Scala code. Each route comprises an HTTP method, a URL pattern, and a corresponding method call. Patterns can contain *path* and *query parameters* that are extracted and used in the method call.
 
 We can *type* the path and query parameters in routes to simplify the parsing code in our controllers and actions. Play supports many types out of the box, but we can also write code to map our own types.
 
 Play also generates *reverse routes* that map method calls back to URIs. These are placed in a synthetic `routes` package that we can access from our Scala code.
 
-Now we have seen what we can do with routes, let's look at the `Request`- and `Result`-handling code we can write in our actions. This will arm us with all the knowledge we need to start dealing with HTML in the next chapter.
+Now we have seen what we can do with routes, let's look at the `Request` and `Result` handling code we can write in our actions. This will arm us with all the knowledge we need to start dealing with HTML in the next chapter.

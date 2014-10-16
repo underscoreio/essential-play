@@ -5,7 +5,7 @@ title: Parsing Requests
 
 # Parsing Requests
 
-So far we have seen how to create `Actions` and map them to URIs using *routes*. In the rest of this chapter we will take a closer look at the code we write in the actions themselves.
+So far we have seen how to create `Action`s and map them to URIs using *routes*. In the rest of this chapter we will take a closer look at the code we write in the actions themselves.
 
 The first job of any `Action` is to extract data from the HTTP request and turn it into well-typed, validated Scala values. We have already seen how *routes* allow us to extract information from the URI. In this section we will see the other tools Play provides for the rest of the `Request`.
 
@@ -91,7 +91,7 @@ See Play's [documentation on body parsers] for more information.
  - the `headers` method returns a [play.api.mvc.Headers] object for inspecting general headers;
  - and `cookies` method returns a [play.api.mvc.Cookies] object for inspecting the `Cookies` header.
 
-These take care of common error scenarios: missing headers, upper- and lower-case names, and so on. Values are treated as `Strings` throughout -- Play doesn't attempt to parse headers as dedicated Scala types. Here is a synopsis:
+These take care of common error scenarios: missing headers, upper- and lower-case names, and so on. Values are treated as `String`s throughout -- Play doesn't attempt to parse headers as dedicated Scala types. Here is a synopsis:
 
 ~~~ scala
 object RequestDemo extends Controller {
