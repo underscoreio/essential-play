@@ -102,7 +102,7 @@ We can extract path and query parameters of types other than `String`. Play has 
 GET /add/:a/to/:b controllers.Calculator.add(a: Int, b: Int)
 ~~~
 
-This allows us to define `Action`s using well-typed arguments without messy parsing code:
+This allows us to define `Actions` using well-typed arguments without messy parsing code:
 
 ~~~ scala
 object Calculator extends Controller {

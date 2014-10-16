@@ -7,11 +7,11 @@ title: Constructing Results
 
 In the previous section we saw how to extract well-typed Scala values from an incoming request. This should always be the first step in any `Action`. If we tame incoming data using the type system, we remove a lot of complexity and possibility of error from our business logic.
 
-Once we have finished our business logic, the final step of any `Action` is to convert the result into a `Result` object. In this section we will see how to create `Result`s, populate them with content, and add headers and cookies.
+Once we have finished our business logic, the final step of any `Action` is to convert the result into a `Result` object. In this section we will see how to create `Results`, populate them with content, and add headers and cookies.
 
 ## Setting The Status Code
 
-Play provides a convenient set of factory objects for creating `Result`s. These are defined in the [play.api.mvc.Results] trait and inherited by [play.api.mvc.Controller]:
+Play provides a convenient set of factory objects for creating `Results`. These are defined in the [play.api.mvc.Results] trait and inherited by [play.api.mvc.Controller]:
 
 |----------------------------+-----------------------------------------|
 | Constructor                | HTTP status code                        |
@@ -38,9 +38,9 @@ val result3: Result = Status(401)("Access denied, Dave.")
 
 ## Adding Content
 
-Play adds `Content-Type` headers to our `Result`s based on the type of data we provide. In the examples above we provide `String` data. creating three results of `Content-Type: text/plain`.
+Play adds `Content-Type` headers to our `Results` based on the type of data we provide. In the examples above we provide `String` data. creating three results of `Content-Type: text/plain`.
 
-We can create `Result`s using values of other Scala types, provided Play understands how to serialize them. Play even sets the `Content-Type` header for us as a convenience. Here are some examples:
+We can create `Results` using values of other Scala types, provided Play understands how to serialize them. Play even sets the `Content-Type` header for us as a convenience. Here are some examples:
 
 |----------------------------------------------+----------------------------|
 | Using this Scala type...                     | Yields this result type... |
@@ -122,9 +122,9 @@ def ohai = Action { request =>
 
 The final step of an `Actions` is to create and return a [play.api.mvc.Result].
 
-We create `Result`s using factory objects provided by [play.api.mvc.Controller]. Each factory creates `Result`s with a specific HTTP status code.
+We create `Results` using factory objects provided by [play.api.mvc.Controller]. Each factory creates `Results` with a specific HTTP status code.
 
-We can `Result`s with a variety of data types. Play provides built-in support for `String`, `JsValue`, `NodeSeq`, and `Html`. We can add our own data types by writing instances of the [play.api.http.Writeable] type class.
+We can `Results` with a variety of data types. Play provides built-in support for `String`, `JsValue`, `NodeSeq`, and `Html`. We can add our own data types by writing instances of the [play.api.http.Writeable] type class.
 
 Once we have created a `Result`, we can tweak headers and cookies before returning it.
 
