@@ -21,7 +21,7 @@ toc:
 
   - head: /json/index.html
     body:
-     - /json/types.html
+     - /json/values.html
      - /json/writes.html
      - /json/reads.html
      - /json/formats.html
