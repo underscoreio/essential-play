@@ -30,10 +30,10 @@ implicit val personFormat  = Json.format[Person]
 Json.toJson(Address(29, "Acacia Road"))
 
 // This compiles because we have a `Reads[Person]` in scope:
-Json.fromJson(Json.obj(
+Json.fromJson[Person](Json.obj(
   "name"    -> "Eric Wimp",
-  "address" -> Json.obj
-    "name"   -> 29,
+  "address" -> Json.obj(
+    "number" -> 29,
     "street" -> "Acacia Road"
   )
 ))
