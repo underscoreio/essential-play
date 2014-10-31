@@ -1,9 +1,9 @@
 ---
 layout: page
-title: Working With JSON
+title: Working with JSON
 ---
 
-# Working With JSON
+# Working with JSON
 
 TODO:
 
