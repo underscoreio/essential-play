@@ -1,9 +1,9 @@
 ---
 layout: page
-title: "Formats for Custom Types: Part 1"
+title: "Custom Formats: Part 1"
 ---
 
-# Formats for Custom Types: Part 1
+# Custom Formats: Part 1
 
 So far in this chapter we have seen how to use the `Json.reads`, `Json.writes` and `Json.format` macros to define `Reads`, `Writes` and `Formats` for case classes. In this section, we will see what we can do when we are dealing with types that *aren't* case classes.
 

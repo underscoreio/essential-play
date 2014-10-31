@@ -1,9 +1,9 @@
 ---
 layout: page
-title: "Formats for Custom Types: Part 2"
+title: "Custom Formats: Part 2"
 ---
 
-# Formats for Custom Types: Part 1
+# Custom Formats: Part 1
 
 Writing complex `Reads` using simple Scala code is difficult. Every time we unpack a field from the JSON, we have to consider potential errors such as the field being missing or of the wrong type. What is more, we have to remember the nature and location of every error we encounter for inclusion in the `JsError`.
 
