@@ -5,24 +5,24 @@ title: Asynchronous Actions
 
 ## Asynchronous Actions
 
-In the previous section we saw how to create and compose `Futures` to schedule asyncronous tasks. In this section we will see how  to create *asynchronous actions* that use `Futures` to process web requests.
+In the previous sections we saw how to create and compose `Futures` to schedule asyncronous tasks. In this section we will see how to use `Futures` to create *asynchronous actions* in Play.
 
-## Synchronous versus Asynchronous Actions
+## Synchronous vs Asynchronous Actions
 
-Whenever our web application processes a request, Play allocates a thread from our application's thread pool to run the corresponding action.
+Play is built using `Futures` from the bottom up. Whenever we process a request, our action is executed in a thread on the *default application thread pool*.
 
-All of the actions we have written so far have been *synchronous* -- they must be executed completely from beginning to end before Play can recycle the active thread.
+All of the actions we have written so far have been *synchronous* -- they run from beginning to end in a single continuous block. The thread Play allocates to the request is tied up for the duration -- only when we return a `Result` can Play recycle the thread to service another request.
 
-At high load the thread pool can become exhausted. If this happens, pending requests must be scheduled for when a thread becomes free. As long as actions are short-running this provides graceful degredation under load. However, long-running actions can cause scheduling problems and latency spikes:
+At high load there can be more incoming requests than there are threads in the application thread pool. If this happens, pending requests must be scheduled for when a thread becomes free. As long as actions are short-running this provides graceful degredation under load. However, long-running actions can cause scheduling problems and latency spikes:
 
 ~~~ scala
 def difficultToSchedule = Action { request =>
   // this could take a while...
-  Ok(longRunningComputation)
+  Ok(ultimateAnswer)
 }
 ~~~
 
-We should be on the lookout for long-running actions and adjust our application flow accordingly. One way of doing this is splitting our work up into easily schedulable chunks using *asynchronous actions*.
+We should look out for long-running actions and adjust our application flow accordingly. One way of doing this is splitting our work up into easily schedulable chunks using *asynchronous actions*.
 
 ## Action.async
 
@@ -34,7 +34,9 @@ def index = Action.async { request =>
 }
 ~~~
 
-`Action.async` differs from `Action.apply` in that it expects us to return a `Future[Result]` rather than a `Result`. The action sets up a chain of asynchronous computations and returns quickly. Each computation is scheduled on the thread pool separately, splitting the work up into (hopefully) managable chunks:
+`Action.async` differs from `Action.apply` only in that it expects us to return a `Future[Result]` instead of a `Result`. When the body of the action returns, Play is left to execute the resulting `Future`.
+
+We can use methods such as `map` and `flatMap` to split long multi-stage workload into sequences of shorter `Futures`, allowing Play to schedule the work more easily across the thread pool along-side other pending requests:
 
 ~~~ scala
 def traffic = Action.async { request =>
@@ -59,7 +61,7 @@ The most common causes for long-running actions are blocking I/O operations:
  - large amounts of file access;
  - requests to remote web services.
 
-We should be aware that we cannot eliminate blocking by converting a synchronous action to an asynchronous one -- we are simply shifting the work to a different thread. However, by splitting a synchronous chain of blocking operations up into a chain of asynchronous tasks, we may make the work easier to schedule at high load.
+We cannot eliminate blocking by converting a synchronous action to an asynchronous one -- we are simply shifting the work to a different thread. However, by splitting a synchronous chain of blocking operations up into a chain of asynchronously executing `Futures`, we can make the work easier to schedule at high load.
 
 ## Take Home Points
 

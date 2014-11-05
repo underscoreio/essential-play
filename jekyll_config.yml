@@ -35,8 +35,8 @@ toc:
      - /async/futures.html
      - /async/executioncontexts.html
      - /async/actions.html
-     - /async/failure.html
      - /async/ws.html
+     - /async/failure.html
 
 # Jekyll Configuration
 # --------------------

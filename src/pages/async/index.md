@@ -11,6 +11,6 @@ In modern web application archtecture we prefer to use a *[non-blocking]* progra
 
 Non-blocking code is also essential for *distributing* work across machines. Modern non-trivial web applications are implemented as collections of *services* that communicate over HTTP. This is impossible (or, at least, not scalable) in conventional blocking architectures.
 
-In this section we will see how to implement non-blocking concurrency in Scala and Play, identify some gotchas, and use the theory to build an example web application using a distributed *service-oriented architecture*.
+In this section we will see how to implement non-blocking concurrency in Scala and Play using a functional programming tool called *Futures*.
 
 [non-blocking]: http://en.wikipedia.org/wiki/Non-blocking_algorithm
