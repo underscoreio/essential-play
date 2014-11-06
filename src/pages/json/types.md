@@ -240,4 +240,8 @@ While this approach is convenient for ad-hoc operations on semi-structured data,
 
 ## Take Home Points
 
-TODO
+We model JSON in Play using `JsValues`, which act as an intermediary between raw string JSON data and well-typed Scala domain objects. There are subtypes of `JsValue` for each of the six main types of JSON data -- `JsObject`, `JsArray`, `JsString`, `JsNumber`, `JsBoolean`, and `JsNull`.
+
+`JsValues` form a DOM-like tree that we can traverse using `\`, `\\` and `apply`, and destructure using pattern matching. These operations allow us to do ad-hoc processing of JSON data with relative ease, but they quickly become cumbersome when parsing complex data structures.
+
+In the next sections we will introduce a more robust way of converting between JSON and well-typed Scala values using objects called `Reads` and `Writes` to model the transformations.
