@@ -5,7 +5,7 @@ title: Async and Concurrency
 
 # Async and Concurrency
 
-We applications often have to wait for long-running operations such as database and network access. In a traditional *synchronous* programming model the application has to *block* to wait for these to complete. This is inefficient as it ties up threads and processes while no useful work is happening.
+Web applications often have to wait for long-running operations such as database and network access. In a traditional *synchronous* programming model the application has to *block* to wait for these to complete. This is inefficient as it ties up threads and processes while no useful work is happening.
 
 In modern web application archtecture we prefer to use a *[non-blocking]* programming model. Non-blocking code relinquishes local resources and reclaims them once long-running tasks complete. This lowers resource contention and allows applications to handle higher traffic loads with predictable latency.
 
