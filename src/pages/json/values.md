@@ -5,7 +5,7 @@ title: Modelling JSON
 
 # Modelling JSON
 
-Play models JSON data using a family of case classes of type [play.api.libs.json.JsValue], representing each of the data types in the [JSON specification]:
+Play models JSON data using a family of case classes of type [play.api.libs.json.JsValue], representing each of the data types in the [JSON specification](http://www.json.org/):
 
 ~~~ scala
 package play.api.libs.json
