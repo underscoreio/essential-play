@@ -12,7 +12,7 @@ In this section we will look at *non-blocking I/O* -- I/O that *calls us back* w
 Although non-blocking I/O is gaining in popularity, libraries are still rare in today's Java and Scala ecosystems. Play provides one of the notable Scala examples in the form of its non-blocking web services client, *Play WS*, which is the focus of this section.
 
 <div class="callout callout-info">
-#### Adding Play WS as a dependency
+#### Configuration: Adding Play WS as a dependency
 
 As of Play 2.3, the web services client is shipped in a separate JAR from core Play. We can add it to our project by including the following line in `build.sbt`:
 

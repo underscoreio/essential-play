@@ -130,7 +130,7 @@ genericOkResult(Address(29, "Acacia Road"))
 Veterans of *Underscore's Essential Scala* course will recognise this as the *type class pattern*!
 
 <div class="callout callout-info">
-#### *Writes* Best Practices
+#### Summary: *Writes* Best Practices
 
 Because `Writes` is a type class, we can conveniently apply the *type class pattern* to our web applications:
 

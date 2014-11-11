@@ -58,7 +58,7 @@ Here are some examples by way of illustration:
 {: .table .table-bordered .table-responsive }
 
 <div class="callout callout-info">
-#### Coping with Routing Strictness
+#### Tip: Coping with Routing Strictness
 
 Play's strict adherance to its routing rules can sometimes be problematic. Failing to match the URI `/hello/`, for example, may seem overzealous. We can work around this issue easily by mapping multiple routes to a single method call:
 
@@ -75,19 +75,30 @@ POST /hello/ controllers.HelloController.hello # POST request
 We can specify parameters in the method-call section of a route without declaring them in the URI. When we do this Play extracts the values from the query string instead:
 
 ~~~ coffee
-GET /send  controllers.Notification.sendTo(message: String, username: String)
+GET /send/:message/to/:username  controllers.ChatController.send(message: String, username: String)
 ~~~
 
-We sometimes want to make query string parameters optional. To do this, we just have to define them as `Option` types. Play will pass `Some(value)` if the URI contains the parameter and `None` if it does not:
+We sometimes want to make query string parameters optional. To do this, we just have to define them as `Option` types. Play will pass `Some(value)` if the URI contains the parameter and `None` if it does not.
 
-~~~ coffee
-GET /send  controllers.Notification.sendTo(message: Option[String], username: Option[String])
+For example, if we have the following `Action`:
+
+~~~ scala
+object NotificationController {
+  def notify(username: String, message: Option[String]) =
+    Action { request => /* ... */ }
+}
 ~~~
 
-We can mix and match required and optional query parameters as we see fit. However, path parameters are always required. The following route fails with a compilation error:
+we can invoke it with the following route:
 
 ~~~ coffee
-GET /hello/:name controllers.Notification.sendTo(name: Option[String])
+GET /notify controllers.NotificationController.notify(username: String, message: Option[String])
+~~~
+
+We can mix and match required and optional query parameters as we see fit -- in the example, `username` is required and `message` is optional. However, *path* parameters are always required -- the following route fails to compile because the path parameter `:message` cannot be optional:
+
+~~~ coffee
+GET /notify/:username/:message controllers.NotificationController.notify(username: String, message: Option[String])
 
 # Fails to compile with the following error:
 #     [error] conf/routes:1: No URL path binder found for type Option[String].
@@ -114,7 +125,7 @@ object Calculator extends Controller {
 
 If Play cannot extract values of the correct type for each parameter in a route, it returns a *400 Bad Request* response to the client. It doesn't consider any other routes lower in the file.
 
-<div class="callout callout-info">
+<div class="callout callout-warning">
 #### Advanced: Custom Parameter Types
 
 Play parses route parameters using instances of two different *type classes*:
@@ -130,7 +141,9 @@ We can implement custom parameter types by creating implicit values these type c
 
 # Reverse Routing
 
-*Reverse routes* are objects that we can use to generate URLs from method calls. Play generates these for us and places them in a top-level `routes` package that is accessible from our Scala code.
+*Reverse routes* are objects that we can use to generate URLs from method calls. This allows us to create URLs from type-checked program code without having to concatenate `Strings` by hand.
+
+Play generates reverse routes for us and places them in a `controllers.routes` package that we can access from our Scala code:
 
 ~~~ scala
 import play.api.mvc.Call

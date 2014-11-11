@@ -135,7 +135,7 @@ The resulting path describes the location of a field or array item relative the 
 Obviously, different `JsPaths` impose implicit assumptions on the structure of the objects and arrays in our data. However, we can safely assume that the `JsPaths` in our errors point to valid locations in the data being parsed.
 
 <div class="callout callout-info">
-### *Reads* Best Practices
+### Summary: *Reads* Best Practices
 
 We can use Scala's type system to eliminate many sources of programmer error. It makes sense to parse incoming JSON as soon as possible using `Json.fromJson`, to convert it to well-typed data from our domain model.
 

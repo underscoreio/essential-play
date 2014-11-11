@@ -62,7 +62,7 @@ Why are `ExecutionContexts` important? Whenever we create a `Future`, *something
 [scala.concurrent.ExecutionContext]: http://www.scala-lang.org/api/2.11.2/#scala.concurrent.ExecutionContext
 
 <div class="callout callout-info">
-#### Threads and Thread Pools
+#### Aside: Threads and Thread Pools
 
 As an aside, let's take a brief look at how Scala and Play schedule `Futures`.
 
