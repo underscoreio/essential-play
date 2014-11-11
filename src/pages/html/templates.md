@@ -128,7 +128,7 @@ Dynamic expressions are prefixed using the `@` character. We don't need to indic
 
 ### Wrapped Expressions
 
-Twirl occasionally has difficulty determining where dsynamic code ends and static content begins. If this is a problem we can use parentheses or braces to delimit the dynamic content:
+Twirl occasionally has difficulty determining where dynamic code ends and static content begins. If this is a problem we can use parentheses or braces to delimit the dynamic content:
 
 <div class="row">
 <div class="col-sm-6">
