@@ -18,7 +18,7 @@ trait Writes[A] {
 }
 ~~~
 
-Play provides build-in `Writes` for many standard data types, and we can create `Writes` by hand for any data type we want to serialize.
+Play provides built-in `Writes` for many standard data types, and we can create `Writes` by hand for any data type we want to serialize.
 
 Play also provides a simple one-liner of defining a `Writes` for a case class:
 
