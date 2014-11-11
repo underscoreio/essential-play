@@ -7,53 +7,64 @@ title: Futures
 
 The underpinning of our concurrent programming model is the [scala.concurrent.Future] trait. A `Future[A]` represents an asynchronous computation that *will calculate a value of type `A` at some point in the future*.
 
-We'll start by looking at `Futures` in isolation from Play -- let's see a simple example:
+`Futures` are a general tool from the Scala core library, but they are used heavily in Play. We'll start by looking at the general case, and tie them into Play later on in this chapter.
 
 [scala.concurrent.Future]: http://www.scala-lang.org/api/2.11.2/#scala.concurrent.Future
 
+## The Ultimate Answer
+
+Let's define a long-running computation:
+
 ~~~ scala
-def longRunningComputation: Int = {
+def ultimateAnswer: Int = {
   // seven and a half million years later...
   42
 }
+~~~
 
+Calling `ultimateAnswer` executes the long-running computation on the current thread. As an alternative, we can use a `Future` to run the computation asynchronously, and continue to run the current thread in parallel:
+
+~~~ scala
 val f: Future[Int] = Future {
   // this code is run asynchronously:
-  longRunningComputation
+  ultimateAnswer
 }
 
+println("Continuing to run in parallel...")
+~~~
+
+At some point in the future `ultimateAnswer` will complete. The result is cached in `f` for eventual re-use. We can schedule callbacks to run when `f` completes. The callbacks accept the cached value as input:
+
+~~~ scala
 f onSuccess {
   case number =>
     println("The answer is " + number + ". Now, what was the question?")
 }
-
-println("This might take a while...")
 ~~~
 
-In this example we have a method, `longRunningComputation`, that takes a few seconds to complete.
+It doesn't matter how many callbacks we register or whether we register them before or after `ultimateAnswer` completes. `scala.concurrent` ensures that the `f` is executed exactly once, and each of our callbacks is executed once after `f` completes.
 
-We create a `Future` to call our method asynchronously -- our `longRunningComputation` is started in the background. The main program continues immediately, assigning the future to the variable `f` and setting up an `onSuccess` callback to print the result.
-
-The main body of the program finishes, executing the final `println` statement. A few seconds later the `longRunningComputation` *completes*, triggering the `onSuccess` callback and printing the result. The final output looks like this:
+The final output of our program looks like this:
 
 ~~~
-This might take a while...
+Continuing to run in parallel...
 The answer is 42. Now, what was the question?
 ~~~
 
-When the computation in a future has completed, the resulting value is cached in the future for eventual re-use. We can attach as many callbacks as we like, before or after its completion, and be sure the same result value will be delivered to each.
-
 ## Composing Futures
 
-The example above uses a *callback* to react to the completion of the future. This is worrying for functional programming purists because it is an *imperative* programming style. Callbacks *aren't functional* -- they don't return a value for use elsewhere in our code. Moreover, callback-driven programming is difficult to read because the order of lines in our code doesn't match the order of execution.
+Callbacks are a good tool for introducing `Futures`, but they aren't very useful for production code because they *don't return values*. This causes at least two problems:
 
-Fortunately, there is more to `Future` than we have seen. `Futures` can be *composed*, allowing us to wire them together in a functional way. A vendor-supplied *execution context* works behind the scenes to sequence all of the background computations and make sure they deliver results to one another as we ask. We can write expressions in the order we expect them to run, and hand off the details of the execution to a library.
+ - callbacks rely on mutable variables to pass around state;
+ - callbacks can be difficult to read because code is written in a different order than it is executed.
 
-We'll learn more about execution contexts later on. For now let's see some of the important methods for composing futures:
+Fortunately, there are other ways of sequencing `Futures`. We can *compose* `Futures` in a functional fashion, wiring them together so that the result of one `Future` is used as an input for another. This approach allows us to avoid mutable state and write expressions in the order we expect them to run. We hand off the details of scheduling execution to `scala.concurrent`.
+
+Let's see some of the important methods for composing futures.:
 
 ### Map
 
-A `Future[A]` has a *map* method that accepts an argument of type `A => B` and returns a `Future B`:
+The `map` method allows us to sequence a future with a block of synchronous code. The synchronous code is represented by a simple function:
 
 ~~~ scala
 trait Future[A] {
@@ -61,32 +72,30 @@ trait Future[A] {
 }
 ~~~
 
-The result is a second future that *sequences* the computation in first future with the running of the function parameter:
+The result of calling `map` is a new future that *sequences* the computation in the original future with `func`. In the example below, `f2` is a future that waits for `f1` to complete, then transforms the result using `conversion`. Both operations are run in the background one after the other without affecting other concurrently running tasks:
 
 ~~~ scala
-def complexConversion(value: Int): String = {
+def conversion(value: Int): String = {
   value.toString
 }
 
-val f1: Future[Int]    = Future(longRunningComputation)
-val f2: Future[String] = f1.map(complexConversion)
+val f1: Future[Int]    = Future(ultimateAnswer)
+val f2: Future[String] = f1.map(conversion)
 ~~~
 
-In this example, `f2` is a future that waits for `f1` to complete, then transforms the result using `complexConversion`. Both operations are run in the background one after the other without affecting other concurrently running tasks.
-
-We can call `map` as many times as we want. The order and the timing of the calls to `map` is insignificant -- the same value will be delivered to each mapping function at the appropriate time:
+We can call `map` as many times as we want. The order and the timing of the calls is insignificant -- the value of `f1` will be delivered to `f2` and `f3` once only when `f1` completes:
 
 ~~~ scala
-val f1: Future[Int]    = Future { longRunningComputation }
+val f1: Future[Int]    = Future { ultimateAnswer }
 val f2: Future[Int]    = f1 map { _ + 1 }
 val f3: Future[Double] = f1 map { _.toDouble }
 ~~~
 
-In this example, the final results of `f1`, `f2` and `f3` will the `42`, `43` and `"42"` respectively.
+The final results of `f1`, `f2` and `f3` above are `42`, `43` and `"42"` respectively.
 
 ### FlatMap
 
-A `Future[A]` has a *flatMap* method that accepts an argument of type `A => Future[B]` and returns a `Future[B]`:
+The `flatMap` method allows us to sequence a future with a block of asynchronous code. The asynchronous code is represented by a function that returns a future:
 
 ~~~ scala
 trait Future[A] {
@@ -94,61 +103,37 @@ trait Future[A] {
 }
 ~~~
 
-The result is a future that:
+The result of calling `flatMap` is a new future that:
 
- - waits for the first future to complete;
- - passes the result to `func`;
- - waits for the result of `func` to complete;
- - yields the result of the result.
+ - waits for the first `Future` to complete;
+ - passes the result to `func` obtaining a second `Future`;
+ - waits for the second `Future` to complete;
+ - yields the result of the second `Future`.
 
 This has a similar sequencing-and-flattening effect to the `flatMap` method on [scala.Option]:
 
 ~~~ scala
 def longRunningConversion(value: Int): Future[String] = {
-  // some length of time...
-  value.toString
+  Future {
+    // some length of time...
+    value.toString
+  }
 }
 
-val f1: Future[Int]    = Future(longRunningComputation)
-val f2: Future[String] = f1.flatMap(longRunningConversion)
+val f1: Future[Int]    = Future(ultimateAnswer)
+val f2: Future[String] = f1.flatMap(value => Future(value + 1))
+val f3: Future[String] = f1.flatMap(longRunningConversion)
 ~~~
 
-Functional programming enthusiasts will note that the presence of a `flatMap` method means `Future` is a *monad*.
+Again, the final results of `f1` and `f2` and `f3` above are `42`, `43` and `"42"` respectively.
 
 [scala.Option]: http://www.scala-lang.org/api/2.11.2/#scala.Option
 
-### Wait... Future is a Monad? We Can Use For-Comprehensions!
+### Wait... Future is a Monad?
 
-Because `Future` has `map` and `flatMap` methods, we can use it with regular Scala for-comprehensions.
+Functional programming enthusiasts will note that the presence of a `flatMap` method means `Future` is a *monad*. This means we can use it with regular Scala for-comprehensions.
 
-{% comment %}
-Here are our previous two examples re-written using this syntax:
-
-<div class="row">
-<div class="col-sm-6">
-**The `map` example**
-
-~~~ scala
-for {
-  value <- Future(longRunningComputation)
-} yield complexConversion(value)
-~~~
-</div>
-
-<div class="col-sm-6">
-**The `flatMap` example**
-
-~~~ scala
-for {
-  value1 <- Future(longRunningComputation)
-  value2 <- longRunningConversion(value1)
-} yield value2
-~~~
-</div>
-</div>
-{% endcomment %}
-
-As an example, suppose we have three web services and a fourth service that monitors their total traffic. Assume we have a method `getTraffic` to interrogate a single remote host:
+As an example, suppose we are creating a web service to monitor traffic on a set of servers. Assume we have a method `getTraffic` to interrogate one of our servers:
 
 ~~~ scala
 def getTraffic(hostname: String): Future[Double] = {
@@ -156,7 +141,7 @@ def getTraffic(hostname: String): Future[Double] = {
 }
 ~~~
 
-We want to combine the results of three separate calls to `getTraffic`. Here are two ways of writing the code using for-comprehensions:
+We want to combine the traffic from three separate servers to produce a single aggregated value. Here are two ways of writing the code using for-comprehensions:
 
 <div class="row">
 <div class="col-sm-6">
@@ -188,9 +173,9 @@ val total: Future[Double] = for {
 </div>
 </div>
 
-Both of these snippets are easy to read. However, their semantics are quite different and they take different amounts of time to complete.
+These examples are easy to read -- each one demonstrates the elegance of using `for` syntax to sequence asynchronous code. However, we should note an an important semantic difference between the two. One of the examples will complete much faster than the other.
 
-What is the difference and which snippet will be faster? To answer this we must look at their expanded forms:
+What is the difference between the two examples and which will finish fastest? To answer this we must look at their expanded forms:
 
 <div class="row">
 <div class="col-sm-6">
@@ -232,10 +217,10 @@ In the *single expression* example, the calls to `getTraffic` are nested inside 
 
 The *create-then-compose* example, by contrast, initiates each of the calls immediately and then sequences the combination of their results.
 
-Both examples are resource-efficient and non-blocking, but *create-then-compose* will typically complete in about one third the time. This is something to watch out for when combining futures using for-comprehensions.
+Both examples are resource-efficient and non-blocking but they sequence operations differently -- *create-then-compose* will typically complete in about one third the time. This is something to watch out for when combining futures using for-comprehensions.
 
 <div class="callout callout-info">
-#### Sequencing Futures using For-Comprehensions
+#### Summary: Sequencing Futures using For-Comprehensions
 
  1. Work out which calculations are dependent on the results of which others:
 
@@ -292,12 +277,10 @@ def totalTraffic(hostnames: Seq[String]): Future[Double] = {
 }
 ~~~
 
-[^sequence]: It actually accepts a `TraversableOnce` of futures, which includes sequences, sets, lazy streams, and many of other types of collection not covered here.
+[^sequence]: `Future.sequence` actually accepts a `TraversableOnce` and returns a `Future` of the same type of sequence. Subtypes of `TraversableOnce` include sequences, sets, lazy streams, and many of other types of collection not covered here, making `Future.sequence` a useful and versatile method.
 
 ### Take Home Points
 
-We use `Futures` to represent asynchronous computations.
+We use `Futures` to represent asynchronous computations. We *compose* them using *for-comprehensions* and methods like `map` and `flatMap` and `Future.sequence`.
 
-We *combine* futures using methods like `map` and `flatMap` and `sequence`.
-
-In the next section we will see how `Futures` are scheduled.
+In the next section we will see how `Futures` are scheduled behind the scenes using *thread pools* and `ExecutionContexts`.

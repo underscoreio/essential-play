@@ -47,7 +47,6 @@ If Play finds a route but can't parse the parameters from the path and query str
 
 ![Bad request: Play's 400 routing error page](bad-request-error.png)
 
-
 ## Take Home Points
 
 Play ships with a default 500 error page out of the box. It gives us nice error messages for compile errors and exceptions during development. Similarly, Play provides default 404 and 400 pages for routing errors.

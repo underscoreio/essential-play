@@ -210,7 +210,7 @@ case class JsUndefined(/* ... */) extends JsValue
 The `\` and `apply` methods of `JsUndefined` each themselves return `JsUndefined`, so we can freely navigate around a JSON data structure using whole sequences of operations without having to check whether the data matches our expectations at every step. Here's an example:
 
 ~~~ scala
-val x: JsValue = dave \ "badname" // => JsUndefined(...)
+val x: JsValue = json \ "badname" // => JsUndefined(...)
 val y: JsValue = json(2)          // => JsUndefined(...)
 val z: JsValue = json(2) \ "name" // => JsUndefined(...)
 ~~~
@@ -240,4 +240,8 @@ While this approach is convenient for ad-hoc operations on semi-structured data,
 
 ## Take Home Points
 
-TODO
+We model JSON in Play using `JsValues`, which act as an intermediary between raw string JSON data and well-typed Scala domain objects. There are subtypes of `JsValue` for each of the six main types of JSON data -- `JsObject`, `JsArray`, `JsString`, `JsNumber`, `JsBoolean`, and `JsNull`.
+
+`JsValues` form a DOM-like tree that we can traverse using `\`, `\\` and `apply`, and destructure using pattern matching. These operations allow us to do ad-hoc processing of JSON data with relative ease, but they quickly become cumbersome when parsing complex data structures.
+
+In the next sections we will introduce a more robust way of converting between JSON and well-typed Scala values using objects called `Reads` and `Writes` to model the transformations.

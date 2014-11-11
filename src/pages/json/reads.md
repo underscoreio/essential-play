@@ -5,13 +5,15 @@ title: Reading JSON
 
 # Reading JSON
 
-In the previous section we saw how to use the `Writes` type class and the `Json.toJson` method to convert objects from our domain model to JSON to embed them in a `Result`. In this section we will look at the opposite process -- reading JSON data from a `Request` and converting it to domain objects.
+In the previous section we saw how to use `Writes` and `Json.toJson` to convert domain objects to JSON. In this section we will look at the opposite process -- reading JSON data from a `Request` and converting it to domain objects.
 
 ## Meet *Reads*
 
-Play defines a `Reads` type class, `Json.reads` macro, and `Json.toJson` method that are analogous to `Writes`, `Json.writes` and `Json.toJson`. Here's a synopsis:
+We parse incoming JSON using instances of the [play.api.libs.json.Reads] trait. Play also defines a`Json.reads` macro and `Json.fromJson` method that compliment `Json.writes` and `Json.toJson`. Here's a synopsis:
 
 ~~~ scala
+import play.api.libs.json._
+
 case class Address(number: Int, street: String)
 case class Person(name: String, address: Address)
 
@@ -19,13 +21,16 @@ implicit val addressReads = Json.reads[Address]
 implicit val personReads  = Json.reads[Person]
 
 // This compiles because we have a `Reads[Address]` in scope:
-Json.fromJson(Json.obj("number" -> 29, "street" -> "Acacia Road"))
+Json.fromJson[Address](Json.obj(
+  "number" -> 29,
+  "street" -> "Acacia Road"
+))
 
 // This compiles because we have a `Reads[Person]` in scope:
-Json.fromJson(Json.obj(
+Json.fromJson[Person](Json.obj(
   "name"    -> "Eric Wimp",
-  "address" -> Json.obj
-    "name"   -> 29,
+  "address" -> Json.obj(
+    "number" -> 29,
     "street" -> "Acacia Road"
   )
 ))
@@ -33,51 +38,121 @@ Json.fromJson(Json.obj(
 
 So far so good -- reading JSON data is at least superficially similar to writing it.
 
-## Accepting Failure
+[play.api.libs.json.Reads]: https://playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Reads
 
-The main difference between reading and writing as operations is that reading can *fail*. `Reads` handles this by wrapping return values in an `Either`-like data structure called a [play.api.json.libs.JsResult] that represents the possibilities of success or failure.
+## Embracing Failure
 
-`JsResult` has two subtypes: [play.api.json.libs.JsSuccess] represents a successful result, and [play.api.libs.json.JsError] represents a failure. `JsError` contains data on the location and nature of every problem encountered attempting to read the JSON:
+The main difference between reading and writing JSON is that reading can *fail*. `Reads` handles this by wrapping return values in an `Either`-like data structure called [play.api.libs.json.JsResult].
+
+`JsResult[A]` has two subtypes:
+
+ - [play.api.libs.json.JsSuccess] represents the result of a successful read;
+ - [play.api.libs.json.JsError] represents the result of a failed read.
+
+Like `Form`, `JsResult` has a `fold` method that allows us to branch based on the success/failure of a read:
 
 ~~~ scala
 // Attempt to read JSON as an Address -- might succeed or fail:
 val result: JsResult[Address] = addressReads.reads(json)
 
-// Match on the result to see if the read was successful:
+result.fold(
+  errors  => println("The JSON was bad: "  + errors),
+  address => println("The JSON was good: " + address)
+)
+~~~
+
+We can equivalently use pattern matching to inspect the result:
+
+~~~ scala
 result match {
+  case JsError(errors) =>
+    println("The JSON was bad: " + errors)
+
   case JsSuccess(address, _) =>
     println("The JSON was good: " + address)
-
-  case JsError(errors) =>
-    println("The JSON was bad:")
-    for {
-      (path, errors) <- pathsAndErrors
-      error <- errors
-    } println(s"Error at $path: $pathError")
 }
 ~~~
 
-We will see more about paths and parse errors later.
+The `address` parameters in these examples are of type `Address`, while the `errors` parameters are sequences of structured error messages.
 
-[play.api.libs.json.Reads]:    https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Reads
-[play.api.libs.json.Writes]:   https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Writes
-[play.api.libs.json.Format]:   https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Format
-[play.api.libs.json.JsResult]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsResult
+[play.api.libs.json.Reads]:     https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Reads
+[play.api.libs.json.Writes]:    https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Writes
+[play.api.libs.json.Format]:    https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Format
+[play.api.libs.json.JsResult]:  https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsResult
+[play.api.libs.json.JsSuccess]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsSuccess
+[play.api.libs.json.JsError]:   https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsError
+
+## Errors and *JsPaths*
+
+The read errors in `JsError` have the type `Seq[(JsPath, Seq[ValidationError])]`:
+
+ - each item is a pair of a `JsPath` representing a location in the JSON,
+   and a `Seq[ValidationError]` representing the errors at that location;
+
+ - each `ValidationError` contains a `String` error code and an optional list of arguments.
+
+Here's an example:
+
+~~~ scala
+val result = Json.fromJson[Person](Json.obj(
+  "address" -> Json.obj(
+    "number" -> "29",
+    "street" -> JsNull
+  )
+))
+
+/*
+result == JsError(List(
+  ( JsPath \ "address" \ "number" , List(ValidationError("error.expected.jsnumber", Nil)) ),
+  ( JsPath \ "address" \ "street" , List(ValidationError("error.expected.jsstring", Nil)) ),
+  ( JsPath \ "name"               , List(ValidationError("error.path.missing",      Nil)) )
+))
+*/
+~~~
+
+The most interesting parts of the data are the `JsPaths` that describe locations of the errors. Each `JsPath` describes the sequence of field and array accessors required to locate a particular value in the JSON.
+
+We build paths starting with the singleton object `JsPath`, representing an empty path. We can use the following methods to construct new paths by appending segments:
+
+ - `\` appends a field accessor;
+ - `apply` appends an array accessor.
+
+The resulting path describes the location of a field or array item relative the the root of our JSON value. Here are some examples:
+
+|--------------------------------------------------------------------------------------------------------------|
+| Scala expression        | Javascript equivalent | Meaning                                                    |
+|--------------------------------------------------------------------------------------------------------------|
+| `JsPath`                | `root`                | The root JSON array or object                              |
+| `JsPath \ "a"`          | `root.a`              | The field `a` in the root object                           |
+| `JsPath(2)`             | `root[2]`             | The third item in the root array                           |
+| `JsPath \ "a" \ "b"`    | `root.a.b`            | The field `b` in the field `a` in the root object          |
+| `JsPath \ "a" apply 2`  | `root.a[2]`           | The third array item in the field `a` in the root object   |
+|==============================================================================================================|
+{: .table .table-bordered .table-responsive }
+
+Obviously, different `JsPaths` impose implicit assumptions on the structure of the objects and arrays in our data. However, we can safely assume that the `JsPaths` in our errors point to valid locations in the data being parsed.
 
 <div class="callout callout-info">
-### *Reads* Best Practices
+### Summary: *Reads* Best Practices
 
-We can use Scala's type system to our advantage, using it eliminate many kinds of errors from our applications. For this reason it is sensible to extract the incoming JSON from a `Request` and convert it to a sane, well-typed data model as soon as we can. If the read fails, we typically returns a *400 Bad Request* `Result` to the client indicating any errors encountered.
+We can use Scala's type system to eliminate many sources of programmer error. It makes sense to parse incoming JSON as soon as possible using `Json.fromJson`, to convert it to well-typed data from our domain model.
 
-It is straightforward to write a method that accepts a `JsError` and turns it into a `Result`, and then use that method when parsing a request:
+If the read operation fails, the `JsPaths` in our error data indicate the locations of any read errors. We can use this information to send an informative *400 Bad Request* `Result` to the client:
 
 ~~~ scala
 /**
- * Traverse the errors in `err` and return a BadRequest` result
- * containing appropriate JSON to send to the client.
+ * Create a `JsArray` describing the errors in `err`.
  */
-def jsErrorResponse(err: JsError): Result = {
-  // ...
+def errorJson(err: JsError): JsArray = {
+  val fields = for {
+    (path, errors) <- err.errors
+  } yield {
+    val name  = path.toJsonString
+    val value = errors.map(error => JsString(error.message))
+    (name, value)
+  }
+
+  JsObject(fields)
 }
 
 /**
@@ -93,7 +168,7 @@ def withRequestJson[A](request: Request[AnyContent])(func: A => Result)
     case Some(body) =>
       Json.fromJson(body) match {
         case success: JsSuccess[A] => func(success.value)
-        case error: JsError        => jsErrorResponse(error)
+        case error: JsError        => BadRequest(errorJson(error))
       }
     }
   }
@@ -112,12 +187,8 @@ def index = Action { request =>
 
 We convert Scala data to JSON using instances of [play.api.libs.json.Reads].
 
-Play provides a convenient macro, `Json.reads`, to define a `Reads` for any case class.
+Play provides a `Json.reads` macro and `Json.fromJson` method that mirror `Json.writes` and `Json.toJson`.
 
-When reading JSON data we have to deal with the possibility of formatting errors. Instances of `Reads[A]` return values of type `JsResult[A]` that either contain the successful result or the read, or a machine-readable list of read errors.
+When reading JSON data we have to deal with the possible read errors. The `reads` method of `Reads[A]` returns values of type `JsResult[A]` to indicate success/failure.
 
-`Reads` is a *type class* used by the `Json.fromJson` method. The recommended recipe for its use is as follows:
-
- 1. Define an `implicit` instances of `Reads[A]`.
- 2. Place the instance in the companion object for `A`, or in a separate object containing relevant `Implicits`.
- 3. Read a call `Json.fromJson(myValue)` ensuring the implicit `Reads` is in scope.
+`JsError` contains `ValidationError` objects for each read error, mapped against `JsPaths` representing the location of the errors in our JSON. We can use this data to report errors back to the client.

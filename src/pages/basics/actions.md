@@ -30,12 +30,12 @@ object HelloController extends Controller {
   }
 
   def helloTo(name: String) = Action { request =>
-    Ok(s"Hello, "$name!")
+    Ok(s"Hello, $name!")
   }
 }
 ~~~
 
-We use *routes* to dispatch incoming requests to `Actions`. They choose `Actions` based on the *HTTP method* and *URI* of the request. We write routes in a Play-specific DSL that is compiled to Scala by SBT -- we'll learn more about this DSL in the next section:
+We use *routes* to dispatch incoming requests to `Actions`. They choose `Actions` based on the *HTTP method* and *path* of the request. We write routes in a Play-specific DSL that is compiled to Scala by SBT -- we'll learn more about this DSL in the next section:
 
 ~~~
 GET /      controllers.HelloController.hello
@@ -63,7 +63,7 @@ Let's take a closer look at the controller in the example above. The code in use
  - the [play.api.mvc] package;
  - the [play.api.mvc.Controller] trait (via inheritance).
 
-The controller, called `HelloWorld`, is a subtype of [play.api.mvc.Controller]. It defines two `Action`-producing methods, `hello` and `helloTo`. Our routes specify which of these methods to call when a request comes in.
+The controller, called `HelloController`, is a subtype of [play.api.mvc.Controller]. It defines two `Action`-producing methods, `hello` and `helloTo`. Our routes specify which of these methods to call when a request comes in.
 
 Note that `Actions` and `Controllers` have different lifetimes. `Controllers` are created when our application boots and persist until it shuts down. `Actions` are created by method calls and only live long enough to handle a single `Request`. Play passes the parameters from our routes to *the method that creates the `Action`*, not to the action itself.
 
@@ -77,10 +77,6 @@ Play uses the type of the argument to `Ok.apply` to determine the `Content-Type`
 [play.api.mvc.Request]:    https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Request
 [play.api.mvc.Result]:     https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Result
 
-## Try It
-
-TODO: Hello world exercise
-
 ## Take Home Points
 
 We create Play web applications from `Actions`, `Controllers`, and *routes*.
@@ -91,6 +87,6 @@ We create Play web applications from `Actions`, `Controllers`, and *routes*.
 
  - **Routes** map incoming `Requests` to `Action`-producing method calls on our `Controllers`.
 
-We typically place controllers in a `controllers` package in the `app/controllers` folder. Routes go in the `conf/routes` file (no filename extension).
+We typically place controllers in a `Controllers` package in the `app/controllers` folder. Routes go in the `conf/routes` file (no filename extension).
 
 In the next section we will take a closer look at routes.

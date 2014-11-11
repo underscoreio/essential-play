@@ -3,6 +3,6 @@ layout: page
 title: HTML and Forms
 ---
 
-# HTML and Forms
+# HTML and forms
 
-In the last chapter we saw how to receive HTTP requests and send responses from our Play web applications. In this chapter we will cover Play's approach to generating HTML pages and handling form submissions.
+In the last chapter we saw how to receive HTTP requests and send responses. However, we dealt exclusively with content of type `text/plain`. In this chapter we will generate HTML content using Play's templating language, *Twirl*. We will also learn how to create HTML forms and parse and validate submitted form data.

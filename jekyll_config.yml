@@ -21,12 +21,13 @@ toc:
 
   - head: /json/index.html
     body:
-     - /json/types.html
+     - /json/values.html
      - /json/writes.html
      - /json/reads.html
      - /json/formats.html
-     - /json/custom.html
-     - /json/oformats.html
+     - /json/custom1.html
+     - /json/custom2.html
+     - /json/custom3.html
      - /json/failure.html
 
   - head: /async/index.html
@@ -34,8 +35,8 @@ toc:
      - /async/futures.html
      - /async/executioncontexts.html
      - /async/actions.html
-     - /async/failure.html
      - /async/ws.html
+     - /async/failure.html
 
 # Jekyll Configuration
 # --------------------
