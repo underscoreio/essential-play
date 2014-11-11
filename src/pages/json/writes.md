@@ -89,7 +89,7 @@ val json: JsValue = personWrites.writes(Person("Eric Wimp", Address(29, "Acacia 
 
 However, using different `Writes` objects to serialize each type in our application is inconvenient -- we have to remember a lot of different identifiers, and we can't write generic code to serialize data of an arbitrary type.
 
-Fortunately, Play provides the `Json.toJson` method, which accepts a value of type `A` and an implicit parameter of type `rites[A]`. Here's the implementation:
+Fortunately, Play provides the `Json.toJson` method, which accepts a value of type `A` and an implicit parameter of type `Writes[A]`. Here's the implementation:
 
 ~~~ scala
 package play.api.libs.json
