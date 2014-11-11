@@ -64,7 +64,7 @@ val future2: Future[Int] = future1.recover {
 }
 ~~~
 
-If `future1` completes without an exception, `future2` completes with the same value. If `future1` fails with a `NumberFormatException`, `future2` completes with the value `43`. If `future1 fails with any other type of exception, `future2` fails as well.
+If `future1` completes without an exception, `future2` completes with the same value. If `future1` fails with a `NumberFormatException`, `future2` completes with the value `43`. If `future1` fails with any other type of exception, `future2` fails as well.
 
 [scala.concurrent.Future]: http://www.scala-lang.org/api/2.11.2/#scala.concurrent.Future
 
