@@ -81,7 +81,7 @@ val future2: Future[Int] = future1.recoverWith {
 
 ### *transform*
 
-If `recover` is similar to `map` and `recoverWith` is similar to `flatMap`, `transform` is similar to `fold`. We supply two functiona as parameters, one to handle successes and one to handle failures:
+If `recover` is similar to `map` and `recoverWith` is similar to `flatMap`, `transform` is similar to `fold`. We supply two functions as parameters, one to handle successes and one to handle failures:
 
 ~~~ scala
 val future2: Future[String] = future1.transform(
