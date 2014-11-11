@@ -11,7 +11,7 @@ In the previous section we saw how to use `Writes` and `Json.toJson` to convert 
 
 
 
-We parse incoming JSON using instances of the [play.api.json.Reads] trait. Play also defines a`Json.reads` macro and `Json.fromJson` method that compliment `Json.writes` and `Json.toJson`. Here's a synopsis:
+We parse incoming JSON using instances of the [play.api.json.Reads](https://playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Reads) trait. Play also defines a`Json.reads` macro and `Json.fromJson` method that compliment `Json.writes` and `Json.toJson`. Here's a synopsis:
 
 ~~~ scala
 import play.api.libs.json._
