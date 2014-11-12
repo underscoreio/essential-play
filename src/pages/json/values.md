@@ -242,6 +242,28 @@ val z: JsValue = json(2) \ "name" // => JsUndefined(...)
 
 Note that we have ignored the contents of `JsUndefined` as they typically aren't used in user code.
 
+A useful trick for exploring JSON in the REPL, or in unit tests, we can use the `as` method to extract values:
+
+~~~ scala
+val name = (json(0) \ "name").as[String]
+// => name: String = Dave
+~~~
+
+We say only for use in the REPL or tests because if `as` cannot convert to the type requested, a run-time exception is thrown:
+
+~~~ scala
+val name = (json(0) \ "name").as[Int]
+// => play.api.libs.json.JsResultException: JsResultException(errors:List((,List(ValidationError(error.expected.jsnumber,WrappedArray())))))
+~~~
+
+If you think using `as` would be handy, hang on, because there is a better way which we will come to. But if you still really want to use `as` prefer the `asOpt` variant. This evaluates to a `None` if it cannot convert the JSON value:
+
+~~~ scala
+scala> val name = (json(0) \ "name").asOpt[Int]
+// => name: Option[Int] = None
+~~~
+
+
 [play.api.libs.json.JsValue]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsValue
 
 ### Putting It All Together
