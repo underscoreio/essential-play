@@ -156,9 +156,9 @@ When building `Writes`, we supply "extractor" functions instead of "constructors
 
 ~~~ scala
 (
-  (JsPath \ "number").writes[Int] and
-  (JsPath \ "street").writes[String]
-)(Address.unapply)
+  (JsPath \ "number").write[Int] and
+  (JsPath \ "street").write[String]
+)(unlift(Address.unapply))
 ~~~
 
 Finally, when building `Formats` we have to supply both a constructor and an extractor function: one to combine the values in a read operation, and one to split them up in a write:
@@ -167,7 +167,7 @@ Finally, when building `Formats` we have to supply both a constructor and an ext
 (
   (JsPath \ "number").format[Int] and
   (JsPath \ "street").format[String]
-)(Address.apply, Address.unapply)
+)(Address.apply, unlift(Address.unapply))
 ~~~
 
 ### Applying the DSL to a Java Class
