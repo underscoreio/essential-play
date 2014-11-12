@@ -11,7 +11,7 @@ Play models JSON data using a family of case classes of type [play.api.libs.json
 package play.api.libs.json
 
 sealed trait JsValue
-final case class JsObject(fields: Seq[(String, JsValue)]) exteds JsValue
+final case class JsObject(fields: Seq[(String, JsValue)]) extends JsValue
 final case class JsArray(values: Seq[JsValue]) extends JsValue
 final case class JsString(value: String) extends JsValue
 final case class JsNumber(value: Double) extends JsValue
@@ -166,7 +166,7 @@ The compliment of `Json.parse` is `Json.stringify`, which converts a `JsValue` t
 Json.stringify(Json.obj("name" -> "Dave", "age" -> 35))
 // => """{"name":"Dave","age":35}"""
 
-Json.prettyPrint("""[ 1, 2, 3 }""")
+Json.prettyPrint(Json.obj("name" -> "Dave", "age" -> 35))
 // => """{
 //      "name": "Dave",
 //      "age": 35
