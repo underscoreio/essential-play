@@ -9,7 +9,7 @@ In the previous section we saw how to send HTML data to web site users using Twi
 
 Play's form handling library is based on objects of type [play.api.data.Form]. `Forms` are metadata objects that represent a combination of mapping information and form data. They allow us to perform four important operations:
 
- 1. *parse* incoming request data to create typed data values;
+ 1. *parse* incoming request data to create typed values;
  2. *validate* the incoming data, allowing us to recover if the user made a mistake;
  3. *generate* HTML forms and inputs using stored data (and error messages from failed validations);
  4. *populate* generated HTML with values taken from data values.

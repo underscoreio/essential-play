@@ -9,9 +9,7 @@ In the previous section we saw how to use `Writes` and `Json.toJson` to convert 
 
 ## Meet *Reads*
 
-
-
-We parse incoming JSON using instances of the [play.api.json.Reads](https://playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Reads) trait. Play also defines a`Json.reads` macro and `Json.fromJson` method that compliment `Json.writes` and `Json.toJson`. Here's a synopsis:
+We parse incoming JSON using instances of the [play.api.libs.json.Reads] trait. Play also defines a`Json.reads` macro and `Json.fromJson` method that compliment `Json.writes` and `Json.toJson`. Here's a synopsis:
 
 ~~~ scala
 import play.api.libs.json._
@@ -135,7 +133,7 @@ The resulting path describes the location of a field or array item relative the 
 Obviously, different `JsPaths` impose implicit assumptions on the structure of the objects and arrays in our data. However, we can safely assume that the `JsPaths` in our errors point to valid locations in the data being parsed.
 
 <div class="callout callout-info">
-### *Reads* Best Practices
+### Summary: *Reads* Best Practices
 
 We can use Scala's type system to eliminate many sources of programmer error. It makes sense to parse incoming JSON as soon as possible using `Json.fromJson`, to convert it to well-typed data from our domain model.
 

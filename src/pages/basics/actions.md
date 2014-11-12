@@ -35,7 +35,7 @@ object HelloController extends Controller {
 }
 ~~~
 
-We use *routes* to dispatch incoming requests to `Actions`. They choose `Actions` based on the *HTTP method* and *URI* of the request. We write routes in a Play-specific DSL that is compiled to Scala by SBT -- we'll learn more about this DSL in the next section:
+We use *routes* to dispatch incoming requests to `Actions`. They choose `Actions` based on the *HTTP method* and *path* of the request. We write routes in a Play-specific DSL that is compiled to Scala by SBT -- we'll learn more about this DSL in the next section:
 
 ~~~
 GET /      controllers.HelloController.hello
@@ -76,10 +76,6 @@ Play uses the type of the argument to `Ok.apply` to determine the `Content-Type`
 [play.api.mvc.Action]:     https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Action
 [play.api.mvc.Request]:    https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Request
 [play.api.mvc.Result]:     https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Result
-
-## Try It
-
-TODO: Hello world exercise
 
 ## Take Home Points
 

@@ -5,7 +5,7 @@ title: Modelling JSON
 
 # Modelling JSON
 
-Play models JSON data using a family of case classes of type [play.api.libs.json.JsValue], representing each of the data types in the [JSON specification](http://www.json.org/):
+Play models JSON data using a family of case classes of type [play.api.libs.json.JsValue], representing each of the data types in the [JSON specification]:
 
 ~~~ scala
 package play.api.libs.json
@@ -22,6 +22,7 @@ final case object JsNull extends JsValue
 In this section we will discuss basic JSON manipulation and traversal, which is useful for ad hoc operations on JSON data. In the following sections we will see how to define mappings between `JsValues` and types from our domain, and use them to validate the JSON we receive in `Requests`.
 
 [play.api.libs.json.JsValue]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsValue
+[JSON specification]: http://www.json.org
 
 ## Representing JSON in Scala
 
@@ -234,7 +235,7 @@ case class JsUndefined(/* ... */) extends JsValue
 The `\` and `apply` methods of `JsUndefined` each themselves return `JsUndefined`. This means we can freely traverse JSON data using sequences of operations without worrying about failure:
 
 ~~~ scala
-val x: JsValue = dave \ "badname" // => JsUndefined(...)
+val x: JsValue = json \ "badname" // => JsUndefined(...)
 val y: JsValue = json(2)          // => JsUndefined(...)
 val z: JsValue = json(2) \ "name" // => JsUndefined(...)
 ~~~

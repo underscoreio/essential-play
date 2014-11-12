@@ -210,7 +210,7 @@ case class JsUndefined(/* ... */) extends JsValue
 The `\` and `apply` methods of `JsUndefined` each themselves return `JsUndefined`, so we can freely navigate around a JSON data structure using whole sequences of operations without having to check whether the data matches our expectations at every step. Here's an example:
 
 ~~~ scala
-val x: JsValue = dave \ "badname" // => JsUndefined(...)
+val x: JsValue = json \ "badname" // => JsUndefined(...)
 val y: JsValue = json(2)          // => JsUndefined(...)
 val z: JsValue = json(2) \ "name" // => JsUndefined(...)
 ~~~
