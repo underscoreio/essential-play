@@ -13,7 +13,7 @@ In this final section of the chapter we will take a first look at a theme that r
 
 Play reports compilation errors in two places: on the SBT console, and via 500 error pages. If you've been following the exercises so far, you will have seen this already. When we run a development web server using `sbt run` and make a mistake in our code, Play responds with an error page:
 
-![Internal error: Play's compilation error 500 page](compile-error.png)
+![Internal error: Play's compilation error 500 page](src/pages/basics/compile-error.png)
 
 While this behaviour is useful, we should be aware of two drawbacks:
 
@@ -35,17 +35,17 @@ While this behaviour is useful, we should be aware of two drawbacks:
 
 If our code compiles but fails at runtime, we get a similar error page that points to the source of the exception. The exception is reported on the SBT console as well as on the page:
 
-![Internal error: Play's default error 500 page](internal-error.png)
+![Internal error: Play's default error 500 page](src/pages/basics/internal-error.png)
 
 ## Routing Errors
 
 Play generates a 404 page if it can't find an appropriate route for an incoming request. This error *doesn't* appear on the console:
 
-![Not found: Play's 404 routing error page](not-found-error.png)
+![Not found: Play's 404 routing error page](src/pages/basics/not-found-error.png)
 
 If Play finds a route but can't parse the parameters from the path and query string, it issues a similar-looking 400 response:
 
-![Bad request: Play's 400 routing error page](bad-request-error.png)
+![Bad request: Play's 400 routing error page](src/pages/basics/bad-request-error.png)
 
 ## Take Home Points
 
