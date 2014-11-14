@@ -9,8 +9,6 @@ The underpinning of our concurrent programming model is the [scala.concurrent.Fu
 
 `Futures` are a general tool from the Scala core library, but they are used heavily in Play. We'll start by looking at the general case, and tie them into Play later on in this chapter.
 
-[scala.concurrent.Future]: http://www.scala-lang.org/api/2.11.2/#scala.concurrent.Future
-
 ## The Ultimate Answer
 
 Let's define a long-running computation:
@@ -110,7 +108,7 @@ The result of calling `flatMap` is a new future that:
  - waits for the second `Future` to complete;
  - yields the result of the second `Future`.
 
-This has a similar sequencing-and-flattening effect to the `flatMap` method on [scala.Option]:
+This has a similar sequencing-and-flattening effect to the `flatMap` method on [scala.Option]
 
 ~~~ scala
 def longRunningConversion(value: Int): Future[String] = {
@@ -127,7 +125,7 @@ val f3: Future[String] = f1.flatMap(longRunningConversion)
 
 Again, the final results of `f1` and `f2` and `f3` above are `42`, `43` and `"42"` respectively.
 
-[scala.Option]: http://www.scala-lang.org/api/2.11.2/#scala.Option
+[scala.Option]
 
 ### Wait... Future is a Monad?
 
@@ -255,7 +253,7 @@ Both examples are resource-efficient and non-blocking but they sequence operatio
 
 For comprehensions are a great way to combine the results of several futures, but they aren't suitable for combining the results of *arbitrarily sized* sets of futures. For this we need the `sequence` method of [Future's companion object]. Here's a simplified type signature:
 
-[Future's companion object]: http://www.scala-lang.org/api/2.11.2/#scala.concurrent.Future$
+[Future's companion object]
 
 ~~~ scala
 package scala.concurrent

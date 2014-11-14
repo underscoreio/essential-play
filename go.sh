@@ -3,7 +3,7 @@
 #--template=src/layouts/page.html \
 
 pandoc -S                               \
-          -o essential-play.html           \
+          -o essential-play.pdf          \
           --table-of-contents           \
           --toc-depth=4                 \
           --from=markdown+multiline_tables+fenced_code_blocks+fenced_code_attributes \
@@ -35,5 +35,6 @@ src/pages/async/executioncontexts.md  \
 src/pages/async/actions.md            \
 src/pages/async/ws.md                 \
 src/pages/async/failure.md            \
+src/pages/links.md                    \
 
 
