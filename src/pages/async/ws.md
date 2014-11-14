@@ -22,7 +22,7 @@ libraryDependencies += ws
 
 This line of configuration gives us access to the [play.api.libs.ws] package in our code.
 
-[play.api.libs.ws]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.ws.package
+
 </div>
 
 ## Using Play WS
@@ -65,8 +65,6 @@ The `get` operation is non-blocking -- Play creates a `Future` to hold the event
 
 The body of the `index` action returns as soon as the chain of `Futures` is set up. Play proceeds to execute each `Future` as its inputs become available, eventually creating a `Result` to send back to the client.
 
-[play.api.libs.ws.WSRequestHolder]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.ws.WSRequestHolder
-[play.api.libs.ws.WSResponse]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.ws.WSResponse
 
 ## A Complete Example
 

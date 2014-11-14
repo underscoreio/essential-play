@@ -27,7 +27,6 @@ We have a lot more flexibility using this syntax than we do with `Json.reads`. W
 
 We won't cover all of these options here -- the full DSL is described in the [Play documentation]. In the remainder of this section we will dissect the `addressReads` example above and explain how it works.
 
-[Play documentation]: https://www.playframework.com/documentation/2.3.x/ScalaJsonCombinators
 
 ### Dissecting the DSL
 

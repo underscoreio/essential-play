@@ -13,4 +13,4 @@ Non-blocking code is also essential for *distributing* work across machines. Mod
 
 In this section we will see how to implement non-blocking concurrency in Scala and Play using a functional programming tool called *Futures*.
 
-[non-blocking]: http://en.wikipedia.org/wiki/Non-blocking_algorithm
+

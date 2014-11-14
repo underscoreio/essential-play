@@ -38,7 +38,7 @@ Json.fromJson[Person](Json.obj(
 
 So far so good -- reading JSON data is at least superficially similar to writing it.
 
-[play.api.libs.json.Reads]: https://playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Reads
+[play.api.libs.json.Reads]
 
 ## Embracing Failure
 
@@ -74,13 +74,6 @@ result match {
 ~~~
 
 The `address` parameters in these examples are of type `Address`, while the `errors` parameters are sequences of structured error messages.
-
-[play.api.libs.json.Reads]:     https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Reads
-[play.api.libs.json.Writes]:    https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Writes
-[play.api.libs.json.Format]:    https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Format
-[play.api.libs.json.JsResult]:  https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsResult
-[play.api.libs.json.JsSuccess]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsSuccess
-[play.api.libs.json.JsError]:   https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsError
 
 ## Errors and *JsPaths*
 

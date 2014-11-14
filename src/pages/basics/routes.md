@@ -142,8 +142,7 @@ Play parses route parameters using instances of two different *type classes*:
 
 We can implement custom parameter types by creating implicit values these type classes. See the linked Scaladocs for more information.
 
-[play.api.mvc.PathBindable]:        https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.PathBindable
-[play.api.mvc.QueryStringBindable]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.QueryStringBindable
+
 </div>
 
 # Reverse Routing
@@ -187,7 +186,7 @@ object DownloadController {
 }
 ~~~
 
-[play.api.mvc.Call]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Call
+
 
 ## Take Home Points
 

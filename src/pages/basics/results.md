@@ -11,7 +11,7 @@ Once we have finished our business logic, the final step of any `Action` is to c
 
 ## Setting The Status Code
 
-Play provides a convenient set of factory objects for creating `Results`. These are defined in the [play.api.mvc.Results] trait and inherited by [play.api.mvc.Controller]:
+Play provides a convenient set of factory objects for creating `Results`. These are defined in the [play.api.mvc.Results] trait and inherited by [play.api.mvc.Controller]
 
 |----------------------------+-----------------------------------------|
 | Constructor                | HTTP status code                        |
@@ -32,9 +32,7 @@ val result2: Result = NotFound("Is it behind the fridge?")
 val result3: Result = Status(401)("Access denied, Dave.")
 ~~~
 
-[play.api.mvc.Results]:    https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Results
-[play.api.mvc.Controller]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Controller
-[play.api.mvc.Result]:     https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Result
+
 
 ## Adding Content
 
@@ -53,8 +51,7 @@ We can create `Results` using values of other Scala types, provided Play underst
 |==============================================+============================|
 {: .table .table-bordered .table-responsive }
 
-[play.twirl.api.Html]: https://github.com/playframework/twirl/blob/master/api/src/main/scala/play/twirl/api/Formats.scala
-[play.api.libs.json.JsValue]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsValue
+
 
 The process of creating a `Result` is type-safe -- Play determines the method of serialization based on the *type* we give it. If it understands what to do with our data, we get a working `Result`. If it doesn't understand the type we give it, we get a compilation error. As a consequence, the final steps in an `Action` tend to be:
 
@@ -94,7 +91,6 @@ def action = Action { request =>
 
 The intention of `Writeable` is to support general data formats. We wouldn't create a `Writeable` to serialize a specific class from our business model, for example, but we might write one to support a format such as XLS, Markdown, or iCal.
 
-[play.api.http.Writeable]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.http.Writeable
 </div>
 
 ## Tweaking the Result
@@ -116,8 +112,6 @@ def ohai = Action { request =>
 }
 ~~~
 
-[play.api.mvc.Result]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Result
-
 ## Take Home Points
 
 The final step of an `Actions` is to create and return a [play.api.mvc.Result].
@@ -127,9 +121,3 @@ We create `Results` using factory objects provided by [play.api.mvc.Controller].
 We can `Results` with a variety of data types. Play provides built-in support for `String`, `JsValue`, `NodeSeq`, and `Html`. We can add our own data types by writing instances of the [play.api.http.Writeable] type class.
 
 Once we have created a `Result`, we can tweak headers and cookies before returning it.
-
-[play.api.mvc.Results]:    https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Results
-[play.api.mvc.Controller]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Controller
-[play.api.mvc.Result]:     https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Result
-[play.api.http.Writeable]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.http.Writeable
-[play.twirl.api.Content]:  https://www.playframework.com/documentation/2.3.x/ScalaTemplates

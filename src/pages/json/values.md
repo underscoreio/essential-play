@@ -5,7 +5,7 @@ title: Modelling JSON
 
 # Modelling JSON
 
-Play models JSON data using a family of case classes of type [play.api.libs.json.JsValue], representing each of the data types in the [JSON specification]:
+Play models JSON data using a family of case classes of type [play.api.libs.json.JsValue], representing each of the data types in the [JSON specification]
 
 ~~~ scala
 package play.api.libs.json
@@ -21,8 +21,7 @@ final case object JsNull extends JsValue
 
 In this section we will discuss basic JSON manipulation and traversal, which is useful for ad hoc operations on JSON data. In the following sections we will see how to define mappings between `JsValues` and types from our domain, and use them to validate the JSON we receive in `Requests`.
 
-[play.api.libs.json.JsValue]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsValue
-[JSON specification]: http://www.json.org
+
 
 ## Representing JSON in Scala
 
@@ -106,7 +105,7 @@ JsObject(Seq(
 </div>
 </div>
 
-[play.api.libs.json.Json]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Json
+
 
 ## JSON *Requests* and *Results*
 
@@ -147,7 +146,7 @@ def index = Action(parse.json) { request =>
 <div class="callout callout-warning">
 #### Advanced: Parsing and Stringifying JSON
 
-We typically don't have to directly parse stringified JSON If we do, we can use the `parse` method of [play.api.libs.json.Json]:
+We typically don't have to directly parse stringified JSON If we do, we can use the `parse` method of [play.api.libs.json.Json]
 
 ~~~ scala
 Json.parse("""{ "name": "Dave", "age": 35 }""")
@@ -264,7 +263,7 @@ scala> val name = (json(0) \ "name").asOpt[Int]
 ~~~
 
 
-[play.api.libs.json.JsValue]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsValue
+
 
 ### Putting It All Together
 

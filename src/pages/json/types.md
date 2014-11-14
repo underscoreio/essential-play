@@ -5,7 +5,7 @@ title: Modelling JSON
 
 # Modelling JSON
 
-Play models JSON data using instances of a sealed trait called [play.api.libs.json.JsValue]. There are five subtypes of `JsValue`, each representing one of the types in the [JSON specification]:
+Play models JSON data using instances of a sealed trait called [play.api.libs.json.JsValue]. There are five subtypes of `JsValue`, each representing one of the types in the [JSON specification]
 
 ~~~ scala
 package play.api.libs.json
@@ -31,9 +31,6 @@ Each of these types allows us to *wrap up* one or more Scala values to describe 
  - wrap the `JsValue` in a `Result`.
 
 This section describes how to construct, traverse, and deconstruct `JsValues` by hand, which is useful for ad hoc operations on JSON data. The next two sections describe how to create mappings between `JsValues` and domain objects, and use them to validate the JSON we receive in `Requests`.
-
-[play.api.libs.json.JsValue]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsValue
-[JSON specification]: http://json.org
 
 # Constructing JSON Data
 
@@ -120,11 +117,11 @@ JsObject(Seq(
 </div>
 </div>
 
-[play.api.libs.json.Json]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Json
+
 
 ## Converting Strings &hArr; JsValues
 
-We can convert any JSON string to a `JsValue` using the `parse` method of [play.api.libs.json.Json]:
+We can convert any JSON string to a `JsValue` using the `parse` method of [play.api.libs.json.Json]
 
 ~~~ scala
 Json.parse("""{ "name": "Dave", "age": 35 }""")

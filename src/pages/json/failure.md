@@ -1,8 +1,3 @@
----
-layout: page
-title: Handling Failure
----
-
 # Handling Failure
 
 We've now seen everything we need to read and write arbitrary JSON data. We are almost ready to create full-featured JSON REST APIs. There's only one more thing we need to cover: failure.
@@ -24,8 +19,6 @@ object Global extends GlobalSettings {
   // custom configuration goes here...
 }
 ~~~
-
-[play.api.GlobalSettings]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.GlobalSettings
 
 ### Custom Routing Error Pages
 
@@ -102,4 +95,4 @@ There are also some other useful methods not covered above:
  - `doFilter` allows us to provide custom HTTP filters,
    for example adding JSONP, logging, or CORS support to every request.
 
-[play.api.GlobalSettings]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.GlobalSettings
+

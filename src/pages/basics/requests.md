@@ -40,11 +40,6 @@ So what type does `request.body` return in the examples we've seen so far? We ha
 |======================================================================================================|
 {: .table .table-bordered .table-responsive }
 
-[play.api.mvc.AnyContent]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.AnyContent
-[play.api.mvc.MultipartFormData]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.MultipartFormData
-[play.api.libs.json.JsValue]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsValue
-[scala.xml.NodeSeq]: https://github.com/scala/scala-xml/blob/master/src/main/scala/scala/xml/NodeSeq.scala
-[play.api.mvc.RawBuffer]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.RawBuffer
 
 <div class="callout callout-warning">
 #### Advanced: Custom Body Parsers
@@ -80,8 +75,7 @@ def action = Action(myDataParser) { request =>
 
 See Play's [documentation on body parsers] for more information.
 
-[play.api.mvc.BodyParser]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.BodyParser
-[documentation on body parsers]: https://www.playframework.com/documentation/2.3.x/ScalaBodyParsers
+
 </div>
 
 ## Headers and Cookies
@@ -115,9 +109,7 @@ object RequestDemo extends Controller {
 }
 ~~~
 
-[play.api.mvc.Request]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Request
-[play.api.mvc.Headers]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Headers
-[play.api.mvc.Cookies]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Cookies
+
 
 ## Methods and URIs
 

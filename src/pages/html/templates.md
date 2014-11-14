@@ -77,10 +77,7 @@ Twirl templates can also be used to generate XML, Javascript, and plain text res
 {: .table .table-bordered .table-responsive }
 </div>
 
-[play.twirl.api.Html]:       https://github.com/playframework/twirl/blob/master/api/src/main/scala/play/twirl/api/Formats.scala
-[play.twirl.api.Xml]:        https://github.com/playframework/twirl/blob/master/api/src/main/scala/play/twirl/api/Formats.scala
-[play.twirl.api.Txt]:        https://github.com/playframework/twirl/blob/master/api/src/main/scala/play/twirl/api/Formats.scala
-[play.twirl.api.JavaScript]: https://github.com/playframework/twirl/blob/master/api/src/main/scala/play/twirl/api/Formats.scala
+
 
 ## Parameters and expressions
 
@@ -107,7 +104,7 @@ The template body is compiled to a single Scala expression that appends all the 
 
 Twirl embedded expression syntax is inspired by Scala syntax. Here is a brief synopsis -- for more information see Play's [documentation on template syntax].
 
-[documentation on template syntax]: https://www.playframework.com/documentation/2.3.x/ScalaTemplates
+
 
 ### Simple Expressions
 
@@ -308,8 +305,6 @@ Twirl provides a `defining` method as a means of aliasing complex Scala expressi
 
 Play also provides a variety of pre-defined templates in the [views.html.helper] package. We will discuss some of these in the next section.
 
-[views.html.helper]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#views.html.helper.package
-
 ## Nesting Templates
 
 Because Twirl templates compile to Scala functions, we can call one template from another. We can also pass `Html` content from one template to another to create wrapper-style constructions:
@@ -365,4 +360,3 @@ Templates are compiled to singleton Scala functions in the `views.html` package.
 
 Template functions accept whatever parameters we define and return instances of [play.twirl.api.Html]. Play understands how to serialize `Html` objects as content within `Results`. It even sets the `Content-Type` for us.
 
-[play.twirl.api.Html]: https://github.com/playframework/twirl/blob/master/api/src/main/scala/play/twirl/api/Formats.scala

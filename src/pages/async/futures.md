@@ -1,8 +1,3 @@
----
-layout: page
-title: Futures
----
-
 # Futures
 
 The underpinning of our concurrent programming model is the [scala.concurrent.Future] trait. A `Future[A]` represents an asynchronous computation that *will calculate a value of type `A` at some point in the future*.

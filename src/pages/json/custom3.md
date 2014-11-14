@@ -30,8 +30,6 @@ addressFormat.writes(Address(29, "Acacia Road")) ++ Json.obj("city" -> "Nuttytow
 // == Json.obj("number" -> 29, "street" -> "Acacia Road", "city" -> "Nuttytown")
 ~~~
 
-[play.api.libs.json.OWrites]: https://playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.OWrites
-[play.api.libs.json.OFormat]: https://playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.OFormat
 
 ## Handling Type Hierarchies
 

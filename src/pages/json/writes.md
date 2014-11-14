@@ -43,7 +43,7 @@ val json: JsValue = addressWrites.writes(address)
 assert(json == Json.obj("number" -> 29, "street" -> "Acacia Road"))
 ~~~
 
-[play.api.libs.json.Writes]: https://playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Writes
+
 
 ## Implicit Writes
 
@@ -77,7 +77,6 @@ implicit val addressWrites = Json.writes[Address]
 val personWrites = Json.writes[Person] // now this compiles!
 ~~~
 
-[play.api.libs.json.DefaultWrites]: https://playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.DefaultWrites
 
 ## The *Json.toJson* Method
 
@@ -148,4 +147,3 @@ Play provides a convenient macro, `Json.writes`, to define a `Writes` for case c
 
 We can use the `Json.toJson` method to serialize any data type for which we have an `implicit` `Writes` in scope. We therefore typically define `Writes` in companion objects or singleton objects, and bring them into scope wherever we need them to create `Results`.
 
-[play.api.libs.json.Writes]: https://playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Writes

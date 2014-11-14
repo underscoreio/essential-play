@@ -9,7 +9,7 @@ We create Play web applications from *actions*, *controllers*, and *routes*. In 
 
 # Hello, World!
 
-*Actions* are objects that handle web requests. They have an `apply` method that accepts a [play.api.mvc.Request] and returns a [play.api.mvc.Result]:
+*Actions* are objects that handle web requests. They have an `apply` method that accepts a [play.api.mvc.Request] and returns a [play.api.mvc.Result]
 
 ~~~ scala
 Action { request =>
@@ -71,11 +71,6 @@ Each of the example `Actions` creates an `Ok` response containing a simple messa
 
 Play uses the type of the argument to `Ok.apply` to determine the `Content-Type` of the `Result`. The `String` arguments in the example create a `Results` of type `text/plain`. Later on we'll see how to customise this behaviour and create results of different types.
 
-[play.api.mvc]:            https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.package
-[play.api.mvc.Controller]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Controller
-[play.api.mvc.Action]:     https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Action
-[play.api.mvc.Request]:    https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Request
-[play.api.mvc.Result]:     https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.mvc.Result
 
 ## Take Home Points
 

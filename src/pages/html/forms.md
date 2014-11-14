@@ -16,7 +16,7 @@ Play's form handling library is based on objects of type [play.api.data.Form]. `
 
 The next two sections cover these topics. This section covers parsing and validation; the next section covers generation and pre-population of HTML `<form>` elements.
 
-[play.api.data.Form]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.data.Form
+
 
 ## *Forms* and *Mappings*
 
@@ -41,7 +41,6 @@ val todoMapping: Mapping[Todo] = mapping(
 
 The methods `text`, `number`, and `boolean` come from [play.api.data.Forms]. They create field `Mappings` between `Strings` and the relevant type for each field of `Todo`:
 
-[play.api.data.Forms]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.data.Forms$
 
 ~~~ scala
 val nameMapping:     Mapping[String]  = text
@@ -135,10 +134,6 @@ val todoForm: Form[Todo] = Form(mapping(
 
 Play provides lots of options for parsing and validating, including adding multiple and custom validation constraints to fields and mapping hierarchical and sequential data. See the [documentation for Forms], the Scaladoc for [play.api.data.Forms], and the Scaladoc for [play.api.data.validation.Constraints] for more information.
 
-[documentation for Forms]: https://www.playframework.com/documentation/2.2.0/ScalaForms
-[play.api.data.Forms]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.data.Forms$
-[play.api.data.validation.Constraints]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.data.validation.Constraints$
-
 ## Take Home Points
 
 In this section we saw how to create `Form` objects and use them to parse and validate incoming form data.
@@ -149,4 +144,3 @@ We extract data from requests using the `bindFromRequest` method of `Form`. Bind
 
 In the next section we will see how to use `Forms` to generate HTML `<form>` and `<input>` tags, pre-populate inputs with text taken from typed Scala data, and report error messages back to the user.
 
-[play.api.data.Forms]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.data.Forms$

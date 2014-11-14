@@ -55,14 +55,14 @@ Let's look at the generated HTML:
 
 The basic output contains a `<form>` element and an `<input>` and `<label>` for each field, together with hints on which fields are numeric and boolean.
 
-[views.html.helper]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#views.html.helper.package
+
 
 <div class="callout callout-warning">
 #### Advanced: Internationalization
 
 Notice the text `"format.boolean"` in the generated HTML. This is an uninternationalized message that has crept through due to a missing value in Play's default string tables. We can fix the broken message by providing our own [internationalization] for our application. However, this is beyond the scope of this chapter.
 
-[internationalization]: https://www.playframework.com/documentation/2.3.x/ScalaI18N
+
 </div>
 
 ## Pre-Filling Forms
@@ -181,7 +181,7 @@ The extra parameters are keyword/value pairs of type `(Symbol, String)`. Most ke
 
 See the Play [documentation on field constructors] for a complete list of special keywords.
 
-[documentation on field constructors]: https://www.playframework.com/documentation/2.3.x/
+
 
 <div class="callout callout-warning">
 #### Advanced: Custom Field Constructors
@@ -224,8 +224,6 @@ The effect on the generated HTML is quite pronounced:
 ~~~
 
 We can even define our own field constructors to completely customise our HTML. See the [documentation on field constructors] for more information.
-
-[documentation on field constructors]: https://www.playframework.com/documentation/2.3.x/
 </div>
 
 ## Take Home Points
@@ -241,8 +239,3 @@ There are numerous helpers in the [views.html.helper] package that we can use in
 The HTML we generate contains values and error messages as well as basic form structure. We can use this to generate pre-populated forms or feedback to user error.
 
 We can tweak the generated HTML by passing extra parameters to helpers such as `inputText` and `checkbox`, or make broad sweeping changes using a custom field constructor.
-
-[views.html.helper]:           https://www.playframework.com/documentation/2.3.x/api/scala/index.html#views.html.helper.package
-[views.html.helper.form]:      https://www.playframework.com/documentation/2.3.x/api/scala/index.html#views.html.helper.form$
-[views.html.helper.inputText]: https://www.playframework.com/documentation/2.3.x/api/scala/index.html#views.html.helper.inputText$
-[views.html.helper.checkbox]:  https://www.playframework.com/documentation/2.3.x/api/scala/index.html#views.html.helper.checkbox$

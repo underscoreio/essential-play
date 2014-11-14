@@ -49,7 +49,7 @@ We can easily adapt this code to create a separate `Reads` or `Writes` -- we sim
 
 Note the construction of the `JsError`, which mimics the way Play handles internationalization of error messages. Each type of error has its own *error code*, allowing us to build internationalization tables on the client. The [built-in error codes] are rather poorly documented -- a list can be found in the Play source code.
 
-[built-in error codes]: https://github.com/playframework/playframework/blob/2.3.x/framework/src/play/src/main/resources/messages.default#L21-L51
+
 </div>
 
 Hand-writing `Formats` using pattern matching tends to be most convenient when processing atomic values that don't have any internal structure. However, hand-written `Formats` can become verbose and unwieldy as the complexity of the data increases.
