@@ -37,14 +37,14 @@ object HelloController extends Controller {
 
 We use *routes* to dispatch incoming requests to `Actions`. They choose `Actions` based on the *HTTP method* and *path* of the request. We write routes in a Play-specific DSL that is compiled to Scala by SBT -- we'll learn more about this DSL in the next section:
 
-~~~
+~~~ bash
 GET /      controllers.HelloController.hello
 GET /:name controllers.HelloController.helloTo(name: String)
 ~~~
 
 By convention we place controllers in the `controllers` package in the `app/controllers` folder, and routes in a `conf/routes` configuration file. This is the structure of a basic Play application:
 
-~~~ coffeescript
+~~~ coffee
 myProject/
   build.sbt                 # SBT project configuration
   project/

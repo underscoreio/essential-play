@@ -6,7 +6,7 @@ pandoc -S                               \
           -o essential-play.pdf         \
           --table-of-contents           \
           --toc-depth=4                 \
-          --from=markdown+multiline_tables                 \
+          --from=markdown+multiline_tables+fenced_code_blocks+fenced_code_attributes                 \
           --epub-stylesheet ./essential-play/css/print.css \
 pandoc/title.txt                      \
 src/pages/index.md                    \
