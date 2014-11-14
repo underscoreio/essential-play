@@ -265,7 +265,7 @@ object Future {
 }
 ~~~
 
-We can use this method to convert any sequence[^sequence] of futures into a future of a sequence of the results. We can use this method to generalise our traffic monitoring example to any number of hosts:
+We can use this method to convert any sequence[^sequence] of futures into a future containing a sequence of the results. We can use this method to generalise our traffic monitoring example to any number of hosts:
 
 ~~~ scala
 def totalTraffic(hostnames: Seq[String]): Future[Double] = {
