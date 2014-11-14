@@ -156,9 +156,9 @@ When building `Writes`, we supply "extractor" functions instead of "constructors
 
 ~~~ scala
 (
-  (JsPath \ "number").writes[Int] and
-  (JsPath \ "street").writes[String]
-)(Address.unapply)
+  (JsPath \ "number").write[Int] and
+  (JsPath \ "street").write[String]
+)(unlift(Address.unapply))
 ~~~
 
 Finally, when building `Formats` we have to supply both a constructor and an extractor function: one to combine the values in a read operation, and one to split them up in a write:
@@ -167,7 +167,7 @@ Finally, when building `Formats` we have to supply both a constructor and an ext
 (
   (JsPath \ "number").format[Int] and
   (JsPath \ "street").format[String]
-)(Address.apply, Address.unapply)
+)(Address.apply, unlift(Address.unapply))
 ~~~
 
 ### Applying the DSL to a Java Class
@@ -175,6 +175,8 @@ Finally, when building `Formats` we have to supply both a constructor and an ext
 We will finish with one last DSL example -- a `Format` that extracts the temporal components (hour, minute, day, month, etc) from an instance of [org.joda.time.DateTime] class. Here we define our own constructor and extractor and use them in the `apply` method of our builder:
 
 ~~~ scala
+import org.joda.time._
+
 def createDateTime(yr: Int, mon: Int, day: Int, hr: Int, min: Int, sec: Int, ms: Int) =
   new DateTime(yr, mon, day, hr, min, sec, ms)
 
@@ -184,15 +186,17 @@ def extractDateTimeFields(dt: DateTime): (Int, Int, Int, Int, Int, Int, Int) =
    dt.getMillisOfSecond)
 
 implicit val dateTimeFormat: Format[DateTime] = (
-  (JsPath \ "year").read[Int] and
-  (JsPath \ "month").read[Int] and
-  (JsPath \ "day").read[Int] and
-  (JsPath \ "hour").read[Int] and
-  (JsPath \ "minute").read[Int] and
-  (JsPath \ "second").read[Int] and
-  (JsPath \ "milli").read[Int]
+  (JsPath \ "year").format[Int] and
+  (JsPath \ "month").format[Int] and
+  (JsPath \ "day").format[Int] and
+  (JsPath \ "hour").format[Int] and
+  (JsPath \ "minute").format[Int] and
+  (JsPath \ "second").format[Int] and
+  (JsPath \ "milli").format[Int]
 )(createDateTime, extractDateTimeFields)
 ~~~
+
+[org.joda.time.DateTime] : http://www.joda.org/joda-time/apidocs/index.html
 
 ## Take Home Points
 
