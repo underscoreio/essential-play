@@ -2,7 +2,12 @@ Pandoc Notes
 
 Right so, this is okay as a starting point:
 
-pandoc -S -o essential-play.html      \
+pandoc -S                               \
+          -o essential-play.pdf         \
+          --table-of-contents           \
+          --toc-depth=4                 \
+          --from=markdown+multiline_tables                 \
+          --epub-stylesheet ./essential-play/css/print.css \
 pandoc/title.txt                      \
 src/pages/index.md                    \
 src/pages/basics/index.md             \
@@ -30,98 +35,20 @@ src/pages/async/executioncontexts.md  \
 src/pages/async/actions.md            \
 src/pages/async/ws.md                 \
 src/pages/async/failure.md            \
---epub-stylesheet ./essential-play/css/print.css
-
-pandoc -S -o essential-play.epub      \
-pandoc/title.txt                      \
-src/pages/index.md                    \
-src/pages/basics/index.md             \
-src/pages/basics/actions.md           \
-src/pages/basics/routes.md            \
-src/pages/basics/requests.md          \
-src/pages/basics/results.md           \
-src/pages/basics/failure.md           \
-src/pages/html/index.md               \
-src/pages/html/templates.md           \
-src/pages/html/forms.md               \
-src/pages/html/form-templates.md      \
-src/pages/json/index.md               \
-src/pages/json/values.md              \
-src/pages/json/writes.md              \
-src/pages/json/reads.md               \
-src/pages/json/formats.md             \
-src/pages/json/custom1.md             \
-src/pages/json/custom2.md             \
-src/pages/json/custom3.md             \
-src/pages/json/failure.md             \
-src/pages/async/index.md              \
-src/pages/async/futures.md            \
-src/pages/async/executioncontexts.md  \
-src/pages/async/actions.md            \
-src/pages/async/ws.md                 \
-src/pages/async/failure.md            \
---epub-stylesheet ./essential-play/css/print.css
-
-pandoc -S -o essential-play.pdf       \
-pandoc/title.txt                      \
-src/pages/index.md                    \
-src/pages/basics/index.md             \
-src/pages/basics/actions.md           \
-src/pages/basics/routes.md            \
-src/pages/basics/requests.md          \
-src/pages/basics/results.md           \
-src/pages/basics/failure.md           \
-src/pages/html/index.md               \
-src/pages/html/templates.md           \
-src/pages/html/forms.md               \
-src/pages/html/form-templates.md      \
-src/pages/json/index.md               \
-src/pages/json/values.md              \
-src/pages/json/writes.md              \
-src/pages/json/reads.md               \
-src/pages/json/formats.md             \
-src/pages/json/custom1.md             \
-src/pages/json/custom2.md             \
-src/pages/json/custom3.md             \
-src/pages/json/failure.md             \
-src/pages/async/index.md              \
-src/pages/async/futures.md            \
-src/pages/async/executioncontexts.md  \
-src/pages/async/actions.md            \
-src/pages/async/ws.md                 \
-src/pages/async/failure.md            \
---epub-stylesheet ./essential-play/css/print.css
 
 
-cruft
-=======
+TODO:
 
-Quick and dirty
+-s, --standalone
+Produce output with an appropriate header and footer (e.g. a standalone HTML, LaTeX, or RTF file, not a fragment). This option is set automatically for pdf, epub, epub3, fb2, docx, and odt output
 
-  - unordered,
-  - no page breaks,
-  - no images,
-  - styles ???
+--highlight-style=STYLE
+Specifies the coloring style to be used in highlighted source code. Options are pygments (the default), kate, monochrome, espresso, zenburn, haddock, and tango
 
-pandoc -S -o essential-play.epub      \
-             pandoc/title.txt         \
-             `find src/pages  -name '*.md'` \
-             --epub-stylesheet ./essential-play/css/print.css
+--self-contained
+Produce a standalone HTML file with no external dependencies, using data: URIs to incorporate the contents of linked scripts, stylesheets, images, and videos. The resulting file should be “self-contained,” in the sense that it needs no external files and no net access to be displayed properly by a browser. This option works only with HTML output formats, including html, html5, html+lhs, html5+lhs, s5, slidy, slideous, dzslides, and revealjs. Scripts, images, and stylesheets at absolute URLs will be downloaded; those at relative URLs will be sought relative to the working directory (if the first source file is local) or relative to the base URL (if the first source file is remote). --self-contained does not work with --mathjax.
 
+-5, --html5
+Produce HTML5 instead of HTML4. This option has no effect for writers other than html. (Deprecated: Use the html5 output format instead.)
 
-Bugger
-
-  - formatting goes to tits up
-
-pandoc -S -o essential-play.epub  pandoc/title.txt  src/pages/index.md pandoc/pagebreak.html src/pages/basics/index.md pandoc/pagebreak.html src/pages/basics/actions.md pandoc/pagebreak.html src/pages/basics/routes.md pandoc/pagebreak.html src/pages/basics/requests.md pandoc/pagebreak.html src/pages/basics/results.md pandoc/pagebreak.html src/pages/basics/failure.md pandoc/pagebreak.html src/pages/html/index.md pandoc/pagebreak.html src/pages/html/templates.md pandoc/pagebreak.html src/pages/html/forms.md pandoc/pagebreak.html src/pages/html/form-templates.md pandoc/pagebreak.html src/pages/json/index.md pandoc/pagebreak.html src/pages/json/values.md pandoc/pagebreak.html src/pages/json/writes.md pandoc/pagebreak.html src/pages/json/reads.md pandoc/pagebreak.html src/pages/json/formats.md pandoc/pagebreak.html src/pages/json/custom1.md pandoc/pagebreak.html src/pages/json/custom2.md pandoc/pagebreak.html src/pages/json/custom3.md pandoc/pagebreak.html src/pages/json/failure.md pandoc/pagebreak.html src/pages/async/index.md pandoc/pagebreak.html src/pages/async/futures.md pandoc/pagebreak.html src/pages/async/executioncontexts.md pandoc/pagebreak.html pandoc/pagebreak.html src/pages/async/actions.md pandoc/pagebreak.html src/pages/async/ws.md pandoc/pagebreak.html src/pages/async/failure.md     --epub-stylesheet ./essential-play/css/print.css
-
-
-Hmmmm
-
-pandoc -S -o essential-play.epub  pandoc/title.txt  src/pages/index.md pandoc/pagebreak.tex src/pages/basics/index.md pandoc/pagebreak.tex src/pages/basics/actions.md pandoc/pagebreak.tex src/pages/basics/routes.md pandoc/pagebreak.tex src/pages/basics/requests.md pandoc/pagebreak.tex src/pages/basics/results.md pandoc/pagebreak.tex src/pages/basics/failure.md pandoc/pagebreak.tex src/pages/html/index.md pandoc/pagebreak.tex src/pages/html/templates.md pandoc/pagebreak.tex src/pages/html/forms.md pandoc/pagebreak.tex src/pages/html/form-templates.md pandoc/pagebreak.tex src/pages/json/index.md pandoc/pagebreak.tex src/pages/json/values.md pandoc/pagebreak.tex src/pages/json/writes.md pandoc/pagebreak.tex src/pages/json/reads.md pandoc/pagebreak.tex src/pages/json/formats.md pandoc/pagebreak.tex src/pages/json/custom1.md pandoc/pagebreak.tex src/pages/json/custom2.md pandoc/pagebreak.tex src/pages/json/custom3.md pandoc/pagebreak.tex src/pages/json/failure.md pandoc/pagebreak.tex src/pages/async/index.md pandoc/pagebreak.tex src/pages/async/futures.md pandoc/pagebreak.tex src/pages/async/executioncontexts.md pandoc/pagebreak.tex pandoc/pagebreak.tex src/pages/async/actions.md pandoc/pagebreak.tex src/pages/async/ws.md pandoc/pagebreak.tex src/pages/async/failure.md
-
-
-How about
-
-pandoc -S -o essential-play.epub  pandoc/title.txt  src/pages/index.md src/pages/basics/index.md src/pages/basics/actions.md src/pages/basics/routes.md src/pages/basics/requests.md src/pages/basics/results.md src/pages/basics/failure.md src/pages/html/index.md src/pages/html/templates.md src/pages/html/forms.md src/pages/html/form-templates.md src/pages/json/index.md src/pages/json/values.md src/pages/json/writes.md src/pages/json/reads.md src/pages/json/formats.md src/pages/json/custom1.md src/pages/json/custom2.md src/pages/json/custom3.md src/pages/json/failure.md src/pages/async/index.md src/pages/async/futures.md src/pages/async/executioncontexts.md pandoc/pagebreak.tex src/pages/async/actions.md src/pages/async/ws.md src/pages/async/failure.md
 

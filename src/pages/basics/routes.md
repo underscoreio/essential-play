@@ -41,21 +41,28 @@ When a request comes in, Play attempts to route it to an action. It examines eac
 
 Routes match if the HTTP method has the relevant value and the URI matches the shape of the pattern. Play supports all eight HTTP methods: `OPTIONS`, `GET`, `HEAD`, `POST`, `PUT`, `DELETE`, `TRACE`, and `CONNECT`.
 
-Here are some examples by way of illustration:
+---------------------------------------------------------------------------------------------------
+HTTP
+method  URI                            Resulting method call
+------- ------------------------------ ------------------------------------------------------------
+`GET`   `/hello`                       `controllers.HelloController.hello`
 
-|---------------------------------------------------------------------------------------------------------|
-| HTTP method  | URI                          | Resulting method call                                     |
-|---------------------------------------------------------------------------------------------------------|
-| `GET`   | `/hello`                          | `controllers.HelloController.hello`                       |
-| `GET`   | `/hello/dave`                     | `controllers.HelloController.helloTo("dave")`             |
-| `GET`   | `/send/hello/to/dave`             | `controllers.ChatController.send("hello", "dave")`        |
-| `GET`   | `/download/path/to/file.txt`      | `controllers.DownloadController.file("path/to/file.txt")` |
-| `GET`   | `/hello/`                         | None -- 404 (trailing slash)                              |
-| `POST`  | `/hello`                          | None -- 404 (POST request)                                |
-| `GET`   | `/send/to/dave`                   | None -- 404 (missing path segment)                        |
-| `GET`   | `/send/a/message/to/dave`         | None -- 404 (extra path segment)                          |
-|=========================================================================================================|
-{: .table .table-bordered .table-responsive }
+`GET`   `/hello/dave`                  `controllers.HelloController.helloTo("dave")`
+
+`GET`   `/send/hello/to/dave`          `controllers.ChatController.send("hello", "dave")`
+
+`GET`   `/download/path/to/file.txt`   `controllers.DownloadController.file("path/to/file.txt")`
+
+`GET`   `/hello/`                      None -- 404 (trailing slash)
+
+`POST`  `/hello`                       None -- 404 (POST request)
+
+`GET`   `/send/to/dave`                None -- 404 (missing path segment)
+
+`GET`   `/send/a/message/to/dave`      None -- 404 (extra path segment)
+
+---------------------------------------------------------------------------------------------------
+:Here are some examples by way of illustration:
 
 <div class="callout callout-info">
 #### Tip: Coping with Routing Strictness
