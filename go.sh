@@ -12,7 +12,7 @@ echo "Running Pandoc @  $(date)"
 pandoc -S                                                                    \
   -o essential-play.pdf                                                      \
   --table-of-contents                                                        \
-  --from=markdown+multiline_tables+fenced_code_blocks+fenced_code_attributes+yaml_metadata_block \
+  --from=markdown+grid_tables+multiline_tables+fenced_code_blocks+fenced_code_attributes+yaml_metadata_block \
   --highlight-style tango                                                    \
   --standalone                                                               \
   --self-contained                                                           \

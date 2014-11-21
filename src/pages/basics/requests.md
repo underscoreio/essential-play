@@ -28,17 +28,24 @@ So what type does `request.body` return in the examples we've seen so far? We ha
 
 [play.api.mvc.AnyContent] allows us to *choose* how to read the request in our `Action` code. It reads the request body into a buffer and provides methods to parse it in a handful of common formats. Each method has an `Optional` result, returning `None` if the request is empty or has the wrong `Content-Type`:
 
-|--------------------------------+---------------------------------------------------------------------|
+:Body parser return types
+
++--------------------------------+------------------------------------+--------------------------------+
 | Method of `AnyContent`         | Return type                        | Works on `Content-Type`        |
-|--------------------------------+------------------------------------+--------------------------------|
++================================+====================================+================================+
 | `asText`                       | `Option[String]`                   | `text/plain`                   |
++--------------------------------+------------------------------------+--------------------------------+
 | `asFormUrlEncoded`             | `Option[Map[String, Seq[String]]]` | `application/form-url-encoded` |
++--------------------------------+------------------------------------+--------------------------------+
 | `asMultipartFormData`          | `Option[MultipartFormData]`        | `multipart/form-data`          |
++--------------------------------+------------------------------------+--------------------------------+
 | `asJson`                       | `Option[JsValue]`                  | `application/json`             |
++--------------------------------+------------------------------------+--------------------------------+
 | `asXml`                        | `Option[NodeSeq]`                  | `application/xml`              |
++--------------------------------+------------------------------------+--------------------------------+
 | `asRaw`                        | `Option[RawBuffer]`                | any                            |
-|======================================================================================================|
-{: .table .table-bordered .table-responsive }
++--------------------------------+------------------------------------+--------------------------------+
+
 
 
 <div class="callout callout-warning">
