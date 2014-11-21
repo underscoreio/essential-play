@@ -7,6 +7,7 @@
 # To change the output type change the suffix.
 #  -o essential-play.pdf
 
+echo "Running Pandoc @  $(date)"
 
 pandoc -S                                                                    \
   -o essential-play.pdf                                                     \
