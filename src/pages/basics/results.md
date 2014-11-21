@@ -1,8 +1,3 @@
----
-layout: page
-title: Constructing Results
----
-
 # Constructing Results
 
 In the previous section we saw how to extract well-typed Scala values from an incoming request. This should always be the first step in any `Action`. If we tame incoming data using the type system, we remove a lot of complexity and possibility of error from our business logic.
@@ -13,16 +8,23 @@ Once we have finished our business logic, the final step of any `Action` is to c
 
 Play provides a convenient set of factory objects for creating `Results`. These are defined in the [play.api.mvc.Results] trait and inherited by [play.api.mvc.Controller]
 
-|----------------------------+-----------------------------------------|
+
+:Result codes
++----------------------------+-----------------------------------------+
 | Constructor                | HTTP status code                        |
-|----------------------------+-----------------------------------------|
++============================+=========================================+
 | `Ok`                       | 200 Ok                                  |
++----------------------------+-----------------------------------------+
 | `NotFound`                 | 404 Not Found                           |
++----------------------------+-----------------------------------------+
 | `InternalServerError`      | 500 Internal Server Error               |
++----------------------------+-----------------------------------------+
 | `Unauthorized`             | 401 Unauthorized                        |
++----------------------------+-----------------------------------------+
 | `Status(number)`           | `number` (an `Int`) -- anything we want |
-|======================================================================|
-{: .table .table-bordered .table-responsive }
++----------------------------+-----------------------------------------+
+
+
 
 Each factory has an `apply` method that creates a `Result` with a different HTTP status code. `Ok.apply` creates 200 responses, `NotFound.apply` creates 404 responses, and so on. The `Status` object is different: it allows us to specify the status as an `Int` parameter. The end result in each case is a `Result` that we can return from our `Action`:
 
