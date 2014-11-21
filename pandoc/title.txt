@@ -1,5 +1,0 @@
----
-title: Tutorial for Play Framework
-author: Dave Gurnell and Noel Welsh
-rights:  Copyright Underscore consulting
-language: en-GB

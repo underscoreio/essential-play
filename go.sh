@@ -10,11 +10,13 @@
 echo "Running Pandoc @  $(date)"
 
 pandoc -S                                                                    \
-  -o essential-play.pdf                                                     \
+  -o essential-play.pdf                                                      \
   --table-of-contents                                                        \
-  --from=markdown+multiline_tables+fenced_code_blocks+fenced_code_attributes \
+  --from=markdown+multiline_tables+fenced_code_blocks+fenced_code_attributes+pandoc_title_block \
   --highlight-style tango                                                    \
-  pandoc/title.txt                                                           \
+  --standalone                                                               \
+  --self-contained                                                           \
+  pandoc/title.txt                                           \
   src/pages/index.md                                                         \
   src/pages/basics/index.md                                                  \
   src/pages/basics/actions.md                                                \
