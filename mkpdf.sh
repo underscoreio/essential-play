@@ -18,17 +18,24 @@ echo "Running Pandoc @ $(date)"
 #...but this does not support the fontfamily value.
 # For xelatex set values for: mainfont, sansfont, monofont, mathfont
 
+# Templates are something we'll probably want to use:
+# http://johnmacfarlane.net/pandoc/demo/example9/templates.html
+
+# Input formats we use:
+FORMATS=markdown+grid_tables+multiline_tables+fenced_code_blocks+fenced_code_attributes+yaml_metadata_block
+
 cat running.order | xargs \
- pandoc -S                                                                   \
-  -o essential-play.pdf                                                      \
-  -V papersize:a4paper                                                       \
-  -V fontfamily:fouriernc                                                    \
-  -V fontsize:11pt                                                           \
-  --chapters                                                                 \
-  --table-of-contents                                                        \
-  --toc-depth=5                                                              \
-  --from=markdown+grid_tables+multiline_tables+fenced_code_blocks+fenced_code_attributes+yaml_metadata_block \
-  --highlight-style tango                                                    \
-  --standalone                                                               \
-  --self-contained                                                           \
+ pandoc -S                \
+  -o essential-play.pdf   \
+  -V papersize:a4paper    \
+  -V fontfamily:fouriernc \
+  -V fontsize:11pt        \
+  --chapters              \
+  --number-sections       \
+  --table-of-contents     \
+  --toc-depth=5           \
+  --from=$FORMATS         \
+  --highlight-style tango \
+  --standalone            \
+  --self-contained        \
   pandoc/metadata.yaml
