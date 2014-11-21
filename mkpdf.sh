@@ -24,6 +24,7 @@ cat running.order | xargs \
   -V papersize:a4paper                                                       \
   -V fontfamily:fouriernc                                                    \
   -V fontsize:11pt                                                           \
+  --chapters                                                                 \
   --table-of-contents                                                        \
   --toc-depth=5                                                              \
   --from=markdown+grid_tables+multiline_tables+fenced_code_blocks+fenced_code_attributes+yaml_metadata_block \
