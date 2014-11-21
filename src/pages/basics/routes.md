@@ -3,13 +3,13 @@ layout: page
 title: Routes in Depth
 ---
 
-# Routes in Depth
+## Routes in Depth
 
 The previous section introduced actions, controllers, and routes. Actions and controllers are standard Scala code, but routes are something new and specific to Play.
 
 We define Play routes using a special DSL that compiles to Scala code. The DSL provides both a convenient way of mapping URIs to method calls, and a way of mapping method calls *back* to URIs. In this section we will take a deeper look at Play's routing DSL, including the various ways we can extract parameters from URIs.
 
-## Path Parameters
+### Path Parameters
 
 Routes associate *URI patterns* with *action-producing method calls*. We can specify *parameters* to extract from the URI and pass to our controllers. Here are some examples:
 
@@ -35,7 +35,7 @@ The third example uses two single-segment parameters to extract two parts of the
 
 The final example uses a *rest-parameter*, written using a leading asterisk ('*'). Rest-style parameters match all remaining characters in the URI, including forward slashes.
 
-## Matching Requests to Routes
+### Matching Requests to Routes
 
 When a request comes in, Play attempts to route it to an action. It examines each route in turn until it finds a match. If no routes match, it returns a 404 response.
 
@@ -77,7 +77,7 @@ POST /hello/ controllers.HelloController.hello # POST request
 ~~~
 </div>
 
-# Query Parameters
+### Query Parameters
 
 We can specify parameters in the method-call section of a route without declaring them in the URI. When we do this Play extracts the values from the query string instead:
 
@@ -112,7 +112,7 @@ GET /notify/:username/:message controllers.NotificationController.notify(usernam
 #     Try to implement an implicit PathBindable for this type.
 ~~~
 
-# Typed Parameters
+### Typed Parameters
 
 We can extract path and query parameters of types other than `String`. Play has built-in support for `Int`, `Double`, `Long`, `Boolean`, `UUID`, and `Option` and `Seq` variants:
 
@@ -145,7 +145,7 @@ We can implement custom parameter types by creating implicit values these type c
 
 </div>
 
-# Reverse Routing
+### Reverse Routing
 
 *Reverse routes* are objects that we can use to generate URLs from method calls. This allows us to create URLs from type-checked program code without having to concatenate `Strings` by hand.
 
@@ -188,7 +188,7 @@ object DownloadController {
 
 
 
-## Take Home Points
+### Take Home Points
 
 *Routes* provide bi-directional mapping between URLs and `Action`-producing methods within `Controllers`.
 

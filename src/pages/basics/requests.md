@@ -3,7 +3,7 @@ layout: page
 title: Parsing Requests
 ---
 
-# Parsing Requests
+## Parsing Requests
 
 So far we have seen how to create `Actions` and map them to URIs using *routes*. In the rest of this chapter we will take a closer look at the code we write in the actions themselves.
 
@@ -85,7 +85,7 @@ See Play's [documentation on body parsers] for more information.
 
 </div>
 
-## Headers and Cookies
+### Headers and Cookies
 
 `Request` contains two methods for inspecting HTTP headers:
 
@@ -118,7 +118,7 @@ object RequestDemo extends Controller {
 
 
 
-## Methods and URIs
+### Methods and URIs
 
 Routes are the recommended way of extracting information from a method or URI. However, the `Request` object also provides methods that are of occasional use:
 
@@ -136,7 +136,7 @@ val path: String = request.path
 val query: Map[String, Seq[String]] = request.queryString
 ~~~
 
-## Take Home Points
+### Take Home Points
 
 Incoming web requests are represented by objects of type `Request[A]`. The type parameter `A` indicates the type of the request body.
 

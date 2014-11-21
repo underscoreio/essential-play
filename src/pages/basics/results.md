@@ -1,10 +1,10 @@
-# Constructing Results
+## Constructing Results
 
 In the previous section we saw how to extract well-typed Scala values from an incoming request. This should always be the first step in any `Action`. If we tame incoming data using the type system, we remove a lot of complexity and possibility of error from our business logic.
 
 Once we have finished our business logic, the final step of any `Action` is to convert the result into a `Result` object. In this section we will see how to create `Results`, populate them with content, and add headers and cookies.
 
-## Setting The Status Code
+### Setting The Status Code
 
 Play provides a convenient set of factory objects for creating `Results`. These are defined in the [play.api.mvc.Results] trait and inherited by [play.api.mvc.Controller]
 
@@ -36,7 +36,7 @@ val result3: Result = Status(401)("Access denied, Dave.")
 
 
 
-## Adding Content
+### Adding Content
 
 Play adds `Content-Type` headers to our `Results` based on the type of data we provide. In the examples above we provide `String` data. creating three results of `Content-Type: text/plain`.
 
@@ -95,7 +95,7 @@ The intention of `Writeable` is to support general data formats. We wouldn't cre
 
 </div>
 
-## Tweaking the Result
+### Tweaking the Result
 
 Once we have created a `Result`, we have access to a variety of methods to alter its contents. The API documentation for [play.api.mvc.Result] documents the options available:
 
@@ -114,7 +114,7 @@ def ohai = Action { request =>
 }
 ~~~
 
-## Take Home Points
+### Take Home Points
 
 The final step of an `Actions` is to create and return a [play.api.mvc.Result].
 

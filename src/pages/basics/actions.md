@@ -51,7 +51,7 @@ myProject/
     routes                  # Routes go here
 ~~~
 
-## The Anatomy of a Controller
+### The Anatomy of a Controller
 
 Let's take a closer look at the controller in the example above. The code in use comes from two places:
 
@@ -67,7 +67,7 @@ Each of the example `Actions` creates an `Ok` response containing a simple messa
 Play uses the type of the argument to `Ok.apply` to determine the `Content-Type` of the `Result`. The `String` arguments in the example create a `Results` of type `text/plain`. Later on we'll see how to customise this behaviour and create results of different types.
 
 
-## Take Home Points
+### Take Home Points
 
 We create Play web applications from `Actions`, `Controllers`, and *routes*.
 
