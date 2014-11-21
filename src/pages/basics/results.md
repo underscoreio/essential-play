@@ -8,8 +8,8 @@ Once we have finished our business logic, the final step of any `Action` is to c
 
 Play provides a convenient set of factory objects for creating `Results`. These are defined in the [play.api.mvc.Results] trait and inherited by [play.api.mvc.Controller]
 
-
 :Result codes
+
 +----------------------------+-----------------------------------------+
 | Constructor                | HTTP status code                        |
 +============================+=========================================+
