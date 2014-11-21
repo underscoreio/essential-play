@@ -1,7 +1,6 @@
 [Documentation on thread pools]:https://www.playframework.com/documentation/2.3.x/ThreadPools
 [Future's companion object]:http://www.scala-lang.org/api/2.11.2/#scala.concurrent.Future$
 [JSON specification]:http://json.org
-[JSON specification]:http://www.json.org
 [Play 2]:http://playframework.com
 [Play documentation]:https://www.playframework.com/documentation/2.3.x/ScalaJsonCombinators
 [built-in error codes]:https://github.com/playframework/playframework/blob/2.3.x/framework/src/play/src/main/resources/messages.default#L21-L51
@@ -26,7 +25,6 @@
 [play.api.libs.json.OFormat]:https://playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.OFormat
 [play.api.libs.json.OWrites]:https://playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.OWrites
 [play.api.libs.json.Reads]:https://playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Reads
-[play.api.libs.json.Writes]:https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Writes
 [play.api.libs.json.Writes]:https://playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Writes
 [play.api.libs.ws]:https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.ws.package
 [play.api.libs.ws.WSRequestHolder]:https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.ws.WSRequestHolder
