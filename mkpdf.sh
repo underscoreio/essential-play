@@ -13,9 +13,7 @@
 
 echo "Running Pandoc @ $(date)"
 
-# NB: We prefer
-#   --latex-engine=xelatex                                                     \
-#...but this does not support the fontfamily value.
+# Notes:
 # For xelatex set values for: mainfont, sansfont, monofont, mathfont
 
 # Templates are something we'll probably want to use:
@@ -28,7 +26,9 @@ cat running.order | xargs \
  pandoc -S                \
   -o essential-play.pdf   \
   -V papersize:a4paper    \
-  -V fontfamily:fouriernc \
+  --latex-engine=xelatex  \
+  -V mainfont:'Garamond'  \
+  -V monofont:'Menlo'     \
   -V fontsize:11pt        \
   --chapters              \
   --number-sections       \

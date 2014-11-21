@@ -21,7 +21,8 @@ GET /hello              controllers.HelloController.hello
 GET /hello/:name        controllers.HelloController.helloTo(name: String)
 
 # Multiple parameters:
-GET /send/:msg/to/:user controllers.ChatController.send(msg: String, user: String)
+GET /send/:msg/to/:user ↵
+  controllers.ChatController.send(msg: String, user: String)
 
 # Rest-style parameter:
 GET /download/*filename controllers.DownloadController.file(filename: String)
