@@ -1,3 +1,0 @@
-% Tutorial for Play Framework
-% Dave Gurnell ; Noel Welsh
-% 21 November 2014
