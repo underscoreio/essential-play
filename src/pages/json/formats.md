@@ -3,11 +3,11 @@ layout: page
 title: JSON Formats
 ---
 
-# JSON Formats
+## JSON Formats
 
 In the previous sections we saw how to use the `Reads` and `Writes` traits to convert between JSON and well-typed Scala data. In this section we introduce a third trait, `Format`, that subsumes both `Reads` and `Writes`.
 
-## Meet *Format*
+### Meet *Format*
 
 We often want to describe reading and writing together at the same time. The `Format` trait is a convenience that allows us to do just that:
 
@@ -41,7 +41,7 @@ Json.fromJson[Person](Json.obj(
 
 `Format` is really just a convenience. We can do everything we need to using `Reads` and `Writes`, but sometimes it is simpler to group both sets of functionality in a single object.
 
-## Take Home Points
+### Take Home Points
 
 `Format[A]` is a subtype of `Reads[A]` and `Writes[A]` that provides both sets of functionality and can be used with `Json.toJson` and `Json.fromJson`.
 

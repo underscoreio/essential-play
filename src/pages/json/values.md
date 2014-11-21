@@ -3,7 +3,7 @@ layout: page
 title: Modelling JSON
 ---
 
-# Modelling JSON
+## Modelling JSON
 
 Play models JSON data using a family of case classes of type [play.api.libs.json.JsValue], representing each of the data types in the [JSON specification]
 
@@ -23,7 +23,7 @@ In this section we will discuss basic JSON manipulation and traversal, which is 
 
 
 
-## Representing JSON in Scala
+### Representing JSON in Scala
 
 We can represent any fragment of JSON data using `JsValue` and its subtypes:
 
@@ -107,7 +107,7 @@ JsObject(Seq(
 
 
 
-## JSON *Requests* and *Results*
+### JSON *Requests* and *Results*
 
 Play contains built-in functionality for extracting `JsValues` from `Requests[AnyContent]` and serializing them in `Results`:
 
@@ -173,11 +173,11 @@ Json.prettyPrint(Json.obj("name" -> "Dave", "age" -> 35))
 ~~~
 </div>
 
-## Deconstructing and Traversing JSON Data
+### Deconstructing and Traversing JSON Data
 
 Getting data out of a request is just the first step in reading it. A client can pass us any data it likes -- valid or invalid -- so we need to know how to traverse `JsValues` and extract the fields we need:
 
-### Pattern Matching
+#### Pattern Matching
 
 One way of deconstructing `JsValues` is to use *pattern matching*. This is convenient as the subtypes are all case classes and case objects:
 
@@ -191,7 +191,7 @@ json match {
 }
 ~~~
 
-### Traversal Methods
+#### Traversal Methods
 
 Pattern matching only gets us so far. We can't easily *search* through the children of a `JsObject` or `JsArray` without looping. Fortunately, `JsValue` contains three methods to drill down to specific fields before we match:
 
@@ -262,7 +262,7 @@ scala> val name = (json(0) \ "name").asOpt[Int]
 // => name: Option[Int] = None
 ~~~
 
-### Putting It All Together
+#### Putting It All Together
 
 Traversal and pattern matching are complimentary techniques for dissecting JSON data. We can extract specific fields using traversal, and pattern match on them to extract Scala values:
 
@@ -283,7 +283,7 @@ json match {
 
 This approach is convenient for ad-hoc operations on semi-structured data. However, it is cumbersome for complex parsing and validation. In the next sections we will introduce *formats* that map JSON data onto Scala types, allowing us to read and write complex values in a single step.
 
-## Take Home Points
+### Take Home Points
 
 We represent JSON data in Play using objects of type `JsValue`.
 

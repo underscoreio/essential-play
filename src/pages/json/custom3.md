@@ -3,11 +3,11 @@ layout: page
 title: "Custom Formats: Part 3"
 ---
 
-# Custom Formats: Part 3
+## Custom Formats: Part 3
 
 In this final section, we cover a common use-case -- creating `Reads`, `Writes`, and `Formats` for generalised hierarchies of types.
 
-## *OFormats* and *OWrites*
+### *OFormats* and *OWrites*
 
 Before introducing this example, we need to look at two final members of Play's pantheon of readers and writers:
 
@@ -31,7 +31,7 @@ addressFormat.writes(Address(29, "Acacia Road")) ++ Json.obj("city" -> "Nuttytow
 ~~~
 
 
-## Handling Type Hierarchies
+### Handling Type Hierarchies
 
 Until now we have written `Reads` and `Writes` that deal exclusively with one type of data. What do we do when we need to serialize a *set* of possible types? Consider the following type hierarchy:
 
@@ -79,7 +79,7 @@ Because `ellipseFormat` and `rectangleFormat` are `OWrites`, they return `JsObje
 
 Our `reads` method inspects the `"type"` field and delegates to `ellipseFormat` or `rectangleFormat` appropriately. If the type isn't one of the expected values, we fail with an appropriately pathed `JsError`.
 
-## Take Home Points
+### Take Home Points
 
 In this section we created a JSON format for a simple type hierarchy. This is a common use case for hand-written formats.
 

@@ -25,6 +25,7 @@ cat running.order | xargs \
   -V fontfamily:fouriernc                                                    \
   -V fontsize:11pt                                                           \
   --table-of-contents                                                        \
+  --toc-depth=5                                                              \
   --from=markdown+grid_tables+multiline_tables+fenced_code_blocks+fenced_code_attributes+yaml_metadata_block \
   --highlight-style tango                                                    \
   --standalone                                                               \

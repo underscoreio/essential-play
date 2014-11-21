@@ -3,7 +3,7 @@ layout: page
 title: Modelling JSON
 ---
 
-# Modelling JSON
+## Modelling JSON
 
 Play models JSON data using instances of a sealed trait called [play.api.libs.json.JsValue]. There are five subtypes of `JsValue`, each representing one of the types in the [JSON specification]
 
@@ -32,7 +32,7 @@ Each of these types allows us to *wrap up* one or more Scala values to describe 
 
 This section describes how to construct, traverse, and deconstruct `JsValues` by hand, which is useful for ad hoc operations on JSON data. The next two sections describe how to create mappings between `JsValues` and domain objects, and use them to validate the JSON we receive in `Requests`.
 
-# Constructing JSON Data
+### Constructing JSON Data
 
 Using `JsValue` and its subtypes, we can represent any fragment of JSON data as a tree of Scala values. For example:
 
@@ -119,7 +119,7 @@ JsObject(Seq(
 
 
 
-## Converting Strings &hArr; JsValues
+### Converting Strings &hArr; JsValues
 
 We can convert any JSON string to a `JsValue` using the `parse` method of [play.api.libs.json.Json]
 
@@ -149,11 +149,11 @@ Json.prettyPrint("""[ 1, 2, 3 }""")
 //    }"""
 ~~~
 
-## Deconstructing and Traversing JSON Data
+### Deconstructing and Traversing JSON Data
 
 Successfully parsing a string using `Json.parse` is not enough to fully process the information stored in the JSON data. `Json.parse` returns a value of type `JsValue`, but we don't know at compile time what type of `JsValue` we are going to get. Similarly, if our JSON contains a `JsObject` or `JsArray`, we don't know the types of any of its fields. So how can we process and interpret the JSON data?
 
-### Pattern Matching
+#### Pattern Matching
 
 One way is to use *pattern matching*. This is quite convenient as the subtypes of `JsValue` are all case classes and case objects:
 
@@ -167,7 +167,7 @@ json match {
 }
 ~~~
 
-### Traversal (`\`, `\\` and `apply`)
+#### Traversal (`\`, `\\` and `apply`)
 
 Pattern matching only gets us so far -- one of the big flaws of matching by hand is that we can't easily *search* through the children of a `JsObject` or `JsArray` without writing loops. Fortunately, we can use three methods of `JsValue` to extract specific fields before we match:
 
@@ -214,7 +214,7 @@ val z: JsValue = json(2) \ "name" // => JsUndefined(...)
 
 Note that we have ignored the contents of `JsUndefined` as they typically aren't used in user code.
 
-### Putting it All Together
+#### Putting it All Together
 
 Traversal and pattern matching provide a powerful combination of techniques for performing an ad hoc dissection of JSON data. The most common idiom is to extract specific fields using traversal operators, and perform pattern matching on the extracted data to see if it matches our needs. For example:
 
@@ -235,7 +235,7 @@ json match {
 
 While this approach is convenient for ad-hoc operations on semi-structured data, it is cumbersome as a means to implement detailed parsing and validation. In the next section we will see how to reliably read and write structured data and define robust mappings between Scala data types and JSON.
 
-## Take Home Points
+### Take Home Points
 
 We model JSON in Play using `JsValues`, which act as an intermediary between raw string JSON data and well-typed Scala domain objects. There are subtypes of `JsValue` for each of the six main types of JSON data -- `JsObject`, `JsArray`, `JsString`, `JsNumber`, `JsBoolean`, and `JsNull`.
 

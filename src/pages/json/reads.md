@@ -3,11 +3,11 @@ layout: page
 title: Reading JSON
 ---
 
-# Reading JSON
+## Reading JSON
 
 In the previous section we saw how to use `Writes` and `Json.toJson` to convert domain objects to JSON. In this section we will look at the opposite process -- reading JSON data from a `Request` and converting it to domain objects.
 
-## Meet *Reads*
+### Meet *Reads*
 
 We parse incoming JSON using instances of the [play.api.libs.json.Reads] trait. Play also defines a`Json.reads` macro and `Json.fromJson` method that compliment `Json.writes` and `Json.toJson`. Here's a synopsis:
 
@@ -40,7 +40,7 @@ So far so good -- reading JSON data is at least superficially similar to writing
 
 [play.api.libs.json.Reads]
 
-## Embracing Failure
+### Embracing Failure
 
 The main difference between reading and writing JSON is that reading can *fail*. `Reads` handles this by wrapping return values in an `Either`-like data structure called [play.api.libs.json.JsResult].
 
@@ -75,7 +75,7 @@ result match {
 
 The `address` parameters in these examples are of type `Address`, while the `errors` parameters are sequences of structured error messages.
 
-## Errors and *JsPaths*
+### Errors and *JsPaths*
 
 The read errors in `JsError` have the type `Seq[(JsPath, Seq[ValidationError])]`:
 
@@ -176,7 +176,7 @@ def index = Action { request =>
 ~~~
 </div>
 
-## Take Home Points
+### Take Home Points
 
 We convert Scala data to JSON using instances of [play.api.libs.json.Reads].
 

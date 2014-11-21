@@ -3,12 +3,12 @@ layout: page
 title: Writing JSON
 ---
 
-# Writing JSON
+## Writing JSON
 
 The application code in a typical REST API operates on a domain model consisting of sealed traits and case classes.
 When we have finished an operation, we have to take the result, convert it to JSON, and wrap it in a Result to send it to the client.
 
-## Meet *Writes*
+### Meet *Writes*
 
 We convert Scala values to JSON using the [play.api.libs.json.Writes] trait:
 
@@ -45,7 +45,7 @@ assert(json == Json.obj("number" -> 29, "street" -> "Acacia Road"))
 
 
 
-## Implicit Writes
+### Implicit Writes
 
 Let's look at a more complicated example -- what happens when we try to define a `Writes` for a nested data structure?
 
@@ -78,7 +78,7 @@ val personWrites = Json.writes[Person] // now this compiles!
 ~~~
 
 
-## The *Json.toJson* Method
+### The *Json.toJson* Method
 
 We can use our new `personWrites` to serialize data just as we did with `addressWrites`:
 
@@ -139,7 +139,7 @@ Because `Writes` is a type class, we can conveniently apply the *type class patt
  - Use implicit parameters (or context bounds) wherever we want to write code to serialize arbitrary types.
 </div>
 
-## Take Home Points
+### Take Home Points
 
 We convert Scala data to JSON using instances of [play.api.libs.json.Writes].
 

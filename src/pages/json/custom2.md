@@ -3,13 +3,13 @@ layout: page
 title: "Custom Formats: Part 2"
 ---
 
-# Custom Formats: Part 1
+## Custom Formats: Part 2
 
 Writing complex `Reads` using simple Scala code is difficult. Every time we unpack a field from the JSON, we have to consider potential errors such as the field being missing or of the wrong type. What is more, we have to remember the nature and location of every error we encounter for inclusion in the `JsError`.
 
 Fortunately, Play provides a *format DSL* for creating `Reads`, `Writes`, and `Formats`, based on a general functional programming pattern called *applicative builders*. In this section we will dissect the DSL and see how it all works.
 
-## Using Play's Format DSL
+### Using Play's Format DSL
 
 Let's start with an example of a `Reads` for our `Address` class:
 
@@ -28,11 +28,11 @@ We have a lot more flexibility using this syntax than we do with `Json.reads`. W
 We won't cover all of these options here -- the full DSL is described in the [Play documentation]. In the remainder of this section we will dissect the `addressReads` example above and explain how it works.
 
 
-### Dissecting the DSL
+#### Dissecting the DSL
 
 Let's build the `addressReads` example from the ground up, examining each step in the process:
 
-#### Step 1. Describe the locations of fields
+##### Step 1. Describe the locations of fields
 
 ~~~ scala
 (JsPath \ "number")
@@ -41,7 +41,7 @@ Let's build the `addressReads` example from the ground up, examining each step i
 
 These are the same `JsPath` objects we saw in the section on `Reads`. They represent paths into a data structure (in this case the `"number"` and `"street"` fields respectively).
 
-#### Step 2. Read fields as typed values
+##### Step 2. Read fields as typed values
 
 We create `Reads` for each field using the `read` method of `JsPath`:
 
@@ -76,7 +76,7 @@ val numberWrites: Writes[Int]    = (JsPath \ "number").write[Int]
 val streetFormat: Format[String] = (JsPath \ "street").format[String]
 ~~~
 
-#### Step 3. Aggregate the fields into a tuple
+##### Step 3. Aggregate the fields into a tuple
 
 We combine our two `Reads` using an `and` method that is brought into scope implicitly from the `play.api.libs.functional.syntax` package:
 
@@ -126,7 +126,7 @@ tupleReads.reads(Json.obj("number" -> "29", "street" -> null))
 
 There are equivalent sets of builders for `Writes` and `Formats` types. All we have to do is combine two `Writes` or `Formats` using `and` to create the relevant `CanBuild2` and do from there.
 
-#### Step 4. Aggregate the fields into an *Address*
+##### Step 4. Aggregate the fields into an *Address*
 
 Instead of using `tupled`, we can call our builder's `apply` method to create a `Reads` that aggregates values in a different way.
 
@@ -169,7 +169,7 @@ Finally, when building `Formats` we have to supply both a constructor and an ext
 )(Address.apply, unlift(Address.unapply))
 ~~~
 
-### Applying the DSL to a Java Class
+#### Applying the DSL to a Java Class
 
 We will finish with one last DSL example -- a `Format` that extracts the temporal components (hour, minute, day, month, etc) from an instance of [org.joda.time.DateTime] class. Here we define our own constructor and extractor and use them in the `apply` method of our builder:
 
@@ -197,7 +197,7 @@ implicit val dateTimeFormat: Format[DateTime] = (
 
 [org.joda.time.DateTime] : http://www.joda.org/joda-time/apidocs/index.html
 
-## Take Home Points
+### Take Home Points
 
 In this section we introduced Play's *format DSL*, which we can use to create `Reads`, `Writes` and `Formats` for arbitrary types.
 

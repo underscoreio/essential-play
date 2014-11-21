@@ -1,4 +1,4 @@
-# Handling Failure
+## Handling Failure
 
 We've now seen everything we need to read and write arbitrary JSON data. We are almost ready to create full-featured JSON REST APIs. There's only one more thing we need to cover: failure.
 
@@ -6,7 +6,7 @@ When a JSON REST endpoint fails, it needs to return JSON to the client. We can d
 
 In this section we will look at replacing Play's default 400 and 500 error pages with our own JSON error pages. We'll do this by writing some simple error handlers using Play's `Global` object.
 
-## The *Global* Object
+### The *Global* Object
 
 We can configure various HTTP-handling aspects of our applications by creating an object called `Global` in the `_root_` package. The object should extend [play.api.GlobalSettings], which provides various methods that we can override:
 
@@ -78,7 +78,7 @@ object Global extends GlobalSettings {
 }
 ~~~
 
-## Take Home Points
+### Take Home Points
 
 We can customise various aspects of our application's general behaviour by providing a `_root_.Global` object. The object must extend [play.api.GlobalSettings].
 

@@ -3,11 +3,11 @@ layout: page
 title: "Custom Formats: Part 1"
 ---
 
-# Custom Formats: Part 1
+## Custom Formats: Part 1
 
 So far in this chapter we have seen how to use the `Json.reads`, `Json.writes` and `Json.format` macros to define `Reads`, `Writes` and `Formats` for case classes. In this section, we will see what we can do when we are dealing with types that *aren't* case classes.
 
-## Writing Formats by Hand
+### Writing Formats by Hand
 
 Play's JSON macros don't do anything for hierarchies of types -- we have to implement these formats ourselves. Enumerations are a classic example covered below. There is a separate section at the end of this chapter that extends this pattern to generalized hierarchies of types.
 
@@ -54,7 +54,7 @@ Note the construction of the `JsError`, which mimics the way Play handles intern
 
 Hand-writing `Formats` using pattern matching tends to be most convenient when processing atomic values that don't have any internal structure. However, hand-written `Formats` can become verbose and unwieldy as the complexity of the data increases.
 
-## Take Home Points
+### Take Home Points
 
 We can write instances of `Reads`, `Writes`, and `Format` by hand using pattern matching, JSON manipulation, and traversal.
 
