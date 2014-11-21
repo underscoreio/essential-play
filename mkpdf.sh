@@ -13,11 +13,17 @@
 
 echo "Running Pandoc @ $(date)"
 
+# NB: We prefer
+#   --latex-engine=xelatex                                                     \
+#...but this does not support the fontfamily value.
+# For xelatex set values for: mainfont, sansfont, monofont, mathfont
+
 cat running.order | xargs \
- pandoc -S                                                                    \
+ pandoc -S                                                                   \
   -o essential-play.pdf                                                      \
   -V papersize:a4paper                                                       \
-  -V fontfamily:utopia                                                       \
+  -V fontfamily:fouriernc                                                    \
+  -V fontsize:11pt                                                           \
   --table-of-contents                                                        \
   --from=markdown+grid_tables+multiline_tables+fenced_code_blocks+fenced_code_attributes+yaml_metadata_block \
   --highlight-style tango                                                    \
