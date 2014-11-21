@@ -7,7 +7,7 @@ title: Asynchronous Actions
 
 In the previous sections we saw how to create and compose `Futures` to schedule asyncronous tasks. In this section we will see how to use `Futures` to create *asynchronous actions* in Play.
 
-## Synchronous vs Asynchronous Actions
+### Synchronous vs Asynchronous Actions
 
 Play is built using `Futures` from the bottom up. Whenever we process a request, our action is executed in a thread on the *default application thread pool*.
 
@@ -24,7 +24,7 @@ def difficultToSchedule = Action { request =>
 
 We should look out for long-running actions and adjust our application flow accordingly. One way of doing this is splitting our work up into easily schedulable chunks using *asynchronous actions*.
 
-## Action.async
+### Action.async
 
 We write asynchronous actions using the `Action.async` method:
 
@@ -53,7 +53,7 @@ def traffic = Action.async { request =>
 }
 ~~~
 
-## Blocking I/O
+### Blocking I/O
 
 The most common causes for long-running actions are blocking I/O operations:
 
@@ -63,7 +63,7 @@ The most common causes for long-running actions are blocking I/O operations:
 
 We cannot eliminate blocking by converting a synchronous action to an asynchronous one -- we are simply shifting the work to a different thread. However, by splitting a synchronous chain of blocking operations up into a chain of asynchronously executing `Futures`, we can make the work easier to schedule at high load.
 
-## Take Home Points
+### Take Home Points
 
 **Asyncronous actions** allow us to split up request handlers using `Futures`.
 

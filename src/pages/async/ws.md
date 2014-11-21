@@ -3,7 +3,7 @@ layout: page
 title: Calling Remote Web Services
 ---
 
-# Calling Remote Web Services
+## Calling Remote Web Services
 
 I/O operations are the biggest sources of latency in web applications. Database queries, file access, and requests to external web services all take orders of magnitude more time than application code running in-memory. Most libraries in the Java and Scala ecosystems use *blocking I/O*, which is as much of a latency problem for asynchronous applications as it is for synchronous ones.
 
@@ -12,7 +12,7 @@ In this section we will look at *non-blocking I/O* -- I/O that *calls us back* w
 Although non-blocking I/O is gaining in popularity, libraries are still rare in today's Java and Scala ecosystems. Play provides one of the notable Scala examples in the form of its non-blocking web services client, *Play WS*, which is the focus of this section.
 
 <div class="callout callout-info">
-#### Configuration: Adding Play WS as a dependency
+### Configuration: Adding Play WS as a dependency
 
 As of Play 2.3, the web services client is shipped in a separate JAR from core Play. We can add it to our project by including the following line in `build.sbt`:
 
@@ -25,7 +25,7 @@ This line of configuration gives us access to the [play.api.libs.ws] package in 
 
 </div>
 
-## Using Play WS
+### Using Play WS
 
 Play WS provides a DSL to construct and send requests to remote services. For example:
 
@@ -66,7 +66,7 @@ The `get` operation is non-blocking -- Play creates a `Future` to hold the event
 The body of the `index` action returns as soon as the chain of `Futures` is set up. Play proceeds to execute each `Future` as its inputs become available, eventually creating a `Result` to send back to the client.
 
 
-## A Complete Example
+### A Complete Example
 
 Let's re-visit our traffic monitoring example from earlier. We now have enough code to implement a full working solution.
 
@@ -126,7 +126,7 @@ def traffic = Action.async { request =>
 }
 ~~~
 
-## Take Home Points
+### Take Home Points
 
 *Play WS* is a non-blocking library for calling out to remote web services. Non-blocking I/O is more resource-efficient than blocking I/O, allowing us to place heavier reliance on web services without sacrificingh scalability.
 

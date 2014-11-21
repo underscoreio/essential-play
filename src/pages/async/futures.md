@@ -1,10 +1,10 @@
-# Futures
+## Futures
 
 The underpinning of our concurrent programming model is the [scala.concurrent.Future] trait. A `Future[A]` represents an asynchronous computation that *will calculate a value of type `A` at some point in the future*.
 
 `Futures` are a general tool from the Scala core library, but they are used heavily in Play. We'll start by looking at the general case, and tie them into Play later on in this chapter.
 
-## The Ultimate Answer
+### The Ultimate Answer
 
 Let's define a long-running computation:
 
@@ -44,7 +44,7 @@ Continuing to run in parallel...
 The answer is 42. Now, what was the question?
 ~~~
 
-## Composing Futures
+### Composing Futures
 
 Callbacks are a good tool for introducing `Futures`, but they aren't very useful for production code because they *don't return values*. This causes at least two problems:
 
@@ -55,7 +55,7 @@ Fortunately, there are other ways of sequencing `Futures`. We can *compose* `Fut
 
 Let's see some of the important methods for composing futures.:
 
-### Map
+#### Map
 
 The `map` method allows us to sequence a future with a block of synchronous code. The synchronous code is represented by a simple function:
 
@@ -86,7 +86,7 @@ val f3: Future[Double] = f1 map { _.toDouble }
 
 The final results of `f1`, `f2` and `f3` above are `42`, `43` and `"42"` respectively.
 
-### FlatMap
+#### FlatMap
 
 The `flatMap` method allows us to sequence a future with a block of asynchronous code. The asynchronous code is represented by a function that returns a future:
 
@@ -122,7 +122,7 @@ Again, the final results of `f1` and `f2` and `f3` above are `42`, `43` and `"42
 
 [scala.Option]
 
-### Wait... Future is a Monad?
+#### Wait... Future is a Monad?
 
 Functional programming enthusiasts will note that the presence of a `flatMap` method means `Future` is a *monad*. This means we can use it with regular Scala for-comprehensions.
 

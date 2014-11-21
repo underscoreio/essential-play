@@ -3,13 +3,13 @@ layout: page
 title: "Thread Pools and ExecutionContexts"
 ---
 
-# Thread Pools and *ExecutionContexts*
+## Thread Pools and *ExecutionContexts*
 
 In the previous section we saw how to sequence and compose asyncronous code using [scala.concurrent.Future]. We didn't discuss how `Futures` are allocated behind the scenes. There is a lot of hidden library code at work creating threads, scheduling futures, and passing values from one future to another.
 
 In this section we will take a brief look at how `Futures` are scheduled in Scala and Play. We will be introduced to the concept of a *thread pool*, and we'll see how to allocate futures to specific pools. We will also learn what an `ExecutionContext` is and why we need one.
 
-## *ExecutionContexts*
+### *ExecutionContexts*
 
 In the previous section we ignored a crucial implementation detail -- whenever we create a `Future` we have to tell Play *how to schedule it*. We do this by passing an implicit parameter of type [scala.concurrent.ExecutionContext] to the constructor:
 
@@ -110,7 +110,7 @@ import play.api.libs.concurrent.Execution.defaultContext
 ~~~
 </div>
 
-## Take Home Points
+### Take Home Points
 
 Whenever we create a `Future`, we need to allocate it to a thread pool by providing an implicit `ExecutionContext`.
 
