@@ -3,7 +3,7 @@ layout: page
 title: Form Handling
 ---
 
-# Form Handling
+## Form Handling
 
 In the previous section we saw how to send HTML data to web site users using Twirl templates. In this section we will look at receiving HTML form data from users.
 
@@ -18,7 +18,7 @@ The next two sections cover these topics. This section covers parsing and valida
 
 
 
-## *Forms* and *Mappings*
+### *Forms* and *Mappings*
 
 `Forms` define mappings between form data and typed *domain values* from our domain model. Here's an example:
 
@@ -74,7 +74,7 @@ val todoForm = Form(mapping(
 )(Todo.apply)(Todo.unapply))
 ~~~
 
-## Handling Form Data
+### Handling Form Data
 
 A `Form` is a combination of the mappings we defined above and a set of data values. Our initial `todoForm` is empty, but we can combine it with incoming request data to create a *populated form*. This process is called *binding* the request:
 
@@ -118,7 +118,7 @@ def submitTodoForm = Action { request =>
 }
 ~~~
 
-## Form Validation
+### Form Validation
 
 Binding a request attempts to parse the incoming data, but it can also *validate* once parsed. The form API contains methods for creating validation constraints and adding them to mappings. `Form.fold` invokes our failure callback if any of our constraints are not satisfied:
 
@@ -134,7 +134,7 @@ val todoForm: Form[Todo] = Form(mapping(
 
 Play provides lots of options for parsing and validating, including adding multiple and custom validation constraints to fields and mapping hierarchical and sequential data. See the [documentation for Forms], the Scaladoc for [play.api.data.Forms], and the Scaladoc for [play.api.data.validation.Constraints] for more information.
 
-## Take Home Points
+### Take Home Points
 
 In this section we saw how to create `Form` objects and use them to parse and validate incoming form data.
 

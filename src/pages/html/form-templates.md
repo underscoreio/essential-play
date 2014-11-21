@@ -3,11 +3,11 @@ layout: page
 title: Generating Form HTML
 ---
 
-# Generating Form HTML
+## Generating Form HTML
 
 In the previous section we saw how to use `Forms` to parse incoming request data from the browser. `Forms` also allow us to generate `<form>` tags that help the browser send data to us in the correct format. In this section we'll use `Forms` to generate `<form>` and `<input>` elements and populate them with data and validation errors:
 
-## Forms and Inputs
+### Forms and Inputs
 
 Play provides several built-in templates in the [views.html.helper] package for generating `<form>` and `<input>` elements. We have to pass these data from our `Form` object, so our first step is to pass this to our own templates:
 
@@ -65,7 +65,7 @@ Notice the text `"format.boolean"` in the generated HTML. This is an uninternati
 
 </div>
 
-## Pre-Filling Forms
+### Pre-Filling Forms
 
 Sometimes we want to pre-fill a `Form` with data taken from a database. We can do this with the `fill` method, which returns a new `Form` filled with input values:
 
@@ -99,7 +99,7 @@ The `<inputs>` in the `populatedHtml` here have their `value` and `checked` attr
 </form>
 ~~~
 
-## Displaying Validation Errors
+### Displaying Validation Errors
 
 If we fail to bind a request in our `Action`, Play calls the failure argument in our call to `Form.fold`. The argument to our failure function is a `Form` containing a complete set of validation error messages. If we pass the `Form` object to our form template, Play will add the error messages to the generated HTML:
 
@@ -142,7 +142,7 @@ The resulting HTML contains extra `<dd class="error">` tags describing the error
 </form>
 ~~~
 
-## Customising the HTML
+### Customising the HTML
 
 We can tweak the HTML for our inputs by passing extra arguments to `inputText` and `checkbox`:
 
@@ -226,7 +226,7 @@ The effect on the generated HTML is quite pronounced:
 We can even define our own field constructors to completely customise our HTML. See the [documentation on field constructors] for more information.
 </div>
 
-## Take Home Points
+### Take Home Points
 
 `Forms` can be used to generate HTML as well as parse request data.
 

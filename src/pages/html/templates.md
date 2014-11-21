@@ -3,11 +3,11 @@ layout: page
 title: Twirl Templates
 ---
 
-# Twirl Templates
+## Twirl Templates
 
 Play uses a PHP-like templating language called *Twirl* to generate HTML. Templates are compiled to function objects that can be called directly from regular Scala code. In this section we will look at the Twirl syntax and compilation process.
 
-## A First Template
+### A First Template
 
 Twirl templates resemble plain HTML with embedded Scala-like dynamic expressions:
 
@@ -40,7 +40,7 @@ object helloWorld {
 }
 ~~~
 
-## File Names and Compiled Names
+### File Names and Compiled Names
 
 We should place templates in the `app/views` folder and give them `.scala.html` filename extensions. Their compiled forms are named based on our filenames and placed in the `views.html` package. Here are some examples:
 
@@ -79,7 +79,7 @@ Twirl templates can also be used to generate XML, Javascript, and plain text res
 
 
 
-## Parameters and expressions
+### Parameters and expressions
 
 Twirl templates can have any number of parameters of arbitrary types. They also support features such as default parameter values and multiple/implicit parameter lists:
 
@@ -106,7 +106,7 @@ Twirl embedded expression syntax is inspired by Scala syntax. Here is a brief sy
 
 
 
-### Simple Expressions
+#### Simple Expressions
 
 Dynamic expressions are prefixed using the `@` character. We don't need to indicate the end of an expression -- Twirl attempts to automatically work out where the Scala code ends and HTML begins:
 
@@ -123,7 +123,7 @@ Dynamic expressions are prefixed using the `@` character. We don't need to indic
 </div>
 </div>
 
-### Wrapped Expressions
+#### Wrapped Expressions
 
 Twirl occasionally has difficulty determining where dynamic code ends and static content begins. If this is a problem we can use parentheses or braces to delimit the dynamic content:
 
@@ -148,7 +148,7 @@ Twirl occasionally has difficulty determining where dynamic code ends and static
 </div>
 </div>
 
-### Method Calls
+#### Method Calls
 
 Method calls can be written as usual. Twirl treats parameters between parentheses as Scala:
 
@@ -188,7 +188,7 @@ Methods of one parameter can be called using braces instead. Twirl parses the pa
 </div>
 </div>
 
-### Conditionals
+#### Conditionals
 
 If we delimit the true and false arms using braces, Twirl treats them as HTML. Otherwise they are treated as Scala code:
 
@@ -227,7 +227,7 @@ If we omit the false arm of a Scala conditional, it evaluates to `Unit`. Twirl r
 </div>
 </div>
 
-### Match Expressions
+#### Match Expressions
 
 If we wrap the right-hand-sides of case clauses in braces, Twirl treats them as HTML content. Otherwise they are treated as Scala code:
 
@@ -255,7 +255,7 @@ If we wrap the right-hand-sides of case clauses in braces, Twirl treats them as 
 </div>
 </div>
 
-### For-Comprehensions
+#### For-Comprehensions
 
 For-comprehensions are supported without the `yield` keyword, which is implicitly assumed in Twirl syntax:
 
@@ -280,7 +280,7 @@ For-comprehensions are supported without the `yield` keyword, which is implicitl
 </div>
 </div>
 
-### Pre-Defined Helpers
+#### Pre-Defined Helpers
 
 Twirl provides a `defining` method as a means of aliasing complex Scala expressions as single identifiers:
 
@@ -305,7 +305,7 @@ Twirl provides a `defining` method as a means of aliasing complex Scala expressi
 
 Play also provides a variety of pre-defined templates in the [views.html.helper] package. We will discuss some of these in the next section.
 
-## Nesting Templates
+### Nesting Templates
 
 Because Twirl templates compile to Scala functions, we can call one template from another. We can also pass `Html` content from one template to another to create wrapper-style constructions:
 
@@ -350,7 +350,7 @@ Because Twirl templates compile to Scala functions, we can call one template fro
 </div>
 </div>
 
-## Take Home Points
+### Take Home Points
 
 We create HTML in Play using a templating language called *Twirl*.
 
