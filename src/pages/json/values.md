@@ -262,9 +262,6 @@ scala> val name = (json(0) \ "name").asOpt[Int]
 // => name: Option[Int] = None
 ~~~
 
-
-
-
 ### Putting It All Together
 
 Traversal and pattern matching are complimentary techniques for dissecting JSON data. We can extract specific fields using traversal, and pattern match on them to extract Scala values:

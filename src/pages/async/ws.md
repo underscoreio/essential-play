@@ -113,7 +113,7 @@ def getTraffic(hostname: String): Future[Double] = {
 Our request-sequencing code remains the same:
 
 ~~~ scala
-def traffic = Action { request =>
+def traffic = Action.async { request =>
   val traffic1 = getTraffic("server1")
   val traffic2 = getTraffic("server2")
   val traffic3 = getTraffic("server3")

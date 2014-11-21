@@ -64,7 +64,7 @@ val future2: Future[Int] = future1.recover {
 }
 ~~~
 
-If `future1` completes without an exception, `future2` completes with the same value. If `future1` fails with a `NumberFormatException`, `future2` completes with the value `43`. If `future1 fails with any other type of exception, `future2` fails as well.
+If `future1` completes without an exception, `future2` completes with the same value. If `future1` fails with a `NumberFormatException`, `future2` completes with the value `43`. If `future1` fails with any other type of exception, `future2` fails as well.
 
 ### *recoverWith*
 
@@ -79,7 +79,7 @@ val future2: Future[Int] = future1.recoverWith {
 
 ### *transform*
 
-If `recover` is similar to `map` and `recoverWith` is similar to `flatMap`, `transform` is similar to `fold`. We supply two functiona as parameters, one to handle successes and one to handle failures:
+If `recover` is similar to `map` and `recoverWith` is similar to `flatMap`, `transform` is similar to `fold`. We supply two functions as parameters, one to handle successes and one to handle failures:
 
 ~~~ scala
 val future2: Future[String] = future1.transform(
