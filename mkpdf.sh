@@ -22,20 +22,21 @@ echo "Running Pandoc @ $(date)"
 # Input formats we use:
 FORMATS=markdown+grid_tables+multiline_tables+fenced_code_blocks+fenced_code_attributes+yaml_metadata_block
 
-cat running.order | xargs \
- pandoc -S                \
-  -o essential-play.pdf   \
-  -V papersize:a4paper    \
-  --latex-engine=xelatex  \
-  -V mainfont:'Garamond'  \
-  -V monofont:'Menlo'     \
-  -V fontsize:11pt        \
-  --chapters              \
-  --number-sections       \
-  --table-of-contents     \
-  --toc-depth=5           \
-  --from=$FORMATS         \
-  --highlight-style tango \
-  --standalone            \
-  --self-contained        \
+cat running.order | xargs        \
+ pandoc -S                       \
+  -o essential-play.pdf          \
+  -V papersize:a4paper           \
+  --latex-engine=xelatex         \
+  -V mainfont:'Lato'             \
+  -V monofont:'Menlo'            \
+  -V fontsize:11pt               \
+  --chapters                     \
+  --number-sections              \
+  --table-of-contents            \
+  --toc-depth=5                  \
+  --from=$FORMATS                \
+  --highlight-style tango        \
+  --template=pandoc/template.tex \
+  --standalone                   \
+  --self-contained               \
   pandoc/metadata.yaml
