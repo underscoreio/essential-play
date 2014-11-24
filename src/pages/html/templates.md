@@ -104,8 +104,6 @@ The template body is compiled to a single Scala expression that appends all the 
 
 Twirl embedded expression syntax is inspired by Scala syntax. Here is a brief synopsis -- for more information see Play's [documentation on template syntax](docs-templates).
 
-
-
 #### Simple Expressions
 
 Dynamic expressions are prefixed using the `@` character. We don't need to indicate the end of an expression -- Twirl attempts to automatically work out where the Scala code ends and HTML begins:

@@ -24,7 +24,7 @@ We can represent any fragment of JSON data using `JsValue` and its subtypes:
 
 <div class="row">
 <div class="col-sm-6">
-**JSON Data**
+*JSON Data*
 
 ~~~ json
 {
@@ -40,7 +40,7 @@ We can represent any fragment of JSON data using `JsValue` and its subtypes:
 ~~~
 </div>
 <div class="col-sm-6">
-**Equivalent `JsValue`**
+*Equivalent `JsValue`*
 
 ~~~ scala
 JsObject(Seq(
@@ -67,7 +67,7 @@ Here's an example of this DSL in action. Note that the code on the left is much 
 
 <div class="row">
 <div class="col-sm-6">
-**DSL Syntax**
+*DSL Syntax*
 
 ~~~ scala
 Json.obj(
@@ -83,7 +83,7 @@ Json.obj(
 ~~~
 </div>
 <div class="col-sm-6">
-**Constructor Syntax**
+*Constructor Syntax*
 
 ~~~ scala
 JsObject(Seq(
@@ -209,13 +209,16 @@ val json = Json.arr(
 )
 
 // We use the `apply` method to extract the first person
-val person: JsValue = json(0) // == JsObject(...)
+val person: JsValue = json(0)
+// == JsObject(...)
 
 // We use `\` to extract the person's name:
-val name: JsValue = person \ "name" // == JsString("Dave")
+val name: JsValue = person \ "name"
+// == JsString("Dave")
 
 // Finally, we use `\\` to extract all likes from the data:
-val likes: Seq[JsValue] = json \\ "likes" // == Seq(JsArray(...), JsArray(...))
+val likes: Seq[JsValue] = json \\ "likes"
+// == Seq(JsArray(...), JsArray(...))
 ~~~
 
 This begs the question: what happens when we use `\` and `apply` and the specified field *doesn't* exist? We can see from the Scaladoc for [play.api.libs.json.JsValue] that each method returns a `JsValue` -- how do the methods represent failure?
@@ -247,7 +250,9 @@ We say only for use in the REPL or tests because if `as` cannot convert to the t
 
 ~~~ scala
 val name = (json(0) \ "name").as[Int]
-// => play.api.libs.json.JsResultException: JsResultException(errors:List((,List(ValidationError(error.expected.jsnumber,WrappedArray())))))
+// => play.api.libs.json.JsResultException: JsResultException(List(
+//      JsPath -> List(ValidationError(error.expected.jsnumber))
+//    ))
 ~~~
 
 If you think using `as` would be handy, hang on, because there is a better way which we will come to. But if you still really want to use `as` prefer the `asOpt` variant. This evaluates to a `None` if it cannot convert the JSON value:

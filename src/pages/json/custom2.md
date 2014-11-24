@@ -27,7 +27,7 @@ We won't cover all of these options here -- the full DSL is described in the [Pl
 
 Let's build the `addressReads` example from the ground up, examining each step in the process:
 
-##### Step 1. Describe the locations of fields
+**Step 1. Describe the locations of fields**
 
 ~~~ scala
 (JsPath \ "number")
@@ -36,7 +36,7 @@ Let's build the `addressReads` example from the ground up, examining each step i
 
 These are the same `JsPath` objects we saw in the section on `Reads`. They represent paths into a data structure (in this case the `"number"` and `"street"` fields respectively).
 
-##### Step 2. Read fields as typed values
+**Step 2. Read fields as typed values**
 
 We create `Reads` for each field using the `read` method of `JsPath`:
 
@@ -55,13 +55,13 @@ numberReads.reads(Json.obj("number" -> 29))
 
 numberReads.reads(JsNumber(29))
 // => JsError(Seq(
-//      (JsPath \ "number", Seq(ValidationError("error.path.missing")))
-//    ))
+//   (JsPath \ "number", Seq(ValidationError("error.path.missing")))
+// ))
 
 numberReads.reads(Json.obj("number" -> "29"))
 // => JsError(Seq(
-//      (JsPath \ "number", Seq(ValidationError("error.expected.jsnumber")))
-//    ))
+//   (JsPath \ "number", Seq(ValidationError("error.expected.jsnumber")))
+// ))
 ~~~
 
 `JsPath` also contains a `write` method for building `Writes`, and a `format` method for building `Formats`:
@@ -71,7 +71,7 @@ val numberWrites: Writes[Int]    = (JsPath \ "number").write[Int]
 val streetFormat: Format[String] = (JsPath \ "street").format[String]
 ~~~
 
-##### Step 3. Aggregate the fields into a tuple
+**Step 3. Aggregate the fields into a tuple**
 
 We combine our two `Reads` using an `and` method that is brought into scope implicitly from the `play.api.libs.functional.syntax` package:
 
@@ -89,20 +89,23 @@ More formally, if we combine a `Reads[A]` and a `Reads[B]` using `and`, we get a
 
 : Reads builder methods
 
-+-------------------------+----------+------------------+-------------------------+
-| Type of `Reads` builder | Method   | Parameters       | Returns                 |
-+=========================+==========+==================+=========================+
-| `CanBuild2[A, B]`       | `tupled` | None             | `Reads[(A, B)]`         |
-| `CanBuild2[A, B]`       | `apply`  | `(A, B) => X`    | `Reads[X]`              |
-| `CanBuild2[A, B]`       | `and`    | `Reads[C]`       | `CanBuild3[A, B, C]`    |
-+-------------------------+----------+------------------+-------------------------+
-| `CanBuild3[A, B, C]`    | `tupled` | None             | `Reads[(A, B, C)]`      |
-| `CanBuild3[A, B, C]`    | `apply`  | `(A, B, C) => X` | `Reads[X]`              |
-| `CanBuild3[A, B, C]`    | `and`    | `Reads[C]`       | `CanBuild4[A, B, C, D]` |
-+-------------------------+----------+------------------+-------------------------+
-| `CanBuild4[A, B, C, D]` | etc...   | etc...           | etc...                  |
-+-------------------------+----------+------------------+-------------------------+
+------------------------------------------------------------------------
+Type of `Reads` builder  Method    Parameters      Returns
+------------------------ --------- --------------- ---------------------
+`CanBuild2[A,B]`         `tupled`  None            `Reads[(A,B)]`
 
+`CanBuild2[A,B]`         `apply`   `(A,B) => X`    `Reads[X]`
+
+`CanBuild2[A,B]`         `and`     `Reads[C]`      `CanBuild3[A,B,C]`
+
+`CanBuild3[A,B,C]`       `tupled`  None            `Reads[(A,B,C)]`
+
+`CanBuild3[A,B,C]`       `apply`   `(A,B,C) => X`  `Reads[X]`
+
+`CanBuild3[A,B,C]`       `and`     `Reads[C]`      `CanBuild4[A,B,C,D]`
+
+`CanBuild4[A,B,C,D]`     etc...    etc...          etc...
+------------------------------------------------------------------------
 
 The idea of the builder pattern is to use `and` to create progressively larger builders (up to `CanBuild21`), and then `tupled` or `apply` to create a `Reads` for our result type. Let's look at the `tupled` method as an example:
 
@@ -114,16 +117,16 @@ tupleReads.reads(Json.obj("number" -> 29, "street" -> "Acacia Road"))
 
 tupleReads.reads(Json.obj("number" -> "29", "street" -> null))
 // => JsError(Seq(
-//      (JsPath \ "number", Seq(ValidationError("error.expected.jsnumber"))),
-//      (JsPath \ "street", Seq(ValidationError("error.expected.jsstring")))
-//    ))
+//   (JsPath \ "number", Seq(ValidationError("error.expected.jsnumber"))),
+//   (JsPath \ "street", Seq(ValidationError("error.expected.jsstring")))
+// ))
 ~~~
 
 `tupleReads` is built from the `Reads` for `"number"` and `"street"`. It extracts the each field from the JSON and combines them into a tuple of type `(Int, String)`. In step 4 below we'll see how to use the `apply` method instead of `tupled` to combine the fields into an `Address`.
 
 There are equivalent sets of builders for `Writes` and `Formats` types. All we have to do is combine two `Writes` or `Formats` using `and` to create the relevant `CanBuild2` and do from there.
 
-##### Step 4. Aggregate the fields into an *Address*
+**Step 4. Aggregate the fields into an *Address* **
 
 Instead of using `tupled`, we can call our builder's `apply` method to create a `Reads` that aggregates values in a different way.
 
@@ -173,10 +176,12 @@ We will finish with one last DSL example -- a `Format` that extracts the tempora
 ~~~ scala
 import org.joda.time._
 
-def createDateTime(yr: Int, mon: Int, day: Int, hr: Int, min: Int, sec: Int, ms: Int) =
+def createDateTime(yr: Int, mon: Int, day: Int, hr: Int, min: Int, ↩
+      sec: Int, ms: Int) =
   new DateTime(yr, mon, day, hr, min, sec, ms)
 
-def extractDateTimeFields(dt: DateTime): (Int, Int, Int, Int, Int, Int, Int) =
+def extractDateTimeFields(dt: DateTime): ↩
+      (Int, Int, Int, Int, Int, Int, Int) =
   (dt.getYear, dt.getMonthOfYear, dt.getDayOfMonth,
    dt.getHourOfDay, dt.getMinuteOfHour, dt.getSecondOfMinute,
    dt.getMillisOfSecond)
@@ -191,8 +196,6 @@ implicit val dateTimeFormat: Format[DateTime] = (
   (JsPath \ "milli").format[Int]
 )(createDateTime, extractDateTimeFields)
 ~~~
-
-[org.joda.time.DateTime] : http://www.joda.org/joda-time/apidocs/index.html
 
 ### Take Home Points
 

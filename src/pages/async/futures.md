@@ -55,7 +55,7 @@ Fortunately, there are other ways of sequencing `Futures`. We can *compose* `Fut
 
 Let's see some of the important methods for composing futures.:
 
-#### Map
+#### *map*
 
 The `map` method allows us to sequence a future with a block of synchronous code. The synchronous code is represented by a simple function:
 
@@ -86,7 +86,7 @@ val f3: Future[Double] = f1 map { _.toDouble }
 
 The final results of `f1`, `f2` and `f3` above are `42`, `43` and `"42"` respectively.
 
-#### FlatMap
+#### *flatMap*
 
 The `flatMap` method allows us to sequence a future with a block of asynchronous code. The asynchronous code is represented by a function that returns a future:
 
@@ -136,9 +136,7 @@ def getTraffic(hostname: String): Future[Double] = {
 
 We want to combine the traffic from three separate servers to produce a single aggregated value. Here are two ways of writing the code using for-comprehensions:
 
-<div class="row">
-<div class="col-sm-6">
-**Single expression**
+*Single expression*
 
 ~~~ scala
 val total: Future[Double] = for {
@@ -147,10 +145,8 @@ val total: Future[Double] = for {
   t3 <- getTraffic("server3")
 } yield t1 + t2 + t3
 ~~~
-</div>
 
-<div class="col-sm-6">
-**Create-then-compose**
+*Create-then-compose*
 
 ~~~ scala
 val traffic1 = getTraffic("server1")
@@ -163,16 +159,12 @@ val total: Future[Double] = for {
   t3 <- traffic3
 } yield t1 + t2 + t3
 ~~~
-</div>
-</div>
 
 These examples are easy to read -- each one demonstrates the elegance of using `for` syntax to sequence asynchronous code. However, we should note an an important semantic difference between the two. One of the examples will complete much faster than the other.
 
 What is the difference between the two examples and which will finish fastest? To answer this we must look at their expanded forms:
 
-<div class="row">
-<div class="col-sm-6">
-**Single expression**
+*Single expression*
 
 ~~~ scala
 val total: Future[Double] =
@@ -184,10 +176,8 @@ val total: Future[Double] =
     }
   }
 ~~~
-</div>
 
-<div class="col-sm-6">
-**Create-then-compose**
+*Create-then-compose*
 
 ~~~ scala
 val traffic1 = getTraffic("server1")
@@ -203,8 +193,6 @@ val total: Future[Double] =
     }
   }
 ~~~
-</div>
-</div>
 
 In the *single expression* example, the calls to `getTraffic` are nested inside one another -- the code *sequences* the calls, waiting until one completes before initiating the next.
 
@@ -252,7 +240,8 @@ For comprehensions are a great way to combine the results of several futures, bu
 package scala.concurrent
 
 object Future {
-  def sequence[A](futures: Seq[Future[A]]): Future[Seq[A]] = // ...
+  def sequence[A](futures: Seq[Future[A]]): Future[Seq[A]] =
+    // ...
 }
 ~~~
 
@@ -260,9 +249,11 @@ We can use this method to convert any sequence[^sequence] of futures into a futu
 
 ~~~ scala
 def totalTraffic(hostnames: Seq[String]): Future[Double] = {
-  val trafficFutures: Seq[Future[Double]] = hostnames.map(getTraffic)
+  val trafficFutures: Seq[Future[Double]] =
+    hostnames.map(getTraffic)
 
-  val futureTraffics: Future[Seq[Double]] = Future.sequence(trafficFutures)
+  val futureTraffics: Future[Seq[Double]] =
+    Future.sequence(trafficFutures)
 
   futureTraffics.map(_.sum)
 }

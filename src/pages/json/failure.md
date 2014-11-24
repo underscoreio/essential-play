@@ -30,13 +30,14 @@ import play.api.libs.json._
 import scala.concurrent.Future
 
 object Global extends GlobalSettings {
-  override def onHandlerNotFound(request: RequestHeader): Future[Result] = {
+  override def onHandlerNotFound(request: RequestHeader): ↩
+        Future[Result] = {
     Logger.warn(s"Error 404: ${request.method} ${request.uri}")
 
     Future(NotFound(Json.obj(
       "type"    -> "error",
       "status"  -> 404,
-      "message" -> s"Could not route request: ${request.method} ${request.uri}"
+      "message" -> s"Handler not found: ${request.method} ${request.uri}"
     )))
   }
 }
@@ -48,7 +49,8 @@ We can also provide a custom response when Play is able to route a request but i
 
 ~~~ scala
 object Global extends GlobalSettings {
-  override def onBadRequest(request: RequestHeader): Future[Result] = {
+  override def onBadRequest(request: RequestHeader): ↩
+        Future[Result] = {
     Logger.warn(s"Error 404: ${request.method} ${request.uri}")
 
     Future(NotFound(Json.obj(

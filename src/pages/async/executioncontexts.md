@@ -52,8 +52,6 @@ trait Future[A] {
 
 Why are `ExecutionContexts` important? Whenever we create a `Future`, *something* needs to allocate it to a thread and execute it, and there are many different strategies that can be used. The `ExecutionContext` encapsulates all of the resources and configuration necessary for this and allows us to ignore it when writing application code.
 
-[scala.concurrent.ExecutionContext]
-
 <div class="callout callout-info">
 *Threads and Thread Pools*
 

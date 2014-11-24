@@ -1,9 +1,13 @@
-\documentclass[oneside,$if(fontsize)$$fontsize$,$endif$$if(lang)$$lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
+\documentclass[oneside,$if(fontsize)$$fontsize$$else$11pt$endif$,$if(lang)$$lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
+
+% Fonts -----------------------------------------
+
 $if(fontfamily)$
 \usepackage{$fontfamily$}
 $else$
 \usepackage{lmodern}
 $endif$
+
 $if(linestretch)$
 \usepackage{setspace}
 \setstretch{$linestretch$}
@@ -28,23 +32,45 @@ $endif$
   \newcommand{\euro}{€}
 $if(mainfont)$
     \setmainfont$mainfont$
+$else$
+    \setmainfont[%
+      Color=primary,
+      Path=fonts/Lato2OFL/,
+      BoldItalicFont=Lato-BlackItalic,
+      BoldFont=Lato-Bold,
+      ItalicFont=Lato-Italic]{Lato-Regular}
 $endif$
+
 $if(sansfont)$
     \setsansfont{$sansfont$}
+$else$
+    \setsansfont[%
+      Color=primary,
+      Path=fonts/Lato2OFL/,
+      BoldItalicFont=Lato-BlackItalic,
+      BoldFont=Lato-Bold,
+      ItalicFont=Lato-Italic]{Lato-Regular}
 $endif$
+
 $if(monofont)$
     \setmonofont[Mapping=tex-ansi]{$monofont$}
+$else$
+    \setmonofont[Mapping=tex-ansi]{Menlo}
 $endif$
+
 $if(mathfont)$
     \setmathfont(Digits,Latin,Greek){$mathfont$}
 $endif$
 \fi
+
+% -----------------------------------------------
+
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 % use microtype if available
 \IfFileExists{microtype.sty}{%
-\usepackage{microtype}
-\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+  \usepackage{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
 $if(geometry)$
 \usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
@@ -65,9 +91,15 @@ $endif$
 $if(lhs)$
 \lstnewenvironment{code}{\lstset{language=Haskell,basicstyle=\small\ttfamily}}{}
 $endif$
+
+% Syntax highlighting ---------------------------
+
 $if(highlighting-macros)$
 $highlighting-macros$
 $endif$
+
+% -----------------------------------------------
+
 $if(verbatim-in-note)$
 \usepackage{fancyvrb}
 $endif$
@@ -92,16 +124,21 @@ $endif$
 \else
   \usepackage[unicode=true]{hyperref}
 \fi
-\hypersetup{breaklinks=true,
-            bookmarks=true,
-            pdfauthor={$author-meta$},
-            pdftitle={$title-meta$},
-            colorlinks=true,
-            citecolor=$if(citecolor)$$citecolor$$else$blue$endif$,
-            urlcolor=$if(urlcolor)$$urlcolor$$else$blue$endif$,
-            linkcolor=$if(linkcolor)$$linkcolor$$else$magenta$endif$,
-            pdfborder={0 0 0}}
-\urlstyle{same}  % don't use monospace font for urls
+\hypersetup{%
+  breaklinks=true,
+  bookmarks=true,
+  pdfauthor={$author-meta$},
+  pdftitle={$title-meta$},
+  colorlinks=true,
+  citecolor=$if(citecolor)$$citecolor$$else$blue$endif$,
+  urlcolor=$if(urlcolor)$$urlcolor$$else$blue$endif$,
+  linkcolor=$if(linkcolor)$$linkcolor$$else$magenta$endif$,
+  pdfborder={0 0 0}}
+
+\urlstyle{same} % don't use monospace font for urls
+
+% Links as footnotes ----------------------------
+
 $if(links-as-notes)$
 % Make links footnotes instead of hotlinks:
 \renewcommand{\href}[2]{#2\footnote{\url{#1}}}
@@ -131,6 +168,8 @@ $if(lang)$
 \fi
 $endif$
 
+% Document metadata -----------------------------
+
 $if(title)$
 \title{$title$$if(subtitle)$\\\vspace{0.5em}{\large $subtitle$}$endif$}
 $endif$
@@ -142,49 +181,83 @@ $for(header-includes)$
 $header-includes$
 $endfor$
 
+% Column support (see columns.coffee) -----------
+
 \usepackage{multicol}
 
+% Callout support (see callout.coffee) ----------
+
 \usepackage[xcolor]{mdframed}
+\definecolor{primary}{HTML}{428BCA}
+\definecolor{success}{HTML}{5CB85C}
+\definecolor{warning}{HTML}{F0AD4E}
+\definecolor{danger}{HTML}{D9534F}
+\definecolor{info}{HTML}{5BC0DE}
 \newmdenv[%
-  topline=false,bottomline=false,leftline=false,rightline=false,linewidth=0,
-  leftmargin=0,rightmargin=0,innertopmargin=1em,innerbottommargin=1em,
-  frametitlebelowskip=1em,
-  backgroundcolor=blue!5,
+  linecolor=info,linewidth=5pt,
+  topline=false,bottomline=false,rightline=false,
+  innertopmargin=1em,innerbottommargin=1em,
+  splittopskip=1em,splitbottomskip=1em,
+  backgroundcolor=info!30,
   frametitle=Tip]{InfoCallout}
 \newmdenv[%
-  topline=false,bottomline=false,leftline=false,rightline=false,linewidth=0,
-  leftmargin=0,rightmargin=0,innertopmargin=1em,innerbottommargin=1em,
-  frametitlebelowskip=1em,
-  backgroundcolor=yellow!10,
+  linecolor=warning,linewidth=5pt,
+  topline=false,bottomline=false,rightline=false,
+  innertopmargin=1em,innerbottommargin=1em,
+  splittopskip=1em,splitbottomskip=1em,
+  backgroundcolor=warning!30,
   frametitle=Advanced]{WarningCallout}
 \newmdenv[%
-  topline=false,bottomline=false,leftline=false,rightline=false,linewidth=0,
-  leftmargin=0,rightmargin=0,innertopmargin=1em,innerbottommargin=1em,
-  frametitlebelowskip=1em,
-  backgroundcolor=red!5,
+  linecolor=danger!60,linewidth=5pt,
+  topline=false,bottomline=false,rightline=false,
+  innertopmargin=1em,innerbottommargin=1em,
+  splittopskip=1em,splitbottomskip=1em,
+  backgroundcolor=danger!25,
   frametitle=Warning]{DangerCallout}
+
+% \newmdenv[%
+%   topline=false,bottomline=false,leftline=false,rightline=false,
+%   innertopmargin=1em,innerbottommargin=1em,
+%   splittopskip=1em,splitbottomskip=1em,
+%   backgroundcolor=black!10]{Shaded}
+
+% Customise default code blocks -----------------
 
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},fontsize=\small}
 
+% ===============================================
+% Document
+% ===============================================
+
 \begin{document}
+
+% Title page ------------------------------------
+
 $if(title)$
-\includegraphics{pandoc/cover.png}
 \maketitle
 $endif$
+
+% Abstract --------------------------------------
+
 $if(abstract)$
 \begin{abstract}
 $abstract$
 \end{abstract}
 $endif$
 
+% Include-before hook ---------------------------
+
 $for(include-before)$
 $include-before$
 
 $endfor$
+
+% Tables of contents, etc. ----------------------
+
 $if(toc)$
 {
 \hypersetup{linkcolor=black}
-\setcounter{tocdepth}{$toc-depth$}
+\setcounter{tocdepth}{$if(toc-depth)$$toc-depth$$else$3$endif$}
 \tableofcontents
 }
 $endif$
@@ -194,7 +267,12 @@ $endif$
 $if(lof)$
 \listoffigures
 $endif$
+
+% Main document body ----------------------------
+
 $body$
+
+% Bibliography ----------------------------------
 
 $if(natbib)$
 $if(biblio-files)$
@@ -213,8 +291,14 @@ $if(biblatex)$
 \printbibliography$if(biblio-title)$[title=$biblio-title$]$endif$
 
 $endif$
+
+% Include-after hook ----------------------------
+
 $for(include-after)$
 $include-after$
 
 $endfor$
+
+% The end ---------------------------------------
+
 \end{document}

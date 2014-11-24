@@ -32,7 +32,8 @@ implicit object lightFormat extends Format[Color] {
     case JsString("red")   => JsSuccess(Red)
     case JsString("green") => JsSuccess(Green)
     case JsString("blue")  => JsSuccess(Blue)
-    case other             => JsError(ValidationError("error.invalid.color", other))
+    case other =>
+      JsError(ValidationError("error.invalid.color", other))
   }
 }
 ~~~

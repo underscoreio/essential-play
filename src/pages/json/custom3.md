@@ -21,8 +21,13 @@ trait OFormat[A] extends Reads[A] with OWrites[A]
 `JsObject` contains methods that let us manipulate fields. The `+` and `++` methods, in particular, allow us to append fields to the JSON we send to clients:
 
 ~~~ scala
-addressFormat.writes(Address(29, "Acacia Road")) ++ Json.obj("city" -> "Nuttytown")
-// == Json.obj("number" -> 29, "street" -> "Acacia Road", "city" -> "Nuttytown")
+addressFormat.writes(Address(29, "Acacia Road")) ++
+  Json.obj("city" -> "Nuttytown")
+// => Json.obj(
+//   "number" -> 29,
+//   "street" -> "Acacia Road",
+//   "city" -> "Nuttytown"
+// )
 ~~~
 
 
@@ -65,7 +70,8 @@ implicit object shapeFormat extends Format[Shape] {
   def reads(json: JsValue): JsResult[Shape] = (json \ "type") match {
     case JsString("Ellipse")   => ellipseFormat.reads(json)
     case JsString("Rectangle") => rectangleFormat.reads(json)
-    case other => JsError(JsPath \ "type", "bad.shape.type", other.toString)
+    case other =>
+      JsError(JsPath \ "type", "bad.shape.type", other.toString)
   }
 }
 ~~~

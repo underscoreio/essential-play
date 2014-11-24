@@ -91,9 +91,14 @@ val result = Json.fromJson[Person](Json.obj(
 
 /*
 result == JsError(List(
-  ( JsPath \ "address" \ "number" , List(ValidationError("error.expected.jsnumber", Nil)) ),
-  ( JsPath \ "address" \ "street" , List(ValidationError("error.expected.jsstring", Nil)) ),
-  ( JsPath \ "name"               , List(ValidationError("error.path.missing",      Nil)) )
+  (JsPath \ "address" \ "number",  ↩
+    List(ValidationError("error.expected.jsnumber"))),
+
+  (JsPath \ "address" \ "street",  ↩
+    List(ValidationError("error.expected.jsstring"))),
+
+  (JsPath \ "name",                ↩
+    List(ValidationError("error.path.missing"))
 ))
 */
 ~~~
@@ -107,25 +112,23 @@ We build paths starting with the singleton object `JsPath`, representing an empt
 
 The resulting path describes the location of a field or array item relative the the root of our JSON value. Here are some examples:
 
-:JSON path examples
+: `JsPaths`, their meanings, and their Javascript equivalents
 
-+-------------------------+-----------------------+------------------------------------------------------------+
-| Scala expression        | Javascript equivalent | Meaning                                                    |
-+=========================+=======================+============================================================+
-| `JsPath`                | `root`                | The root JSON array or object                              |
-+-------------------------+-----------------------+------------------------------------------------------------+
-| `JsPath \ "a"`          | `root.a`              | The field `a` in the root object                           |
-+-------------------------+-----------------------+------------------------------------------------------------+
-| `JsPath(2)`             | `root[2]`             | The third item in the root array                           |
-+-------------------------+-----------------------+------------------------------------------------------------+
-| `JsPath \ "a" \ "b"`    | `root.a.b`            | The field `b` in the field `a` in the root object          |
-+-------------------------+-----------------------+------------------------------------------------------------+
-| `JsPath \ "a" apply 2`  | `root.a[2]`           | The third array item in the field `a` in the root object   |
-+-------------------------+-----------------------+------------------------------------------------------------+
+---------------------------------------------------------------------------
+Scala expression          JS equivalent  Meaning
+------------------------- -------------- ----------------------------------
+`JsPath`                  `root`         The root JSON array or object
 
+`JsPath \ "a"`            `root.a`       The field `a` in the root object
 
+`JsPath(2)`               `root[2]`      The third item in the root array
 
-Obviously, different `JsPaths` impose implicit assumptions on the structure of the objects and arrays in our data. However, we can safely assume that the `JsPaths` in our errors point to valid locations in the data being parsed.
+`JsPath \ "a" \ "b"`      `root.a.b`     The field `b` in the field `a`
+
+`(JsPath \ "a") apply 2`  `root.a[2]`    The third item in the array `a`
+---------------------------------------------------------------------------
+
+Obviously, `JsPaths` impose implicit assumptions on the structure of the objects and arrays in our data. However, we can safely assume that the `JsPaths` in our errors point to valid locations in the data being parsed.
 
 <div class="callout callout-info">
 *Reads Best Practices*
@@ -154,18 +157,20 @@ def errorJson(err: JsError): JsArray = {
  * Extract the JSON body from `request`, read it as type `A`
  * and then pass it to `func`.
  *
- * If anything goes wrong, immediately return a *400 Bad Request* result
- * describing the failure.
+ * If anything goes wrong, immediately return a
+ * *400 Bad Request* result describing the failure.
  */
-def withRequestJson[A](request: Request[AnyContent])(func: A => Result)
+def withRequestJson[A](request: Request[AnyContent])(fn: A => Result)
     (implicit reads: Reads[A]): Result = {
   request.body.asJson match {
     case Some(body) =>
       Json.fromJson(body) match {
-        case success: JsSuccess[A] => func(success.value)
+        case success: JsSuccess[A] => fn(success.value)
         case error: JsError        => BadRequest(errorJson(error))
       }
-    }
+
+    case None =>
+      BadRequest(Json.obj("error" -> "Request body was not JSON"))
   }
 }
 

@@ -78,7 +78,8 @@ val personWrites = Json.writes[Person] // now this compiles!
 We can use our new `personWrites` to serialize data just as we did with `addressWrites`:
 
 ~~~ scala
-val json: JsValue = personWrites.writes(Person("Eric Wimp", Address(29, "Acacia Road")))
+val json: JsValue = personWrites.writes( ↩
+  Person("Eric Wimp", Address(29, "Acacia Road")))
 ~~~
 
 However, using different `Writes` objects to serialize each type in our application is inconvenient -- we have to remember a lot of different identifiers, and we can't write generic code to serialize data of an arbitrary type.
@@ -113,7 +114,7 @@ Json.toJson(Address(29, "Acacia Road"))
 // This compiles because we have a `Writes[Person]` in scope:
 Json.toJson(Person("Eric Wimp", Address(29, "Acacia Road")))
 
-// This generic method can be used for any type with a corresponding `Writes`:
+// This method can be used for any type with a corresponding `Writes`:
 def genericOkResult[A](value: A)(implicit valueWrites: Writes): Result =
   Ok(Json.toJson(value))
 
