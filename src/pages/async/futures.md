@@ -213,7 +213,7 @@ The *create-then-compose* example, by contrast, initiates each of the calls imme
 Both examples are resource-efficient and non-blocking but they sequence operations differently -- *create-then-compose* will typically complete in about one third the time. This is something to watch out for when combining futures using for-comprehensions.
 
 <div class="callout callout-info">
-#### Summary: Sequencing Futures using For-Comprehensions
+*Sequencing Futures using For-Comprehensions*
 
  1. Work out which calculations are dependent on the results of which others:
 
@@ -246,9 +246,7 @@ Both examples are resource-efficient and non-blocking but they sequence operatio
 
 ### Future.sequence
 
-For comprehensions are a great way to combine the results of several futures, but they aren't suitable for combining the results of *arbitrarily sized* sets of futures. For this we need the `sequence` method of [Future's companion object]. Here's a simplified type signature:
-
-[Future's companion object]
+For comprehensions are a great way to combine the results of several futures, but they aren't suitable for combining the results of *arbitrarily sized* sets of futures. For this we need the `sequence` method of [Future's companion object](scala.concurrent.Future$). Here's a simplified type signature:
 
 ~~~ scala
 package scala.concurrent

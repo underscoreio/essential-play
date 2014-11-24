@@ -1,8 +1,3 @@
----
-layout: page
-title: Generating Form HTML
----
-
 ## Generating Form HTML
 
 In the previous section we saw how to use `Forms` to parse incoming request data from the browser. `Forms` also allow us to generate `<form>` tags that help the browser send data to us in the correct format. In this section we'll use `Forms` to generate `<form>` and `<input>` elements and populate them with data and validation errors:
@@ -58,9 +53,9 @@ The basic output contains a `<form>` element and an `<input>` and `<label>` for 
 
 
 <div class="callout callout-warning">
-#### Advanced: Internationalization
+*Internationalization*
 
-Notice the text `"format.boolean"` in the generated HTML. This is an uninternationalized message that has crept through due to a missing value in Play's default string tables. We can fix the broken message by providing our own [internationalization] for our application. However, this is beyond the scope of this chapter.
+Notice the text `"format.boolean"` in the generated HTML. This is an uninternationalized message that has crept through due to a missing value in Play's default string tables. We can fix the broken message by providing our own [internationalization](docs-i18n) for our application. However, this is beyond the scope of this chapter.
 
 
 </div>
@@ -146,9 +141,7 @@ The resulting HTML contains extra `<dd class="error">` tags describing the error
 
 We can tweak the HTML for our inputs by passing extra arguments to `inputText` and `checkbox`:
 
-<div class="row">
-<div class="col-sm-6">
-Twirl code:
+*Twirl code:*
 
 ~~~ scala
 @helper.inputText(
@@ -158,10 +151,8 @@ Twirl code:
   '_help  -> "Enter the name of your todo"
 )
 ~~~
-</div>
 
-<div class="col-sm-6">
-Resulting HTML:
+*Resulting HTML:*
 
 ~~~ scala
 <dl id="todoname_field">
@@ -170,8 +161,6 @@ Resulting HTML:
   <dd class="info">Enter the name of your todo</dd>
 </dl>
 ~~~
-</div>
-</div>
 
 The extra parameters are keyword/value pairs of type `(Symbol, String)`. Most keywords add or replace attributes on the `<input>` element. Certain special keywords starting with an `_` change the HTML in other ways:
 
@@ -179,51 +168,14 @@ The extra parameters are keyword/value pairs of type `(Symbol, String)`. Most ke
  - `'_help` adds a line of help text to the element;
  - `'_id` alters the `id` attribute of the `<dl>` tag (as opposed to the `<input>`).
 
-See the Play [documentation on field constructors] for a complete list of special keywords.
-
-
+See the Play [documentation on field constructors](docs-field-constructors) for a complete list of special keywords.
 
 <div class="callout callout-warning">
-#### Advanced: Custom Field Constructors
+*Custom Field Constructors*
 
-Sometimes small tweaks to the HTML aren't enough. We can make comprehensive changes to the HTML structure by specifying a *field constructor* in our template. For example, we can generate Twitter Bootstrap compatible HTML by adding the following to the top of our template, right below the method definition:
+Sometimes small tweaks to the HTML aren't enough. We can make comprehensive changes to the HTML structure by specifying a *field constructor* in our template. See the [documentation on field constructors](docs-field-constructors) for more information.
 
-~~~ html
-@import helper.twitterBootstrap._
-~~~
-
-The effect on the generated HTML is quite pronounced:
-
-~~~ html
-<form action="/todo" method="POST">
-  <div class="clearfix" id="name_field">
-    <label for="name">name</label>
-    <div class="input">
-      <input type="text" id="name" name="name" value="Todo">
-      <span class="help-inline"></span>
-    </div>
-  </div>
-  <div class="clearfix  error" id="priority_field">
-    <label for="priority">priority</label>
-    <div class="input">
-      <input type="text" id="priority" name="priority" value="unknown">
-      <span class="help-inline">Numeric value expected</span>
-      <span class="help-block">Numeric</span>
-    </div>
-  </div>
-  <div class="clearfix  error" id="complete_field">
-    <label for="complete">complete</label>
-    <div class="input">
-      <input type="checkbox" id="complete" name="complete" value="true">
-      <span class="help-inline">error.boolean</span>
-      <span class="help-block">format.boolean</span>
-    </div>
-  </div>
-  <button type="submit">OK</button>
-</form>
-~~~
-
-We can even define our own field constructors to completely customise our HTML. See the [documentation on field constructors] for more information.
+[This StackOverflow post](link-using-bootstrap-with-play) contains information on using a custom field constructor to generate [Twitter Bootstrap][link-twitter-bootstrap] compatible form HTML.
 </div>
 
 ### Take Home Points

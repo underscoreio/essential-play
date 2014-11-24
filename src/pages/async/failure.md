@@ -1,8 +1,3 @@
----
-layout: page
-title: Handling Failure
----
-
 ## Handling Failure
 
 In earlier sections we saw how `Futures` are implemented on top of thread pools. Each `Future` executes on a separate thread, and there is little continuity between `Futures` in terms of stack information.

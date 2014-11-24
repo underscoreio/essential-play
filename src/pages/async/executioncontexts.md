@@ -1,8 +1,3 @@
----
-layout: page
-title: "Thread Pools and ExecutionContexts"
----
-
 ## Thread Pools and *ExecutionContexts*
 
 In the previous section we saw how to sequence and compose asyncronous code using [scala.concurrent.Future]. We didn't discuss how `Futures` are allocated behind the scenes. There is a lot of hidden library code at work creating threads, scheduling futures, and passing values from one future to another.
@@ -60,7 +55,7 @@ Why are `ExecutionContexts` important? Whenever we create a `Future`, *something
 [scala.concurrent.ExecutionContext]
 
 <div class="callout callout-info">
-#### Aside: Threads and Thread Pools
+*Threads and Thread Pools*
 
 As an aside, let's take a brief look at how Scala and Play schedule `Futures`.
 
@@ -92,12 +87,10 @@ def index = Future {
 }
 ~~~
 
-The default application thread pool is sufficient for most cases, but advanced users can tweak its parameters and allocate extra thread pools if required. See Play's [documentation on thread pools] for more information.
-
-[Documentation on thread pools]
+The default application thread pool is sufficient for most cases, but advanced users can tweak its parameters and allocate extra thread pools if required. See Play's [documentation on thread pools](docs-thread-pools) for more information.
 
 <div class="callout callout-danger">
-#### Warning: Scala's Default ExecutionContext
+*Scala's Default ExecutionContext*
 
 The Scala standard library also provides a default `ExecutionContext`. This is suitable for use in regular Scala applications, but we **should not use it in Play web applications.**
 

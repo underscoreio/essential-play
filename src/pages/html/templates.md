@@ -1,8 +1,3 @@
----
-layout: page
-title: Twirl Templates
----
-
 ## Twirl Templates
 
 Play uses a PHP-like templating language called *Twirl* to generate HTML. Templates are compiled to function objects that can be called directly from regular Scala code. In this section we will look at the Twirl syntax and compilation process.
@@ -44,14 +39,17 @@ object helloWorld {
 
 We should place templates in the `app/views` folder and give them `.scala.html` filename extensions. Their compiled forms are named based on our filenames and placed in the `views.html` package. Here are some examples:
 
-|---------------------------------------------------------------------------------|
-| Template file name                     | Scala object name                      |
-|---------------------------------------------------------------------------------|
-| `views/helloWorld.scala.html`          | `views.html.helloWorld`                |
-| `views/user/loginForm.scala.html`      | `views.html.user.loginForm`            |
-| `views/foo/bar/baz.scala.html`         | `views.html.foo.bar.baz`               |
-|=================================================================================|
-{: .table .table-bordered .table-responsive }
+:Template paths and their corresponding class names
+
+---------------------------------------------------------------
+Template file name                 Scala object name
+---------------------------------- ----------------------------
+`views/helloWorld.scala.html`      `views.html.helloWorld`
+
+`views/user/loginForm.scala.html`  `views.html.user.loginForm`
+
+`views/foo/bar/baz.scala.html`     `views.html.foo.bar.baz`
+---------------------------------------------------------------
 
 Templates return objects of type [play.twirl.api.Html]. Play knows how to serialize `Html` values in the `Results`. This makes it easy to use templates in our `Actions`:
 
@@ -62,22 +60,24 @@ def index = Action { request =>
 ~~~
 
 <div class="callout callout-warning">
-#### Advanced: Non-HTML Templates
+*Non-HTML Templates*
 
 Twirl templates can also be used to generate XML, Javascript, and plain text responses. The folders, packages, and return types vary, but otherwise these templates are identical to the HTML templates discussed here:
 
-|-----------------------------------------------------------------------------------------------------|
-| Template type | Source folder | Filename extension | Compiled package | Return type                 |
-|-----------------------------------------------------------------------------------------------------|
-| HTML          | `app/views`   | `.scala.html`      | `views.html`     | [play.twirl.api.Html]       |
-| XML           | `app/views`   | `.scala.xml`       | `views.xml`      | [play.twirl.api.Xml]        |
-| Javascript    | `app/views`   | `.scala.js`        | `views.js`       | [play.twirl.api.Txt]        |
-| Plain text    | `app/views`   | `.scala.txt`       | `views.txt`      | [play.twirl.api.JavaScript] |
-|=====================================================================================================|
-{: .table .table-bordered .table-responsive }
+:Template conventions for different types of content
+
+------------------------------------------------------------------------------------------------
+Template type  Source folder  Filename extension  Compiled package  Return type
+-------------- -------------- ------------------- ----------------- ----------------------------
+HTML           `app/views`    `.scala.html`       `views.html`      [play.twirl.api.Html]
+
+XML            `app/views`    `.scala.xml`        `views.xml`       [play.twirl.api.Xml]
+
+Javascript     `app/views`    `.scala.js`         `views.js`        [play.twirl.api.Txt]
+
+Plain text     `app/views`    `.scala.txt`        `views.txt`       [play.twirl.api.JavaScript]
+------------------------------------------------------------------------------------------------
 </div>
-
-
 
 ### Parameters and expressions
 
@@ -85,12 +85,12 @@ Twirl templates can have any number of parameters of arbitrary types. They also 
 
 ~~~ html
 <!-- user.scala.html -->
-@(user: User, showEmail: Boolean = true)(implicit obfuscate: EmailObfuscator)
+@(user: User, showEmail: Boolean = true)(implicit obfs: EmailObfuscator)
 
 <ul>
   <li>@user.name</li>
   @if(showEmail) {
-    <li>@obfuscate(user.email)</li>
+    <li>@obfs(user.email)</li>
   }
 </ul>
 ~~~
@@ -102,7 +102,7 @@ The template body is compiled to a single Scala expression that appends all the 
  - `Optional` values yield text content when full and no content when empty;
  - `Unit` values yield no content.
 
-Twirl embedded expression syntax is inspired by Scala syntax. Here is a brief synopsis -- for more information see Play's [documentation on template syntax].
+Twirl embedded expression syntax is inspired by Scala syntax. Here is a brief synopsis -- for more information see Play's [documentation on template syntax](docs-templates).
 
 
 
@@ -198,16 +198,18 @@ If we delimit the true and false arms using braces, Twirl treats them as HTML. O
 <!-- a = 1000, b = 2000 -->
 <p>
   @if(1 > 2) {
-    <em>Help! All of maths is wrong!</em>
+    <em>Help! All is wrong!</em>
   } else {
-    <em>Phew! Looks like we're ok.</em>
+    <em>Phew! All is good.</em>
   }
 </p>
 ~~~
 </div>
 <div class="col-sm-6">
 ~~~ html
-<p><em>Phew! Looks like we're ok.</em></p>
+<p>
+  <em>Phew! All is good.</em>
+</p>
 ~~~
 </div>
 </div>
@@ -217,12 +219,18 @@ If we omit the false arm of a Scala conditional, it evaluates to `Unit`. Twirl r
 <div class="row">
 <div class="col-sm-6">
 ~~~ html
-<p>Everything is @if(false) { NOT } ok.</p>
+<p>
+  Everything is
+  @if(false) { NOT } ok.
+</p>
 ~~~
 </div>
 <div class="col-sm-6">
 ~~~ html
-<p>Eerything is  ok.</p>
+<p>
+  Eerything is
+   ok.
+</p>
 ~~~
 </div>
 </div>
@@ -236,10 +244,14 @@ If we wrap the right-hand-sides of case clauses in braces, Twirl treats them as 
 ~~~ html
 <p>
   @List("foo", "bar", "baz") match {
-    case Nil => "the list is empty"
+    case Nil =>
+      "the list is empty"
+
     case a :: b => {
-      <em>the list has many elements:
-      @a, and @(b.lenth) others</em>
+      <em>
+        the list contains @a,
+        and @(b.lenth) other items
+      </em>
     }
   }
 </p>
@@ -248,8 +260,10 @@ If we wrap the right-hand-sides of case clauses in braces, Twirl treats them as 
 <div class="col-sm-6">
 ~~~ html
 <p>
-  <em>the list has mane elements:
-  foo, and 2 others</em>
+  <em>
+    the list contains foo,
+    and 2 other items
+  </em>
 </p>
 ~~~
 </div>
@@ -288,7 +302,7 @@ Twirl provides a `defining` method as a means of aliasing complex Scala expressi
 <div class="col-sm-6">
 ~~~ html
 <p>
-  @defining(1 + 2 + 3 + 4 + 5) { sum =>
+  @defining(1 + 2 + 3 + 4) { sum =>
     The answer is @sum.
   }
 </p>
@@ -297,7 +311,7 @@ Twirl provides a `defining` method as a means of aliasing complex Scala expressi
 <div class="col-sm-6">
 ~~~ html
 <p>
-  The answer is 15.
+  The answer is 10.
 </p>
 ~~~
 </div>
@@ -312,17 +326,17 @@ Because Twirl templates compile to Scala functions, we can call one template fro
 <div class="row">
 <div class="col-sm-6">
 ~~~ html
-<!-- In app/views/main.scala.html -->
+<!-- app/views/main.scala.html -->
 @hello("Dave")
 
-<!-- In app/views/hello.scala.html -->
+<!-- app/views/hello.scala.html -->
 @(name: String)
 
 @layout("Hello " + name) {
   <p>Hello there, @name.</p>
 }
 
-<!-- In app/views/layout.scala.html -->
+<!-- app/views/layout.scala.html -->
 @(title: String)(body: Html)
 
 <html>
@@ -359,4 +373,3 @@ We place Twirl templates in the `app/views` folder and give them the extension `
 Templates are compiled to singleton Scala functions in the `views.html` package.
 
 Template functions accept whatever parameters we define and return instances of [play.twirl.api.Html]. Play understands how to serialize `Html` objects as content within `Results`. It even sets the `Content-Type` for us.
-

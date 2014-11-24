@@ -142,6 +142,30 @@ $for(header-includes)$
 $header-includes$
 $endfor$
 
+\usepackage{multicol}
+
+\usepackage[xcolor]{mdframed}
+\newmdenv[%
+  topline=false,bottomline=false,leftline=false,rightline=false,linewidth=0,
+  leftmargin=0,rightmargin=0,innertopmargin=1em,innerbottommargin=1em,
+  frametitlebelowskip=1em,
+  backgroundcolor=blue!5,
+  frametitle=Tip]{InfoCallout}
+\newmdenv[%
+  topline=false,bottomline=false,leftline=false,rightline=false,linewidth=0,
+  leftmargin=0,rightmargin=0,innertopmargin=1em,innerbottommargin=1em,
+  frametitlebelowskip=1em,
+  backgroundcolor=yellow!10,
+  frametitle=Advanced]{WarningCallout}
+\newmdenv[%
+  topline=false,bottomline=false,leftline=false,rightline=false,linewidth=0,
+  leftmargin=0,rightmargin=0,innertopmargin=1em,innerbottommargin=1em,
+  frametitlebelowskip=1em,
+  backgroundcolor=red!5,
+  frametitle=Warning]{DangerCallout}
+
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},fontsize=\small}
+
 \begin{document}
 $if(title)$
 \maketitle

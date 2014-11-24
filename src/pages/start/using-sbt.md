@@ -1,8 +1,3 @@
----
-layout: page
-title: Developing Using SBT
----
-
 ## Developing Using SBT
 
 TODO:

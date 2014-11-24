@@ -10,21 +10,19 @@ Play provides a convenient set of factory objects for creating `Results`. These 
 
 :Result codes
 
-+----------------------------+-----------------------------------------+
-| Constructor                | HTTP status code                        |
-+============================+=========================================+
-| `Ok`                       | 200 Ok                                  |
-+----------------------------+-----------------------------------------+
-| `NotFound`                 | 404 Not Found                           |
-+----------------------------+-----------------------------------------+
-| `InternalServerError`      | 500 Internal Server Error               |
-+----------------------------+-----------------------------------------+
-| `Unauthorized`             | 401 Unauthorized                        |
-+----------------------------+-----------------------------------------+
-| `Status(number)`           | `number` (an `Int`) -- anything we want |
-+----------------------------+-----------------------------------------+
+-------------------------------------------------------------------
+Constructor                 HTTP status code
+--------------------------- ---------------------------------------
+`Ok`                        200 Ok
 
+`NotFound`                  404 Not Found
 
+`InternalServerError`       500 Internal Server Error
+
+`Unauthorized`              401 Unauthorized
+
+`Status(number)`            `number` (an `Int`) -- anything we want
+-------------------------------------------------------------------
 
 Each factory has an `apply` method that creates a `Result` with a different HTTP status code. `Ok.apply` creates 200 responses, `NotFound.apply` creates 404 responses, and so on. The `Status` object is different: it allows us to specify the status as an `Int` parameter. The end result in each case is a `Result` that we can return from our `Action`:
 
@@ -34,26 +32,27 @@ val result2: Result = NotFound("Is it behind the fridge?")
 val result3: Result = Status(401)("Access denied, Dave.")
 ~~~
 
-
-
 ### Adding Content
 
 Play adds `Content-Type` headers to our `Results` based on the type of data we provide. In the examples above we provide `String` data. creating three results of `Content-Type: text/plain`.
 
 We can create `Results` using values of other Scala types, provided Play understands how to serialize them. Play even sets the `Content-Type` header for us as a convenience. Here are some examples:
 
-|----------------------------------------------+----------------------------|
-| Using this Scala type...                     | Yields this result type... |
-|----------------------------------------------+----------------------------|
-| `String`                                     | `text/plain`               |
-| [play.twirl.api.Html] (see Chapter 2)        | `text/html`                |
-| [play.api.libs.json.JsValue] (see Chapter 3) | `application/json`         |
-| `scala.xml.NodeSeq`                          | `application/xml`          |
-| `Array[Byte]`                                | `application/octet-stream` |
-|==============================================+============================|
-{: .table .table-bordered .table-responsive }
+:Result `Content-Types`
 
+-----------------------------------------------------------------------------------------
+Using this Scala type...                                       Yields this result type...
+-------------------------------------------------------------- --------------------------
+`String`                                                       `text/plain`
 
+[play.twirl.api.Html] (see [Chapter 2](#chapter-html))         `text/html`
+
+[play.api.libs.json.JsValue] (see [Chapter 3](#chapter-json))  `application/json`
+
+`scala.xml.NodeSeq`                                            `application/xml`
+
+`Array[Byte]`                                                  `application/octet-stream`
+-----------------------------------------------------------------------------------------
 
 The process of creating a `Result` is type-safe -- Play determines the method of serialization based on the *type* we give it. If it understands what to do with our data, we get a working `Result`. If it doesn't understand the type we give it, we get a compilation error. As a consequence, the final steps in an `Action` tend to be:
 
@@ -70,7 +69,7 @@ The process of creating a `Result` is type-safe -- Play determines the method of
  4. return the `Result`.
 
 <div class="callout callout-warning">
-#### Advanced: Custom Result Types
+*Custom Result Types*
 
 Play understands a limited set of result content types out-of-the-box. We can add support for our own types by defining instances of the [play.api.http.Writeable] type class. See the Scaladocs for more information:
 

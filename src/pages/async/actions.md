@@ -1,8 +1,3 @@
----
-layout: page
-title: Asynchronous Actions
----
-
 ## Asynchronous Actions
 
 In the previous sections we saw how to create and compose `Futures` to schedule asyncronous tasks. In this section we will see how to use `Futures` to create *asynchronous actions* in Play.
@@ -70,5 +65,3 @@ We cannot eliminate blocking by converting a synchronous action to an asynchrono
 We write asynchronous actions using `Action.async`. This is similar to `Action.apply` except that we must return a `Future[Result]` instead of a plain `Result`.
 
 If we are using blocking I/O, wrapping it in a `Future` doesn't make it go away. However, dealing with long-running tasks in shorter chunks can make actions easier to schedule under high load.
-
-

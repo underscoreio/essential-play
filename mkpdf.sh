@@ -22,9 +22,11 @@ echo "Running Pandoc @ $(date)"
 # Input formats we use:
 FORMATS=markdown+grid_tables+multiline_tables+fenced_code_blocks+fenced_code_attributes+yaml_metadata_block
 
-cat running.order | xargs        \
+cat running.order | grep -v '#' | xargs \
  pandoc -S                       \
   -o essential-play.pdf          \
+  --filter pandoc/callout.coffee \
+  --filter pandoc/columns.coffee \
   -V papersize:a4paper           \
   --latex-engine=xelatex         \
   -V mainfont:'Lato'             \

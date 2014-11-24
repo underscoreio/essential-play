@@ -1,8 +1,3 @@
----
-layout: page
-title: JSON Formats
----
-
 ## JSON Formats
 
 In the previous sections we saw how to use the `Reads` and `Writes` traits to convert between JSON and well-typed Scala data. In this section we introduce a third trait, `Format`, that subsumes both `Reads` and `Writes`.

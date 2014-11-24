@@ -1,8 +1,3 @@
----
-layout: page
-title: "Custom Formats: Part 3"
----
-
 ## Custom Formats: Part 3
 
 In this final section, we cover a common use-case -- creating `Reads`, `Writes`, and `Formats` for generalised hierarchies of types.

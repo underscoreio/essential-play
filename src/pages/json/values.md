@@ -1,11 +1,6 @@
----
-layout: page
-title: Modelling JSON
----
-
 ## Modelling JSON
 
-Play models JSON data using a family of case classes of type [play.api.libs.json.JsValue], representing each of the data types in the [JSON specification]
+Play models JSON data using a family of case classes of type [play.api.libs.json.JsValue], representing each of the data types in the [JSON specification](link-json-spec).
 
 ~~~ scala
 package play.api.libs.json
@@ -144,7 +139,7 @@ def index = Action(parse.json) { request =>
 ~~~
 
 <div class="callout callout-warning">
-#### Advanced: Parsing and Stringifying JSON
+*Parsing and Stringifying JSON*
 
 We typically don't have to directly parse stringified JSON If we do, we can use the `parse` method of [play.api.libs.json.Json]
 

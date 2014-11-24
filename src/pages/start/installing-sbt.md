@@ -1,8 +1,3 @@
----
-layout: page
-title: Installing SBT
----
-
 ## Installing SBT
 
 TODO:

@@ -1,8 +1,3 @@
----
-layout: page
-title: Handling Failure
----
-
 ## Handling Failure
 
 At this point we have covered all the basics for this chapter. We have learned how to set up routes, write `Actions`, handle `Requests`, and create `Results`.

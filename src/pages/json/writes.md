@@ -1,8 +1,3 @@
----
-layout: page
-title: Writing JSON
----
-
 ## Writing JSON
 
 The application code in a typical REST API operates on a domain model consisting of sealed traits and case classes.
@@ -129,7 +124,7 @@ genericOkResult(Address(29, "Acacia Road"))
 Veterans of *Underscore's Essential Scala* course will recognise this as the *type class pattern*!
 
 <div class="callout callout-info">
-#### Summary: *Writes* Best Practices
+*Writes Best Practices*
 
 Because `Writes` is a type class, we can conveniently apply the *type class pattern* to our web applications:
 
@@ -146,4 +141,3 @@ We convert Scala data to JSON using instances of [play.api.libs.json.Writes].
 Play provides a convenient macro, `Json.writes`, to define a `Writes` for case classes. If we're not dealing with case classes, we have to create `Writes` by hand.
 
 We can use the `Json.toJson` method to serialize any data type for which we have an `implicit` `Writes` in scope. We therefore typically define `Writes` in companion objects or singleton objects, and bring them into scope wherever we need them to create `Results`.
-

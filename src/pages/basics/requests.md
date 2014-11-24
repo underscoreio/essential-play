@@ -1,8 +1,3 @@
----
-layout: page
-title: Parsing Requests
----
-
 ## Parsing Requests
 
 So far we have seen how to create `Actions` and map them to URIs using *routes*. In the rest of this chapter we will take a closer look at the code we write in the actions themselves.
@@ -30,26 +25,24 @@ So what type does `request.body` return in the examples we've seen so far? We ha
 
 :Body parser return types
 
-+--------------------------------+------------------------------------+--------------------------------+
-| Method of `AnyContent`         | Return type                        | Works on `Content-Type`        |
-+================================+====================================+================================+
-| `asText`                       | `Option[String]`                   | `text/plain`                   |
-+--------------------------------+------------------------------------+--------------------------------+
-| `asFormUrlEncoded`             | `Option[Map[String, Seq[String]]]` | `application/form-url-encoded` |
-+--------------------------------+------------------------------------+--------------------------------+
-| `asMultipartFormData`          | `Option[MultipartFormData]`        | `multipart/form-data`          |
-+--------------------------------+------------------------------------+--------------------------------+
-| `asJson`                       | `Option[JsValue]`                  | `application/json`             |
-+--------------------------------+------------------------------------+--------------------------------+
-| `asXml`                        | `Option[NodeSeq]`                  | `application/xml`              |
-+--------------------------------+------------------------------------+--------------------------------+
-| `asRaw`                        | `Option[RawBuffer]`                | any                            |
-+--------------------------------+------------------------------------+--------------------------------+
+----------------------------------------------------------------------------------------------------
+Method of `AnyContent`          Request content type            Return type
+------------------------------- ------------------------------- ------------------------------------
+`asText`                        `text/plain`                    `Option[String]`
 
+`asFormUrlEncoded`              `application/form-url-encoded`  `Option[Map[String, Seq[String]]]`
 
+`asMultipartFormData`           `multipart/form-data`           `Option[MultipartFormData]`
+
+`asJson`                        `application/json`              `Option[JsValue]`
+
+`asXml`                         `application/xml`               `Option[NodeSeq]`
+
+`asRaw`                         any                             `Option[RawBuffer]`
+----------------------------------------------------------------------------------------------------
 
 <div class="callout callout-warning">
-#### Advanced: Custom Body Parsers
+*Custom Body Parsers*
 
 `AnyContent` is a convenient way to parse common types of request bodies. However, it suffers from two drawbacks:
 
@@ -80,9 +73,7 @@ def action = Action(myDataParser) { request =>
 }
 ~~~
 
-See Play's [documentation on body parsers] for more information.
-
-
+See Play's [documentation on body parsers](docs-body-parsers) for more information.
 </div>
 
 ### Headers and Cookies
@@ -115,8 +106,6 @@ object RequestDemo extends Controller {
   }
 }
 ~~~
-
-
 
 ### Methods and URIs
 

@@ -1,8 +1,3 @@
----
-layout: page
-title: Calling Remote Web Services
----
-
 ## Calling Remote Web Services
 
 I/O operations are the biggest sources of latency in web applications. Database queries, file access, and requests to external web services all take orders of magnitude more time than application code running in-memory. Most libraries in the Java and Scala ecosystems use *blocking I/O*, which is as much of a latency problem for asynchronous applications as it is for synchronous ones.
@@ -12,7 +7,7 @@ In this section we will look at *non-blocking I/O* -- I/O that *calls us back* w
 Although non-blocking I/O is gaining in popularity, libraries are still rare in today's Java and Scala ecosystems. Play provides one of the notable Scala examples in the form of its non-blocking web services client, *Play WS*, which is the focus of this section.
 
 <div class="callout callout-info">
-### Configuration: Adding Play WS as a dependency
+*Adding Play WS as a Dependency*
 
 As of Play 2.3, the web services client is shipped in a separate JAR from core Play. We can add it to our project by including the following line in `build.sbt`:
 

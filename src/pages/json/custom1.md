@@ -1,8 +1,3 @@
----
-layout: page
-title: "Custom Formats: Part 1"
----
-
 ## Custom Formats: Part 1
 
 So far in this chapter we have seen how to use the `Json.reads`, `Json.writes` and `Json.format` macros to define `Reads`, `Writes` and `Formats` for case classes. In this section, we will see what we can do when we are dealing with types that *aren't* case classes.
@@ -45,9 +40,9 @@ implicit object lightFormat extends Format[Color] {
 We can easily adapt this code to create a separate `Reads` or `Writes` -- we simply extend `Reads` or `Writes` instead of `Format` and remove the definition of `writes` or `reads` as appropriate.
 
 <div class="callout callout-warning">
-#### Advanced: Internationalization
+*Internationalization*
 
-Note the construction of the `JsError`, which mimics the way Play handles internationalization of error messages. Each type of error has its own *error code*, allowing us to build internationalization tables on the client. The [built-in error codes] are rather poorly documented -- a list can be found in the Play source code.
+Note the construction of the `JsError`, which mimics the way Play handles internationalization of error messages. Each type of error has its own *error code*, allowing us to build internationalization tables on the client. The [built-in error codes](link-error-codes) are rather poorly documented -- a list can be found in the Play source code.
 
 
 </div>

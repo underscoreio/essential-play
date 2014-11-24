@@ -1,8 +1,3 @@
----
-layout: page
-title: "Custom Formats: Part 2"
----
-
 ## Custom Formats: Part 2
 
 Writing complex `Reads` using simple Scala code is difficult. Every time we unpack a field from the JSON, we have to consider potential errors such as the field being missing or of the wrong type. What is more, we have to remember the nature and location of every error we encounter for inclusion in the `JsError`.
@@ -25,7 +20,7 @@ implicit val addressReads: Reads[Address] = (
 
 We have a lot more flexibility using this syntax than we do with `Json.reads`. We can change the field names for `"number"` and `"street"`, introduce default values for fields, validate that the house number is greater than zero, and so on.
 
-We won't cover all of these options here -- the full DSL is described in the [Play documentation]. In the remainder of this section we will dissect the `addressReads` example above and explain how it works.
+We won't cover all of these options here -- the full DSL is described in the [Play documentation](docs-json-combinators). In the remainder of this section we will dissect the `addressReads` example above and explain how it works.
 
 
 #### Dissecting the DSL
