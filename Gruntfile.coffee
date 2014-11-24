@@ -123,9 +123,12 @@ module.exports = (grunt) ->
 
     grunt.verbose.subhead("pandoc")
 
+    distPath = "dist/" + target + "/"
+    output   = distPath + "essential-play." + target
+    grunt.file.mkdir(distPath)
+
     switch target
       when "pdf"
-        target   = "dist/pdf/essential-play.pdf"
         template = "src/templates/template.tex"
       when "html"
         output   = "dist/html/index.html"
