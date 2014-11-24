@@ -30,6 +30,8 @@ cat running.order | xargs        \
   -V mainfont:'[Color=primary, Path=fonts/Lato2OFL/,BoldItalicFont=Lato-BlackItalic,BoldFont=Lato-Bold,ItalicFont=Lato-Italic]{Lato-Regular}'   \
   -V monofont:'Menlo'            \
   -V fontsize:11pt               \
+  -V lof:true                    \
+  -V lot:true                    \
   --chapters                     \
   --number-sections              \
   --table-of-contents            \
