@@ -27,7 +27,7 @@ cat running.order | xargs        \
   -o essential-play.pdf          \
   -V papersize:a4paper           \
   --latex-engine=xelatex         \
-  -V mainfont:'Lato'             \
+  -V mainfont:'[Color=primary, Path=fonts/Lato2OFL/,BoldItalicFont=Lato-BlackItalic,BoldFont=Lato-Bold,ItalicFont=Lato-Italic]{Lato-Regular}'   \
   -V monofont:'Menlo'            \
   -V fontsize:11pt               \
   --chapters                     \
@@ -40,3 +40,5 @@ cat running.order | xargs        \
   --standalone                   \
   --self-contained               \
   pandoc/metadata.yaml
+
+
