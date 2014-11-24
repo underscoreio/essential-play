@@ -92,20 +92,22 @@ The result of the combination is a *builder* object that we can use to create la
 
 More formally, if we combine a `Reads[A]` and a `Reads[B]` using `and`, we get a *`Reads` builder* of type `CanBuild2[Int, String]`. Builders have the following methods:
 
-|---------------------------------------------------------------------------------|
+: Reads builder methods
+
++-------------------------+----------+------------------+-------------------------+
 | Type of `Reads` builder | Method   | Parameters       | Returns                 |
-|-------------------------------------------------------+-------------------------|
++=========================+==========+==================+=========================+
 | `CanBuild2[A, B]`       | `tupled` | None             | `Reads[(A, B)]`         |
 | `CanBuild2[A, B]`       | `apply`  | `(A, B) => X`    | `Reads[X]`              |
 | `CanBuild2[A, B]`       | `and`    | `Reads[C]`       | `CanBuild3[A, B, C]`    |
-|-------------------------------------------------------+-------------------------|
++-------------------------+----------+------------------+-------------------------+
 | `CanBuild3[A, B, C]`    | `tupled` | None             | `Reads[(A, B, C)]`      |
 | `CanBuild3[A, B, C]`    | `apply`  | `(A, B, C) => X` | `Reads[X]`              |
 | `CanBuild3[A, B, C]`    | `and`    | `Reads[C]`       | `CanBuild4[A, B, C, D]` |
-|-------------------------------------------------------+-------------------------|
++-------------------------+----------+------------------+-------------------------+
 | `CanBuild4[A, B, C, D]` | etc...   | etc...           | etc...                  |
-|=================================================================================|
-{: .table .table-bordered .table-responsive }
++-------------------------+----------+------------------+-------------------------+
+
 
 The idea of the builder pattern is to use `and` to create progressively larger builders (up to `CanBuild21`), and then `tupled` or `apply` to create a `Reads` for our result type. Let's look at the `tupled` method as an example:
 
