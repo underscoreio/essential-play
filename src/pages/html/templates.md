@@ -44,14 +44,19 @@ object helloWorld {
 
 We should place templates in the `app/views` folder and give them `.scala.html` filename extensions. Their compiled forms are named based on our filenames and placed in the `views.html` package. Here are some examples:
 
-|---------------------------------------------------------------------------------|
+:Template paths
+
++----------------------------------------+----------------------------------------+
 | Template file name                     | Scala object name                      |
-|---------------------------------------------------------------------------------|
++========================================+========================================+
 | `views/helloWorld.scala.html`          | `views.html.helloWorld`                |
++----------------------------------------+----------------------------------------+
 | `views/user/loginForm.scala.html`      | `views.html.user.loginForm`            |
++----------------------------------------+----------------------------------------+
 | `views/foo/bar/baz.scala.html`         | `views.html.foo.bar.baz`               |
-|=================================================================================|
-{: .table .table-bordered .table-responsive }
++----------------------------------------+----------------------------------------+
+
+
 
 Templates return objects of type [play.twirl.api.Html]. Play knows how to serialize `Html` values in the `Results`. This makes it easy to use templates in our `Actions`:
 
@@ -66,15 +71,20 @@ def index = Action { request =>
 
 Twirl templates can also be used to generate XML, Javascript, and plain text responses. The folders, packages, and return types vary, but otherwise these templates are identical to the HTML templates discussed here:
 
-|-----------------------------------------------------------------------------------------------------|
+:Twirl templates
+
++---------------+---------------+--------------------+------------------+-----------------------------+
 | Template type | Source folder | Filename extension | Compiled package | Return type                 |
-|-----------------------------------------------------------------------------------------------------|
++===============+===============+====================+==================+=============================+
 | HTML          | `app/views`   | `.scala.html`      | `views.html`     | [play.twirl.api.Html]       |
++---------------+---------------+--------------------+------------------+-----------------------------+
 | XML           | `app/views`   | `.scala.xml`       | `views.xml`      | [play.twirl.api.Xml]        |
++---------------+---------------+--------------------+------------------+-----------------------------+
 | Javascript    | `app/views`   | `.scala.js`        | `views.js`       | [play.twirl.api.Txt]        |
++---------------+---------------+--------------------+------------------+-----------------------------+
 | Plain text    | `app/views`   | `.scala.txt`       | `views.txt`      | [play.twirl.api.JavaScript] |
-|=====================================================================================================|
-{: .table .table-bordered .table-responsive }
++---------------+---------------+--------------------+------------------+-----------------------------+
+
 </div>
 
 
