@@ -42,18 +42,21 @@ Play adds `Content-Type` headers to our `Results` based on the type of data we p
 
 We can create `Results` using values of other Scala types, provided Play understands how to serialize them. Play even sets the `Content-Type` header for us as a convenience. Here are some examples:
 
-|----------------------------------------------+----------------------------|
+:Result types
+
++----------------------------------------------+----------------------------+
 | Using this Scala type...                     | Yields this result type... |
-|----------------------------------------------+----------------------------|
++==============================================+============================+
 | `String`                                     | `text/plain`               |
++----------------------------------------------+----------------------------+
 | [play.twirl.api.Html] (see Chapter 2)        | `text/html`                |
++----------------------------------------------+----------------------------+
 | [play.api.libs.json.JsValue] (see Chapter 3) | `application/json`         |
++----------------------------------------------+----------------------------+
 | `scala.xml.NodeSeq`                          | `application/xml`          |
++----------------------------------------------+----------------------------+
 | `Array[Byte]`                                | `application/octet-stream` |
-|==============================================+============================|
-{: .table .table-bordered .table-responsive }
-
-
++----------------------------------------------+----------------------------+
 
 The process of creating a `Result` is type-safe -- Play determines the method of serialization based on the *type* we give it. If it understands what to do with our data, we get a working `Result`. If it doesn't understand the type we give it, we get a compilation error. As a consequence, the final steps in an `Action` tend to be:
 
