@@ -41,6 +41,7 @@ cat running.order | xargs        \
   --template=pandoc/template.tex \
   --standalone                   \
   --self-contained               \
+  --include-before-body=pandoc/preface.tex \
   pandoc/metadata.yaml
 
 
