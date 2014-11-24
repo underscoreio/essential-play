@@ -29,9 +29,11 @@ cat running.order | grep -v '#' | xargs \
   --filter pandoc/columns.coffee \
   -V papersize:a4paper           \
   --latex-engine=xelatex         \
-  -V mainfont:'Lato'             \
+  -V mainfont:'[Color=primary, Path=fonts/Lato2OFL/,BoldItalicFont=Lato-BlackItalic,BoldFont=Lato-Bold,ItalicFont=Lato-Italic]{Lato-Regular}'   \
   -V monofont:'Menlo'            \
   -V fontsize:11pt               \
+  -V lof:true                    \
+  -V lot:true                    \
   --chapters                     \
   --number-sections              \
   --table-of-contents            \
@@ -41,4 +43,7 @@ cat running.order | grep -v '#' | xargs \
   --template=pandoc/template.tex \
   --standalone                   \
   --self-contained               \
+  --include-before-body=pandoc/preface.tex \
   pandoc/metadata.yaml
+
+
