@@ -63,7 +63,7 @@ method  URI                            Resulting method call
 `GET`   `/send/a/message/to/dave`      None -- 404 (extra path segment)
 
 ---------------------------------------------------------------------------------------------------
-:Here are some examples by way of illustration:
+:Example URI to controller route mappings
 
 <div class="callout callout-info">
 #### Tip: Coping with Routing Strictness
