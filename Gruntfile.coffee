@@ -110,6 +110,7 @@ module.exports = (grunt) ->
         tasks: [
           "pandoc:html"
           "pandoc:pdf"
+          "pandoc:epub"
         ]
       pages:
         files: [
@@ -118,6 +119,7 @@ module.exports = (grunt) ->
         tasks: [
           "pandoc:html"
           "pandoc:pdf"
+          "pandoc:epub"
         ]
       metadata:
         files: [
@@ -126,6 +128,7 @@ module.exports = (grunt) ->
         tasks: [
           "pandoc:html"
           "pandoc:pdf"
+          "pandoc:epub"
         ]
 
     connect:
@@ -159,10 +162,17 @@ module.exports = (grunt) ->
         filters  = joinLines """
                      --filter=src/filters/html/tables.coffee
                    """
+      when "epub"
+        output   = "--output=dist/essential-play.epub"
+        template = "--epub-stylesheet=dist/temp/main.css"
+        filters  = ""
       when "json"
         output   = "--output=dist/essential-play.json"
         template = ""
         filters  = ""
+
+      else
+        grunt.log.error("Bad pandoc format: #{target}")
 
     command = joinLines """
       pandoc
@@ -227,6 +237,12 @@ module.exports = (grunt) ->
     "pandoc:pdf"
   ]
 
+  grunt.registerTask "epub", [
+    "less"
+    "cssUrlEmbed"
+    "pandoc:epub"
+  ]
+
   grunt.registerTask "serve", [
     "build"
     "connect:server"
@@ -236,6 +252,7 @@ module.exports = (grunt) ->
   grunt.registerTask "watch", [
     "html"
     "pdf"
+    "epub"
     "connect:server"
     "watchImpl"
     "serve"

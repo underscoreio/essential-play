@@ -1,4 +1,5 @@
-.toc {
+// For HTML:
+nav.toc {
   h1 {
     margin-top: @line-height-computed;
   }
@@ -25,6 +26,34 @@
             padding-bottom: 0;
             font-size: @font-size-base * 1.0;
           }
+        }
+      }
+    }
+  }
+}
+
+// For EPUB:
+ol.toc {
+  .list-unstyled();
+
+  a { display: block; }
+
+  > li {
+    > a {
+      padding-top: 1*@line-height-computed;
+      font-size: @font-size-base * 1.5;
+    }
+    > ol > li {
+      > a {
+        padding-top: 1*@line-height-computed;
+        padding-bottom: .5*@line-height-computed;
+        font-size: @font-size-base * 1.2;
+      }
+      > ol > li {
+        > a {
+          padding-top: .25*@line-height-computed;
+          padding-bottom: 0;
+          font-size: @font-size-base * 1.0;
         }
       }
     }
