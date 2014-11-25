@@ -38,8 +38,6 @@ val json: JsValue = addressWrites.writes(address)
 assert(json == Json.obj("number" -> 29, "street" -> "Acacia Road"))
 ~~~
 
-
-
 ### Implicit Writes
 
 Let's look at a more complicated example---what happens when we try to define a `Writes` for a nested data structure?
@@ -71,7 +69,6 @@ case class Person(name: String, address: Address)
 implicit val addressWrites = Json.writes[Address]
 val personWrites = Json.writes[Person] // now this compiles!
 ~~~
-
 
 ### The *Json.toJson* Method
 

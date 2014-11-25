@@ -20,6 +20,7 @@ module.exports = (grunt) ->
 
   pandocSources = joinLines """
     src/pages/intro/index.md
+    src/pages/intro/conventions.md
     src/pages/basics/index.md
     src/pages/basics/actions.md
     src/pages/basics/routes.md

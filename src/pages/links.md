@@ -11,6 +11,10 @@
 [link-non-blocking]:                      http://en.wikipedia.org/wiki/Non-blocking_algorithm
 [link-play]:                              http://playframework.com
 [link-twitter-bootstrap]:                 http://getbootstrap.com
+[link-twitter-jono]:                      http://twitter.com/jonoabroad
+[link-twitter-noel]:                      http://twitter.com/noelwelsh
+[link-twitter-richard]:                   http://twitter.com/d6y
+[link-underscore]:                        http://underscore.io
 [link-using-bootstrap-with-play]:         http://stackoverflow.com/questions/10436815/how-to-use-twitter-bootstrap-2-with-play-framework-2-x
 
 [`org.joda.time.DateTime`]:               http://www.joda.org/joda-time/apidocs/index.html
