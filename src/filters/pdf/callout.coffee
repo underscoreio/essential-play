@@ -1,6 +1,6 @@
 #!/usr/bin/env coffee
 
-pandoc = require('pandoc-filter')
+pandoc = require 'pandoc-filter'
 
 action = (type, value, format, meta) ->
   switch type

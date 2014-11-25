@@ -1,4 +1,6 @@
-window.jQuery = $ = require "jquery"
-_ = require "underscore"
+# $      = require 'jquery'
+# navbar = require './navbar'
 
-dropdown = require "bootstrap/js/dropdown"
+# $ ->
+#   navbar.init()
+#   return

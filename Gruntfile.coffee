@@ -13,6 +13,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks "grunt-contrib-less"
   grunt.loadNpmTasks "grunt-contrib-watch"
   grunt.loadNpmTasks "grunt-exec"
+  grunt.loadNpmTasks "grunt-css-url-embed"
 
   joinLines = (lines) ->
     lines.split(/[ \r\n]+/).join(" ")
@@ -58,12 +59,19 @@ module.exports = (grunt) ->
           compress: minify
           yuicompress: minify
         files:
-          "dist/html/css/main.css" : "src/css/main.less"
+          "dist/temp/main.noembed.css" : "src/css/main.less"
+
+    cssUrlEmbed:
+      main:
+        options:
+          baseDir: "."
+        files:
+          "dist/temp/main.css" : "dist/temp/main.noembed.css"
 
     browserify:
       main:
         src:  "src/js/main.coffee"
-        dest: "dist/html/js/main.js"
+        dest: "dist/temp/main.js"
         cwd:  "."
         options:
           watch: false
@@ -84,6 +92,8 @@ module.exports = (grunt) ->
         ]
         tasks: [
           "less"
+          "cssUrlEmbed"
+          "pandoc:html"
         ]
       js:
         files: [
@@ -91,6 +101,7 @@ module.exports = (grunt) ->
         ]
         tasks: [
           "browserify"
+          "pandoc:html"
         ]
       templates:
         files: [
@@ -111,7 +122,7 @@ module.exports = (grunt) ->
       server:
         options:
           port: 4000
-          base: 'dist/html'
+          base: 'dist'
 
   grunt.renameTask "watch", "watchImpl"
 
@@ -126,26 +137,28 @@ module.exports = (grunt) ->
 
     switch target
       when "pdf"
-        template = "src/templates/template.tex"
+        output   = "--output=dist/essential-play.pdf"
+        template = "--template=src/templates/template.tex"
         filters  = joinLines """
-                     --filter=src/filters/callout.coffee
-                     --filter=src/filters/columns.coffee
-                   """
-        extras   = joinLines """
-                     --standalone
-                     --self-contained
+                     --filter=src/filters/pdf/callout.coffee
+                     --filter=src/filters/pdf/columns.coffee
                    """
       when "html"
-        output   = "dist/html/index.html"
-        template = "src/templates/template.html"
+        output   = "--output=dist/essential-play.html"
+        template = "--template=src/templates/template.html"
+        filters  = joinLines """
+                     --filter=src/filters/html/tables.coffee
+                   """
+      when "json"
+        output   = "--output=dist/essential-play.json"
+        template = ""
         filters  = ""
-        extras   = ""
 
     command = joinLines """
       pandoc
       --smart
-      --output=#{output}
-      --template=#{template}
+      #{output}
+      #{template}
       --from=markdown+grid_tables+multiline_tables+fenced_code_blocks+fenced_code_attributes+yaml_metadata_block
       --latex-engine=xelatex
       #{filters}
@@ -157,7 +170,8 @@ module.exports = (grunt) ->
       --number-sections
       --table-of-contents
       --highlight-style tango
-      #{extras}
+      --standalone
+      --self-contained
       src/meta/metadata.yaml
       #{pandocSources}
     """
@@ -188,8 +202,13 @@ module.exports = (grunt) ->
 
     return
 
+  grunt.registerTask "json", [
+    "pandoc:json"
+  ]
+
   grunt.registerTask "html", [
     "less"
+    "cssUrlEmbed"
     "browserify"
     "pandoc:html"
   ]

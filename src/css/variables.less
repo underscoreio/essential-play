@@ -2,11 +2,18 @@
 @border-radius-large:          0px;
 @border-radius-small:          0px;
 
-@pre-border-color:             transparent;
-
 @container-tablet:             (720px + @grid-gutter-width);
 @container-sm:                 @container-tablet;
 @container-desktop:            (720px + @grid-gutter-width);
 @container-md:                 @container-desktop;
 @container-large-desktop:      (720px + @grid-gutter-width);
 @container-lg:                 @container-large-desktop;
+
+@headings-font-weight:         200;
+
+@pre-border-color:             transparent;
+
+@shadow-color:             rgba(0, 0, 0, .15);
+@shadow-default:           0 4px 0 @shadow-color;
+@shadow-active:            0 4px 0 fadeIn(@shadow-color, 10%);
+@shadow-navbar:            0 4px 0 fadeOut(@shadow-color, 7%);

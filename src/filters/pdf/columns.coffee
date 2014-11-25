@@ -1,7 +1,7 @@
 #!/usr/bin/env coffee
 
-_      = require('underscore')
-pandoc = require('pandoc-filter')
+_      = require 'underscore'
+pandoc = require 'pandoc-filter'
 
 action = (type, value, format, meta) ->
   switch type
