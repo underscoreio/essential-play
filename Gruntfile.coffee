@@ -131,6 +131,11 @@ module.exports = (grunt) ->
           "pandoc:epub"
         ]
 
+    exec:
+      zip:
+        cmd: "zip essential-play.zip essential-play.pdf essential-play.html essential-play.epub"
+        cwd: "dist"
+
     connect:
       server:
         options:
@@ -196,7 +201,7 @@ module.exports = (grunt) ->
       #{pandocSources}
     """
 
-    grunt.log.write("Running: #{command}")
+    grunt.log.debug("Running: #{command}")
 
     pandoc = process.exec(command)
 
@@ -243,6 +248,20 @@ module.exports = (grunt) ->
     "pandoc:epub"
   ]
 
+  grunt.registerTask "all", [
+    "less"
+    "cssUrlEmbed"
+    "browserify"
+    "pandoc:html"
+    "pandoc:pdf"
+    "pandoc:epub"
+  ]
+
+  grunt.registerTask "zip", [
+    "all"
+    "exec:zip"
+  ]
+
   grunt.registerTask "serve", [
     "build"
     "connect:server"
@@ -250,10 +269,12 @@ module.exports = (grunt) ->
   ]
 
   grunt.registerTask "watch", [
-    "html"
-    "pdf"
-    "epub"
+    "all"
     "connect:server"
     "watchImpl"
     "serve"
+  ]
+
+  grunt.registerTask "default", [
+    "zip"
   ]

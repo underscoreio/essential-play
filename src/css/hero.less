@@ -1,6 +1,21 @@
 .hero {
-  // Height of H1+H3, plus a line's margin between them.
-  @hero-text-height: @font-size-h1 + @font-size-h3 + @line-height-computed;
+  @title-height:     2*@line-height-computed;
+  @title-spacing:      @line-height-computed;
+  @author-height:  1.5*@line-height-computed;
+  @author-spacing:     @line-height-computed;
+  @date-height:      1*@line-height-computed;
+  @date-spacing:     2*@line-height-computed;
+  @logo-height:        100px;
+  @surround-spacing: 3*@line-height-computed;
+
+  @hero-text-height:
+    @title-height   +
+    @title-spacing  +
+    @author-height  +
+    @author-spacing +
+    @date-height    +
+    @date-spacing   +
+    @logo-height;
 
   position: relative;
 
@@ -9,9 +24,8 @@
 
   .container {
     position: relative;
-    height: 40vh;
-    max-height: 480px;
-    min-height: @hero-text-height + 4*@line-height-computed + 30px;
+    height: 50vh;
+    min-height: @hero-text-height + 2*@surround-spacing + 30px;
   }
 
   .hero-text {
@@ -22,8 +36,28 @@
     bottom: 30px;
     margin: auto;
     height: @hero-text-height;
-    > :first-child { margin-top: 0; }
-    > :last-child { margin-bottom: 0; }
+    text-align: center;
+
+    .title {
+      margin: 0 0 @title-spacing;
+      line-height: @title-height;
+    }
+
+    .author {
+      margin: 0 0 @author-spacing;
+      line-height: @author-height;
+    }
+
+    .date {
+      margin: 0 0 @date-spacing;
+      line-height: @date-height;
+    }
+
+    .brand-logo {
+      display: block;
+      height: @logo-height;
+      margin: 0 auto;
+    }
   }
 }
 
@@ -47,18 +81,8 @@
   background-position: left top;
 }
 
-.hero-left-overlay-black {
-  background-image: url(src/templates/images/hero-left-overlay-black.svg);
-  background-position: left top;
-}
-
 .hero-right-overlay-white {
   background-image: url(src/templates/images/hero-right-overlay-white.svg);
-  background-position: right bottom;
-}
-
-.hero-right-overlay-black {
-  background-image: url(src/templates/images/hero-right-overlay-black.svg);
   background-position: right bottom;
 }
 

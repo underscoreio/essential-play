@@ -49,15 +49,14 @@ $endfor$
 <div class="container">
 <div class="hero-text">
 $if(title)$
-<h1>$title$</h1>
-<h3>
+<h1 class="title">$title$</h1>
 $for(author)$
-<span class="author">$author$</span>
+<h3 class="author">$author$</h3>
 $endfor$
 $if(date)$
-<span class="date">$date$</span>
+<p class="date">$date$</p>
 $endif$
-</h3>
+<img class="brand-logo" src="src/templates/images/brand.svg" alt="Underscore">
 </div>
 $endif$
 </div>
@@ -84,12 +83,44 @@ $body$
 </article>
 
 <footer>
-<div class="container">
+  <div class="container">
+    <div class="text-center">
+      <img class="footer-brand" src="src/templates/images/brand.svg" alt="Underscore" width="200px">
+    </div>
+
 $for(include-after)$
 $include-after$
 $endfor$
-</div>
+
+    <div class="row sitemap">
+      <div class="col-sm-6">
+        <h5><a href="http://underscore.io">Underscore</a></h5>
+        <ul class="list-unstyled">
+          <li><a href="http://underscore.io/training/booking.html">Book a Private Course</a></li>
+          <li><a href="http://underscore.io/training">Our Course Directory</a></li>
+          <li><a href="http://underscore.io/consulting">Our Consulting Services</a></li>
+          <li><a href="http://underscore.io/company">About Us</a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-6">
+        <h5><a href="/contact.html">Contact</a></h5>
+        <ul class="list-unstyled">
+          <li><a href="http://underscore.io">http://underscore.io</a></li>
+          <li><a href="tel:+442030955332">+44 (0)20 309 55332</a></li>
+          <li><a href="mailto:hello@underscore.io">hello@underscore.io</a></li>
+          <li><a href="http://twitter.com/underscoreuk">@underscoreuk</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="copyright text-center">
+      Copyright 2014 Underscore Consulting LLP.
+      <br class="visible-xs">
+      All rights reserved.
+    </p>
+  </div>
 </footer>
 
-  </body>
+</body>
 </html>
