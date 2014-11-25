@@ -20,7 +20,7 @@ object MyApp extends App {
 }
 ~~~
 
-Some lines of program code are too wide to fit on the page. In these cases we use a *continuation character*, "↩", to indicate that longer code should all be written on one line. For example, the following code:
+Some lines of program code are too wide to fit on the page. In these cases we use a *continuation character* (curly arrow) to indicate that longer code should all be written on one line. For example, the following code:
 
 ~~~ scala
 println("This code should all be written ↩
