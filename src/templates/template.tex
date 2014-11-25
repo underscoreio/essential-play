@@ -1,4 +1,14 @@
-\documentclass[oneside,$if(fontsize)$$fontsize$$else$11pt$endif$,$if(lang)$$lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
+\documentclass[oneside,a4paper,$if(fontsize)$$fontsize$$else$11pt$endif$,$if(lang)$$lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
+
+% Colors ----------------------------------------
+
+\usepackage[xcolor]{mdframed}
+\definecolor{bookcolor}{HTML}{A0C556}
+% \definecolor{primarycolor}{HTML}{428BCA}
+% \definecolor{successcolor}{HTML}{5CB85C}
+\definecolor{warningcolor}{HTML}{F0AD4E}
+\definecolor{dangercolor}{HTML}{D9534F}
+\definecolor{infocolor}{HTML}{5BC0DE}
 
 % Fonts -----------------------------------------
 
@@ -181,38 +191,38 @@ $for(header-includes)$
 $header-includes$
 $endfor$
 
+% Utilities for the title page ------------------
+
+\usepackage{tikz}
+
+\newenvironment{bottompar}{\par\vspace*{\fill}}{\clearpage}
+
 % Column support (see columns.coffee) -----------
 
 \usepackage{multicol}
 
 % Callout support (see callout.coffee) ----------
 
-\usepackage[xcolor]{mdframed}
-\definecolor{primary}{HTML}{428BCA}
-\definecolor{success}{HTML}{5CB85C}
-\definecolor{warning}{HTML}{F0AD4E}
-\definecolor{danger}{HTML}{D9534F}
-\definecolor{info}{HTML}{5BC0DE}
 \newmdenv[%
-  linecolor=info,linewidth=5pt,
+  linecolor=infocolor,linewidth=5pt,
   topline=false,bottomline=false,rightline=false,
   innertopmargin=1em,innerbottommargin=1em,
   splittopskip=1em,splitbottomskip=1em,
-  backgroundcolor=info!30,
+  backgroundcolor=infocolor!30,
   frametitle=Tip]{InfoCallout}
 \newmdenv[%
-  linecolor=warning,linewidth=5pt,
+  linecolor=warningcolor,linewidth=5pt,
   topline=false,bottomline=false,rightline=false,
   innertopmargin=1em,innerbottommargin=1em,
   splittopskip=1em,splitbottomskip=1em,
-  backgroundcolor=warning!30,
+  backgroundcolor=warningcolor!30,
   frametitle=Advanced]{WarningCallout}
 \newmdenv[%
-  linecolor=danger!60,linewidth=5pt,
+  linecolor=dangercolor!60,linewidth=5pt,
   topline=false,bottomline=false,rightline=false,
   innertopmargin=1em,innerbottommargin=1em,
   splittopskip=1em,splitbottomskip=1em,
-  backgroundcolor=danger!25,
+  backgroundcolor=dangercolor!25,
   frametitle=Warning]{DangerCallout}
 
 % \newmdenv[%
@@ -230,12 +240,63 @@ $endfor$
 % ===============================================
 
 \begin{document}
+\pagecolor{white}
 
 % Title page ------------------------------------
 
+\begin{titlepage}
+\pagecolor{bookcolor}
+\color{white}
+
+\begin{tikzpicture}[overlay, remember picture]
+\node[anchor=north west, xshift=-.2cm, yshift=.2cm]
+     at (current page.north west)
+     {\includegraphics{src/templates/images/hero-left-overlay-white.pdf}};
+\end{tikzpicture}
+
+\begin{tikzpicture}[overlay, remember picture]
+\node[anchor=south east, xshift=.2cm, yshift=-.2cm]
+     at (current page.south east)
+     {\includegraphics{src/templates/images/hero-right-overlay-white.pdf}};
+\end{tikzpicture}
+
+\begin{center}
+\vspace{5cm}
+
 $if(title)$
-\maketitle
+{\fontsize{1.5cm}{1em} \textsf{$title$}}
 $endif$
+
+\vspace{1em}
+
+$for(author)$
+{\fontsize{1cm}{1em} \textsf{$author$}}
+$endfor$
+
+\vspace{1em}
+
+$if(date)$
+{\fontsize{.5cm}{1em} \textsf{$date$}}
+$endif$
+
+\begin{bottompar}
+\begin{center}
+\includegraphics[width=5cm]{src/templates/images/brand.pdf}
+
+\vspace{1cm}
+
+Copyright 2014 Underscore Consulting LLP. All rights reserved.
+\end{center}
+\end{bottompar}
+
+\end{center}
+\end{titlepage}
+
+% $if(title)$
+% \maketitle
+% $endif$
+
+\pagecolor{white}
 
 % Abstract --------------------------------------
 

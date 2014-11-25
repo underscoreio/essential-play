@@ -109,6 +109,7 @@ module.exports = (grunt) ->
         ]
         tasks: [
           "pandoc:html"
+          "pandoc:pdf"
         ]
       pages:
         files: [
@@ -116,6 +117,15 @@ module.exports = (grunt) ->
         ]
         tasks: [
           "pandoc:html"
+          "pandoc:pdf"
+        ]
+      metadata:
+        files: [
+          "src/meta/**/*"
+        ]
+        tasks: [
+          "pandoc:html"
+          "pandoc:pdf"
         ]
 
     connect:
@@ -127,9 +137,9 @@ module.exports = (grunt) ->
   grunt.renameTask "watch", "watchImpl"
 
   grunt.registerTask "pandoc", "Run pandoc", (target) ->
-    done   = this.async()
+    done = this.async()
 
-    grunt.verbose.subhead("pandoc")
+    target ?= "html"
 
     distPath = "dist/" + target + "/"
     output   = distPath + "essential-play." + target
@@ -225,6 +235,7 @@ module.exports = (grunt) ->
 
   grunt.registerTask "watch", [
     "html"
+    "pdf"
     "connect:server"
     "watchImpl"
     "serve"
