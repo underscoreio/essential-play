@@ -261,7 +261,7 @@ $endfor$
 \end{tikzpicture}
 
 \begin{center}
-\vspace{5cm}
+\vspace*{5cm}
 
 $if(title)$
 {\fontsize{1.5cm}{1em} \textsf{$title$}}
@@ -285,7 +285,7 @@ $endif$
 
 \vspace{1cm}
 
-Copyright 2014 Underscore Consulting LLP. All rights reserved.
+Copyright 2014 $author$.
 \end{center}
 \end{bottompar}
 
@@ -312,6 +312,34 @@ $for(include-before)$
 $include-before$
 
 $endfor$
+
+\begin{center}
+
+\vspace*{\fill}
+
+{\Large $title$}
+
+$date$
+
+\vspace{3em}
+
+Copyright 2014 $author$.
+
+Published by Underscore Consulting LLP, Brighton, UK.
+
+\vspace{3em}
+
+Copies of this, and related topics, can be found at \href{http://underscore.io}{http://underscore.io}.
+
+Team discounts, when available, may also be found at that address.
+
+\vspace{3em}
+
+Contact the author regarding this text at: \href{mailto:hello@underscore.io}{hello@underscore.io}.
+
+\vspace*{\fill}
+
+\end{center}
 
 % Tables of contents, etc. ----------------------
 
