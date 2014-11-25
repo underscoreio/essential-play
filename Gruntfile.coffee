@@ -49,7 +49,7 @@ module.exports = (grunt) ->
 
   grunt.initConfig
     less:
-      all:
+      main:
         options:
           paths: [
             "node_modules"
@@ -58,11 +58,10 @@ module.exports = (grunt) ->
           compress: minify
           yuicompress: minify
         files:
-          "dist/html/css/screen.css" : "src/css/screen.less"
-          "dist/html/css/print.css"  : "src/css/print.less"
+          "dist/html/css/main.css" : "src/css/main.less"
 
     browserify:
-      all:
+      main:
         src:  "src/js/main.coffee"
         dest: "dist/html/js/main.js"
         cwd:  "."
@@ -98,16 +97,14 @@ module.exports = (grunt) ->
           "src/templates/**/*"
         ]
         tasks: [
-          "copy"
-          "pandoc"
+          "pandoc:html"
         ]
       pages:
         files: [
           "src/pages/**/*"
         ]
         tasks: [
-          "copy"
-          "pandoc"
+          "pandoc:html"
         ]
 
     connect:
@@ -127,9 +124,19 @@ module.exports = (grunt) ->
       when "pdf"
         target   = "dist/pdf/essential-play.pdf"
         template = "src/templates/template.tex"
+        filters  = joinLines """
+                     --filter=src/filters/callout.coffee
+                     --filter=src/filters/columns.coffee
+                   """
+        extras   = joinLines """
+                     --standalone
+                     --self-contained
+                   """
       when "html"
         output   = "dist/html/index.html"
         template = "src/templates/template.html"
+        filters  = ""
+        extras   = ""
 
     command = joinLines """
       pandoc
@@ -138,8 +145,7 @@ module.exports = (grunt) ->
       --template=#{template}
       --from=markdown+grid_tables+multiline_tables+fenced_code_blocks+fenced_code_attributes+yaml_metadata_block
       --latex-engine=xelatex
-      --filter=src/filters/callout.coffee
-      --filter=src/filters/columns.coffee
+      #{filters}
       --variable=papersize:a4paper
       --variable=lof:true
       --variable=lot:true
@@ -147,8 +153,7 @@ module.exports = (grunt) ->
       --number-sections
       --table-of-contents
       --highlight-style tango
-      --standalone
-      --self-contained
+      #{extras}
       src/meta/metadata.yaml
       #{pandocSources}
     """

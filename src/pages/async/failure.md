@@ -93,7 +93,7 @@ val future3 = Future.failed[Int](new Exception("Oh noes!"))
 
 Stack information is preserved correctly in the `Future` as we might expect.
 
-### Failures in for-comprehensions
+### Failures in For-Comprehensions
 
 Failure propagation in `Futures` has similar semantics to the propagation of `None` in `Options`. Once a failure occurs, it is propagated by calls to `map` and `flatMap`, shortcutting any mapping functions we provide. This gives `for` comprehensions over `Futures` familiar error-handling semantics:
 
