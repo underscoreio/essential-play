@@ -79,7 +79,7 @@ Plain text     `app/views`    `.scala.txt`        `views.txt`       [play.twirl.
 ------------------------------------------------------------------------------------------------
 </div>
 
-### Parameters and expressions
+### Parameters and Expressions
 
 Twirl templates can have any number of parameters of arbitrary types. They also support features such as default parameter values and multiple/implicit parameter lists:
 

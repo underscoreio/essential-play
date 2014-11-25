@@ -38,7 +38,7 @@ Play adds `Content-Type` headers to our `Results` based on the type of data we p
 
 We can create `Results` using values of other Scala types, provided Play understands how to serialize them. Play even sets the `Content-Type` header for us as a convenience. Here are some examples:
 
-:Result `Content-Types`
+:Result *Content-Types*
 
 -----------------------------------------------------------------------------------------
 Using this Scala type...                                       Yields this result type...

@@ -19,7 +19,7 @@ def difficultToSchedule = Action { request =>
 
 We should look out for long-running actions and adjust our application flow accordingly. One way of doing this is splitting our work up into easily schedulable chunks using *asynchronous actions*.
 
-### Action.async
+### *Action.async*
 
 We write asynchronous actions using the `Action.async` method:
 
