@@ -146,6 +146,7 @@ module.exports = (grunt) ->
       --variable=papersize:a4paper
       --variable=lof:true
       --variable=lot:true
+      --variable=geometry:margin=.75in        \
       --chapters
       --number-sections
       --table-of-contents
