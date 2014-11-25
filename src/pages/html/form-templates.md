@@ -4,7 +4,7 @@ In the previous section we saw how to use `Forms` to parse incoming request data
 
 ### Forms and Inputs
 
-Play provides several built-in templates in the [`views.html.helper`] package for generating `<form>` and `<input>` elements. We have to pass these data from our `Form` object, so our first step is to pass this to our own templates:
+Play provides several built-in templates in the [`views.html.helper`] package for generating `<form>` and `<input>` elements:
 
 ~~~ scala
 @(todoForm: Form[Todo])
@@ -23,7 +23,7 @@ If we place this file in `app/views/todoFormTemplate.scala.html`, we can invoke 
 Ok(views.html.todoFormTemplate(todoForm))
 ~~~
 
-Let's look at the generated HTML:
+The generated HTML contains a `<form>` element and an `<input>` and `<label>` for each field, together with hints on which fields are numeric and boolean:
 
 ~~~ html
 <form action="/todo" method="POST">
@@ -48,16 +48,10 @@ Let's look at the generated HTML:
 </form>
 ~~~
 
-The basic output contains a `<form>` element and an `<input>` and `<label>` for each field, together with hints on which fields are numeric and boolean.
-
-
-
 <div class="callout callout-warning">
 *Internationalization*
 
-Notice the text `"format.boolean"` in the generated HTML. This is an uninternationalized message that has crept through due to a missing value in Play's default string tables. We can fix the broken message by providing our own [internationalization](docs-i18n) for our application. However, this is beyond the scope of this chapter.
-
-
+Notice the text `"format.boolean"` in the generated HTML. This is an uninternationalized message that has crept through due to a missing value in Play's default string tables. We can fix the broken message by providing our own [internationalization](docs-i18n) for our application. See the linked documentation for details.
 </div>
 
 ### Pre-Filling Forms
@@ -96,7 +90,7 @@ The `<inputs>` in the `populatedHtml` here have their `value` and `checked` attr
 
 ### Displaying Validation Errors
 
-If we fail to bind a request in our `Action`, Play calls the failure argument in our call to `Form.fold`. The argument to our failure function is a `Form` containing a complete set of validation error messages. If we pass the `Form` object to our form template, Play will add the error messages to the generated HTML:
+If we fail to bind a request in our `Action`, Play calls the failure argument in our call to `Form.fold`. The argument to our failure function is a `Form` containing a complete set of validation error messages. If we pass the `Form` with errors to our form template, Play will add the error messages to the generated HTML:
 
 ~~~ scala
 val badData = Map(

@@ -184,12 +184,12 @@ module.exports = (grunt) ->
       --smart
       #{output}
       #{template}
-      --from=markdown+grid_tables+multiline_tables+fenced_code_blocks+fenced_code_attributes+yaml_metadata_block
+      --from=markdown+grid_tables+multiline_tables+fenced_code_blocks+fenced_code_attributes+yaml_metadata_block+implicit_figures
       --latex-engine=xelatex
       #{filters}
       --variable=papersize:a4paper
-      --variable=lof:true
-      --variable=lot:true
+      --variable=lof:false
+      --variable=lot:false
       --variable=geometry:margin=.75in        \
       --chapters
       --number-sections

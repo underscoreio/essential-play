@@ -2,9 +2,9 @@
 
 So far we have seen how to create `Actions` and map them to URIs using *routes*. In the rest of this chapter we will take a closer look at the code we write in the actions themselves.
 
-The first job of any `Action` is to extract data from the HTTP request and turn it into well-typed, validated Scala values. We have already seen how *routes* allow us to extract information from the URI. In this section we will see the other tools Play provides for the rest of the `Request`.
+The first job of any `Action` is to extract data from the HTTP request and turn it into well-typed, validated Scala values. We have already seen how routes allow us to extract information from the URI. In this section we will see the other tools Play provides for the rest of the `Request`.
 
-<h3 id="bodies">Request Bodies</h3>
+### Request Bodies {#bodies}
 
 The most important source of request data comes from the *body*. Clients can `POST` or `PUT` data in a huge range of formats, the most common being JSON, XML, and form data. Our first task is to identify the content type and parse the body.
 
@@ -19,7 +19,7 @@ def index = Action { request =>
 
 Play contains an number of *body parsers* that we can use to parse the request, returning a `body` of an appropriate Scala type.
 
-So what type does `request.body` return in the examples we've seen so far? We haven't chosen a body parser, nor have we indicated the type of body anywhere in our code. Play *cannot* know the content-type of a request at compile time, so how is this handled? The answer is quite clever -- by default our actions handle requests of type `Request[AnyContent]`.
+So what type does `request.body` return in the examples we've seen so far? We haven't chosen a body parser, nor have we indicated the type of body anywhere in our code. Play *cannot* know the `Content-Type` of a request at compile time, so how is this handled? The answer is quite clever -- by default our actions handle requests of type `Request[AnyContent]`.
 
 [`play.api.mvc.AnyContent`] allows us to *choose* how to read the request in our `Action` code. It reads the request body into a buffer and provides methods to parse it in a handful of common formats. Each method has an `Optional` result, returning `None` if the request is empty or has the wrong `Content-Type`:
 
@@ -107,6 +107,8 @@ object RequestDemo extends Controller {
 }
 ~~~
 
+Note that the `Headers.get` method is case insensitive -- we can grab the `Content-Type` using `headers.get("Content-Type")` or `headers.get("content-type")`. Cookie names, on the other hand, are case sensitive. Make sure you define your cookie names as constants to avoid case errors!
+
 ### Methods and URIs
 
 Routes are the recommended way of extracting information from a method or URI. However, the `Request` object also provides methods that are of occasional use:
@@ -131,6 +133,6 @@ Incoming web requests are represented by objects of type `Request[A]`. The type 
 
 By default, Play represents bodies using a type called `AnyContent` that allows us to parse bodies a set of common data types.
 
-Reading the body may succeed or fail depending on whether the content type matches the type we expect. The various `body.asFoo` methods return `Options` to force us to deal with the possibility of failure.
+Reading the body may succeed or fail depending on whether the content type matches the type we expect. The various `body.asX` methods such as `body.asJson` return `Options` to force us to deal with the possibility of failure.
 
 `Request` also contains methods to access HTTP headers, cookies, and various parts of the HTTP method and URI.

@@ -54,19 +54,19 @@ Using this Scala type...                                         Yields this res
 `Array[Byte]`                                                    `application/octet-stream`
 --------------------------------------------------------------------------------------------
 
-The process of creating a `Result` is type-safe -- Play determines the method of serialization based on the *type* we give it. If it understands what to do with our data, we get a working `Result`. If it doesn't understand the type we give it, we get a compilation error. As a consequence, the final steps in an `Action` tend to be:
+The process of creating a `Result` is type-safe -- Play determines the method of serialization based on the *type* we give it. If it understands what to do with our data, we get a working `Result`. If it doesn't understand the type we give it, we get a compilation error. As a consequence, the final steps in an `Action` tend to be as follows:
 
- 1. convert the result of our business logic to a type Play can serialize:
+ 1. Convert the result of our business logic to a type Play can serialize:
     - HTML using a Twirl template, or;
     - a `JsValue` to return the data as JSON, or;
     - a Scala `NodeSeq` to return the data as XML, or;
     - a `String` or `Array[Byte]`.
 
- 2. use the serializable data to create a `Result`;
+ 2. Use the serializable data to create a `Result`.
 
- 3. tweak HTTP headers and so on;
+ 3. Tweak HTTP headers and so on.
 
- 4. return the `Result`.
+ 4. Return the `Result`.
 
 <div class="callout callout-warning">
 *Custom Result Types*
@@ -108,8 +108,17 @@ These methods can be chained, allowing us to create the `Result`, tweak it, and 
 def ohai = Action { request =>
   Ok("OHAI").
     as("text/lolspeak").
-    withHeaders(/* ... */).
-    withCookies(/* ... */)
+    withHeaders(
+      "Cache-Control" -> "no-cache, no-store, must-revalidate",
+      "Pragma"        -> "no-cache",
+      "Expires"       -> "0",
+      // etc...
+    ).
+    withCookies(
+      Cookie(name = "DemoCookie", value = "DemoCookieValue"),
+      Cookie(name = "OtherCookie", value = "OtherCookieValue"),
+      // etc...
+    )
 }
 ~~~
 

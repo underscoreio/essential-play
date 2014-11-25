@@ -1,6 +1,6 @@
 ## Routes in Depth
 
-The previous section introduced actions, controllers, and routes. Actions and controllers are standard Scala code, but routes are something new and specific to Play.
+The previous section introduced `Actions`, `Controllers`, and routes. `Actions` and `Controllers` are standard Scala code, but routes are something new and specific to Play.
 
 We define Play routes using a special DSL that compiles to Scala code. The DSL provides both a convenient way of mapping URIs to method calls, and a way of mapping method calls *back* to URIs. In this section we will take a deeper look at Play's routing DSL, including the various ways we can extract parameters from URIs.
 
@@ -24,7 +24,7 @@ GET /download/*filename ↩
   controllers.DownloadController.file(filename: String)
 ~~~
 
-The first example assocates a single URL with a parameterless method. The match must be exact -- only `GET` requests to `/hello` will be routed. Even a trailing slash in the URI (`/hello/`) will cause a mismatch.
+The first example assocates a single URI with a parameterless method. The match must be exact -- only `GET` requests to `/hello` will be routed. Even a trailing slash in the URI (`/hello/`) will cause a mismatch.
 
 The second example introduces a *single-segment parameter*, written using a leading colon (':'). Single-segment parameters match any continuous set of characters *excluding* forward slashes ('/'). The parameter is extracted and passed to the method call -- the rest of the URI must match exactly.
 
@@ -36,33 +36,29 @@ The final example uses a *rest-parameter*, written using a leading asterisk ('*'
 
 When a request comes in, Play attempts to route it to an action. It examines each route in turn until it finds a match. If no routes match, it returns a 404 response.
 
-Routes match if the HTTP method has the relevant value and the URI matches the shape of the pattern. Play supports all eight HTTP methods: `OPTIONS`, `GET`, `HEAD`, `POST`, `PUT`, `DELETE`, `TRACE`, and `CONNECT`:
+Routes match if the HTTP method has the relevant value and the URI matches the shape of the pattern. Play supports all eight HTTP methods: `OPTIONS`, `GET`, `HEAD`, `POST`, `PUT`, `DELETE`, `TRACE`, and `CONNECT`.
 
-~~~ coffee
-GET /hello
-  ➥ controllers.HelloController.hello
+:Routing examples -- mappings from HTTP data to Scala code
 
-GET /hello/dave
-  ➥ controllers.HelloController.helloTo("dave")
+---------------------------------------------------------------------------------------------
+HTTP method and URI                Scala method call or result
+---------------------------------- ----------------------------------------------------------
+`GET  /hello`                      `controllers.HelloController.hello`
 
-GET /send/hello/to/dave
-  ➥ controllers.ChatController.send("hello", "dave")
+`GET  /hello/dave`                 `controllers.HelloController.helloTo("dave")`
 
-GET /download/path/to/file.txt
-  ➥ controllers.DownloadController.file("path/to/file.txt")
+`GET  /send/hello/to/dave`         `controllers.ChatController.send("hello", "dave")`
 
-GET /hello/
-  ➥ 404 (trailing slash)
+`GET  /download/path/to/file.txt`  `controllers.DownloadController.file("path/to/file.txt")`
 
-POST /hello
-  ➥ 404 (POST request)
+`GET  /hello`/                     404 result (trailing slash)
 
-GET /send/to/dave
-  ➥ 404 (missing path segment)
+`POST /hello`                      404 result (POST request)
 
-GET /send/a/message/to/dave
-  ➥ 404 (extra path segment)
-~~~
+`GET  /send/to/dave`               404 result (missing path segment)
+
+`GET  /send/a/message/to/dave`     404 result (extra path segment)
+---------------------------------------------------------------------------------------------
 
 <div class="callout callout-info">
 *Play Routing is Strict*
@@ -82,7 +78,16 @@ POST /hello/ controllers.HelloController.hello # POST request
 We can specify parameters in the method-call section of a route without declaring them in the URI. When we do this Play extracts the values from the query string instead:
 
 ~~~ coffee
+# Extract `username` and `message` from the path:
 GET /send/:message/to/:username ↩
+  controllers.ChatController.send(message: String, username: String)
+
+# Extract `username` and `message` from the query string:
+GET /send ↩
+  controllers.ChatController.send(message: String, username: String)
+
+# Extract `username` from the path and `message` from the query string:
+GET /send/to/:username ↩
   controllers.ChatController.send(message: String, username: String)
 ~~~
 
@@ -148,7 +153,7 @@ We can implement custom parameter types by creating implicit values these type c
 
 ### Reverse Routing
 
-*Reverse routes* are objects that we can use to generate URLs from method calls. This allows us to create URLs from type-checked program code without having to concatenate `Strings` by hand.
+*Reverse routes* are objects that we can use to generate URIs. This allows us to create URIs from type-checked program code without having to concatenate `Strings` by hand.
 
 Play generates reverse routes for us and places them in a `controllers.routes` package that we can access from our Scala code:
 
@@ -191,9 +196,9 @@ object DownloadController {
 
 ### Take Home Points
 
-*Routes* provide bi-directional mapping between URLs and `Action`-producing methods within `Controllers`.
+*Routes* provide bi-directional mapping between URIs and `Action`-producing methods within `Controllers`.
 
-We write routes using a Play-specific DSL that compiles to Scala code. Each route comprises an HTTP method, a URL pattern, and a corresponding method call. Patterns can contain *path* and *query parameters* that are extracted and used in the method call.
+We write routes using a Play-specific DSL that compiles to Scala code. Each route comprises an HTTP method, a URI pattern, and a corresponding method call. Patterns can contain *path* and *query parameters* that are extracted and used in the method call.
 
 We can *type* the path and query parameters in routes to simplify the parsing code in our controllers and actions. Play supports many types out of the box, but we can also write code to map our own types.
 
