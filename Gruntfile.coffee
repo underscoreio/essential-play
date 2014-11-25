@@ -120,9 +120,12 @@ module.exports = (grunt) ->
 
     grunt.verbose.subhead("pandoc")
 
+    distPath = "dist/" + target + "/"
+    output   = distPath + "essential-play." + target
+    grunt.file.mkdir(distPath)
+
     switch target
       when "pdf"
-        target   = "dist/pdf/essential-play.pdf"
         template = "src/templates/template.tex"
         filters  = joinLines """
                      --filter=src/filters/callout.coffee
@@ -149,6 +152,7 @@ module.exports = (grunt) ->
       --variable=papersize:a4paper
       --variable=lof:true
       --variable=lot:true
+      --variable=geometry:margin=.75in        \
       --chapters
       --number-sections
       --table-of-contents

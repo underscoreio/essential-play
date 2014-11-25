@@ -8,16 +8,9 @@ Thumbs.db
 
 .rbenv-version
 .rvmrc
-/bower_components/
 /dist/
-/essential-scala/
-/core-scala/
-/core-scala.zip
 /node_modules/
 
 # Built copy of the site:
-/essential-play
-*.sublime-workspace
 essential-play.pdf
-
-/essential-play.html
+essential-play.html
