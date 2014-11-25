@@ -133,9 +133,17 @@ module.exports = (grunt) ->
         ]
 
     exec:
-      zip:
-        cmd: "zip essential-play.zip essential-play.pdf essential-play.html essential-play.epub"
+      exercises:
+        cmd: joinLines """
+               rm -rf essential-play-code &&
+               git clone git@github.com:underscoreio/essential-play-code.git &&
+               zip -r essential-play-code.zip essential-play-code
+             """
         cwd: "dist"
+      zip:
+        cmd: "zip essential-play.zip essential-play.pdf essential-play.html essential-play.epub essential-play-code.zip"
+        cwd: "dist"
+
 
     connect:
       server:
@@ -162,20 +170,27 @@ module.exports = (grunt) ->
                      --filter=src/filters/pdf/callout.coffee
                      --filter=src/filters/pdf/columns.coffee
                    """
+        metadata = "src/meta/pdf.yaml"
+
       when "html"
         output   = "--output=dist/essential-play.html"
         template = "--template=src/templates/template.html"
         filters  = joinLines """
                      --filter=src/filters/html/tables.coffee
                    """
+        metadata = "src/meta/html.yaml"
+
       when "epub"
         output   = "--output=dist/essential-play.epub"
         template = "--epub-stylesheet=dist/temp/main.css"
         filters  = ""
+        metadata = "src/meta/epub.yaml"
+
       when "json"
         output   = "--output=dist/essential-play.json"
         template = ""
         filters  = ""
+        metadata = ""
 
       else
         grunt.log.error("Bad pandoc format: #{target}")
@@ -188,8 +203,6 @@ module.exports = (grunt) ->
       --from=markdown+grid_tables+multiline_tables+fenced_code_blocks+fenced_code_attributes+yaml_metadata_block+implicit_figures
       --latex-engine=xelatex
       #{filters}
-      --variable=papersize:a4paper
-      --variable=geometry:margin=.75in        \
       --chapters
       --number-sections
       --table-of-contents
@@ -197,6 +210,7 @@ module.exports = (grunt) ->
       --standalone
       --self-contained
       src/meta/metadata.yaml
+      #{metadata}
       #{pandocSources}
     """
 
@@ -258,6 +272,7 @@ module.exports = (grunt) ->
 
   grunt.registerTask "zip", [
     "all"
+    "exec:exercises"
     "exec:zip"
   ]
 
