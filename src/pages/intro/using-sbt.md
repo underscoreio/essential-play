@@ -7,8 +7,8 @@ TODO:
     - Running
  - Important commands:
     - `sbt compile`
-    - `sbt run` -- reload page to compile
-    - `sbt test` -- run unit tests
+    - `sbt run`---reload page to compile
+    - `sbt test`---run unit tests
  - Continuous compilation
     - `sbt ~compile`
       (as opposed to `sbt run`, where you have to reload the page to compile)
@@ -18,5 +18,5 @@ TODO:
 
 TODO:
 
- - `sbt stage` -- gather JARs together into directory
+ - `sbt stage`---gather JARs together into directory
  - `rsync` this onto

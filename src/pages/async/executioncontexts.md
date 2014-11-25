@@ -6,7 +6,7 @@ In this section we will take a brief look at how `Futures` are scheduled in Scal
 
 ### *ExecutionContexts*
 
-In the previous section we ignored a crucial implementation detail -- whenever we create a `Future` we have to tell Play *how to schedule it*. We do this by passing an implicit parameter of type [`scala.concurrent.ExecutionContext`] to the constructor:
+In the previous section we ignored a crucial implementation detail---whenever we create a `Future` we have to tell Play *how to schedule it*. We do this by passing an implicit parameter of type [`scala.concurrent.ExecutionContext`] to the constructor:
 
 ~~~ scala
 val ec: ExecutionContext = // ...
@@ -75,7 +75,7 @@ There are many parameters to thread pools that we can tweak: the number of threa
 
 ### Play's *ExecutionContext*
 
-Play operates several thread pools internally and provides one -- the *default application thread pool* -- for use in our applications. To use the thread pool, we simply have to import its `ExecutionContext` wherever we create `Futures`:
+Play operates several thread pools internally and provides one---the *default application thread pool*---for use in our applications. To use the thread pool, we simply have to import its `ExecutionContext` wherever we create `Futures`:
 
 ~~~ scala
 import play.api.libs.concurrent.Execution.defaultContext

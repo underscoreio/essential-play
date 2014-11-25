@@ -29,7 +29,7 @@ The surprising result is that we get a 500 error page as usual, even though the 
 
 The answer lies in something called *failed futures*. A `Future` can actually be in one of three states: *incomplete*, *complete*, or *failed*:
 
- - *incomplete* futures still have work to do -- they have not started or have not run to completion;
+ - *incomplete* futures still have work to do---they have not started or have not run to completion;
  - *complete* futures have finished executing after successfully calculating a result;
  - *failed* futures have finished executing after being terminated by an exception.
 

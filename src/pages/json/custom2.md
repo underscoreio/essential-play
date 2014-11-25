@@ -20,7 +20,7 @@ implicit val addressReads: Reads[Address] = (
 
 We have a lot more flexibility using this syntax than we do with `Json.reads`. We can change the field names for `"number"` and `"street"`, introduce default values for fields, validate that the house number is greater than zero, and so on.
 
-We won't cover all of these options here -- the full DSL is described in the [Play documentation](docs-json-combinators). In the remainder of this section we will dissect the `addressReads` example above and explain how it works.
+We won't cover all of these options here---the full DSL is described in the [Play documentation](docs-json-combinators). In the remainder of this section we will dissect the `addressReads` example above and explain how it works.
 
 
 #### Dissecting the DSL
@@ -171,7 +171,7 @@ Finally, when building `Formats` we have to supply both a constructor and an ext
 
 #### Applying the DSL to a Java Class
 
-We will finish with one last DSL example -- a `Format` that extracts the temporal components (hour, minute, day, month, etc) from an instance of [`org.joda.time.DateTime`] class. Here we define our own constructor and extractor and use them in the `apply` method of our builder:
+We will finish with one last DSL example---a `Format` that extracts the temporal components (hour, minute, day, month, etc) from an instance of [`org.joda.time.DateTime`] class. Here we define our own constructor and extractor and use them in the `apply` method of our builder:
 
 ~~~ scala
 import org.joda.time._

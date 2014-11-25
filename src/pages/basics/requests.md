@@ -8,7 +8,7 @@ The first job of any `Action` is to extract data from the HTTP request and turn 
 
 The most important source of request data comes from the *body*. Clients can `POST` or `PUT` data in a huge range of formats, the most common being JSON, XML, and form data. Our first task is to identify the content type and parse the body.
 
-Confession time. Up to this point we've been telling a white lie about `Request` -- it is actually a generic type, `Request[A]`. The parameter `A` indicates the type of body, which we can retrieve via the `body` method:
+Confession time. Up to this point we've been telling a white lie about `Request`---it is actually a generic type, `Request[A]`. The parameter `A` indicates the type of body, which we can retrieve via the `body` method:
 
 ~~~ scala
 def index = Action { request =>
@@ -19,7 +19,7 @@ def index = Action { request =>
 
 Play contains an number of *body parsers* that we can use to parse the request, returning a `body` of an appropriate Scala type.
 
-So what type does `request.body` return in the examples we've seen so far? We haven't chosen a body parser, nor have we indicated the type of body anywhere in our code. Play *cannot* know the `Content-Type` of a request at compile time, so how is this handled? The answer is quite clever -- by default our actions handle requests of type `Request[AnyContent]`.
+So what type does `request.body` return in the examples we've seen so far? We haven't chosen a body parser, nor have we indicated the type of body anywhere in our code. Play *cannot* know the `Content-Type` of a request at compile time, so how is this handled? The answer is quite clever---by default our actions handle requests of type `Request[AnyContent]`.
 
 [`play.api.mvc.AnyContent`] allows us to *choose* how to read the request in our `Action` code. It reads the request body into a buffer and provides methods to parse it in a handful of common formats. Each method has an `Optional` result, returning `None` if the request is empty or has the wrong `Content-Type`:
 
@@ -83,7 +83,7 @@ See Play's [documentation on body parsers](docs-body-parsers) for more informati
  - the `headers` method returns a [`play.api.mvc.Headers`] object for inspecting general headers;
  - and `cookies` method returns a [`play.api.mvc.Cookies`] object for inspecting the `Cookies` header.
 
-These take care of common error scenarios: missing headers, upper- and lower-case names, and so on. Values are treated as `Strings` throughout -- Play doesn't attempt to parse headers as dedicated Scala types. Here is a synopsis:
+These take care of common error scenarios: missing headers, upper- and lower-case names, and so on. Values are treated as `Strings` throughout---Play doesn't attempt to parse headers as dedicated Scala types. Here is a synopsis:
 
 ~~~ scala
 object RequestDemo extends Controller {
@@ -107,7 +107,7 @@ object RequestDemo extends Controller {
 }
 ~~~
 
-Note that the `Headers.get` method is case insensitive -- we can grab the `Content-Type` using `headers.get("Content-Type")` or `headers.get("content-type")`. Cookie names, on the other hand, are case sensitive. Make sure you define your cookie names as constants to avoid case errors!
+Note that the `Headers.get` method is case insensitive---we can grab the `Content-Type` using `headers.get("Content-Type")` or `headers.get("content-type")`. Cookie names, on the other hand, are case sensitive. Make sure you define your cookie names as constants to avoid case errors!
 
 ### Methods and URIs
 

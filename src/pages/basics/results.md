@@ -21,7 +21,7 @@ Constructor                 HTTP status code
 
 `Unauthorized`              401 Unauthorized
 
-`Status(number)`            `number` (an `Int`) -- anything we want
+`Status(number)`            `number` (an `Int`)---anything we want
 -------------------------------------------------------------------
 
 Each factory has an `apply` method that creates a `Result` with a different HTTP status code. `Ok.apply` creates 200 responses, `NotFound.apply` creates 404 responses, and so on. The `Status` object is different: it allows us to specify the status as an `Int` parameter. The end result in each case is a `Result` that we can return from our `Action`:
@@ -54,7 +54,7 @@ Using this Scala type...                                         Yields this res
 `Array[Byte]`                                                    `application/octet-stream`
 --------------------------------------------------------------------------------------------
 
-The process of creating a `Result` is type-safe -- Play determines the method of serialization based on the *type* we give it. If it understands what to do with our data, we get a working `Result`. If it doesn't understand the type we give it, we get a compilation error. As a consequence, the final steps in an `Action` tend to be as follows:
+The process of creating a `Result` is type-safe---Play determines the method of serialization based on the *type* we give it. If it understands what to do with our data, we get a working `Result`. If it doesn't understand the type we give it, we get a compilation error. As a consequence, the final steps in an `Action` tend to be as follows:
 
  1. Convert the result of our business logic to a type Play can serialize:
     - HTML using a Twirl template, or;

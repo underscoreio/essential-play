@@ -74,7 +74,7 @@ A `Form` is a combination of the mappings we defined above and a set of data val
 val populatedForm = todoForm.bindFromRequest()(request)
 ~~~
 
-The `bindFromRequest` method creates a new `Form` and populates it with data from `request`. Besides caching the data in its raw form, `Form` and attempts to parse and validate it to produce a `Todo` item. The result is stored along-side the original request data in the new `populatedForm`. Binding is a a non-destructive operation -- `todoForm` is left untouched by the process.
+The `bindFromRequest` method creates a new `Form` and populates it with data from `request`. Besides caching the data in its raw form, `Form` and attempts to parse and validate it to produce a `Todo` item. The result is stored along-side the original request data in the new `populatedForm`. Binding is a a non-destructive operation---`todoForm` is left untouched by the process.
 
 There are two possible outcomes of binding a request:
 

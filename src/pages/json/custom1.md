@@ -4,7 +4,7 @@ So far in this chapter we have seen how to use the `Json.reads`, `Json.writes` a
 
 ### Writing Formats by Hand
 
-Play's JSON macros don't do anything for hierarchies of types -- we have to implement these formats ourselves. Enumerations are a classic example covered below. There is a separate section at the end of this chapter that extends this pattern to generalized hierarchies of types.
+Play's JSON macros don't do anything for hierarchies of types---we have to implement these formats ourselves. Enumerations are a classic example covered below. There is a separate section at the end of this chapter that extends this pattern to generalized hierarchies of types.
 
 Consider the following enumeration:
 
@@ -15,7 +15,7 @@ case object Green extends Color
 case object Blue  extends Color
 ~~~
 
-Using pattern matching, we can easily create a simple format to render these colours as string constants -- `"red"`, `"green"` and `"blue"`:
+Using pattern matching, we can easily create a simple format to render these colours as string constants---`"red"`, `"green"` and `"blue"`:
 
 ~~~ scala
 import play.api.libs.json._
@@ -38,12 +38,12 @@ implicit object lightFormat extends Format[Color] {
 }
 ~~~
 
-We can easily adapt this code to create a separate `Reads` or `Writes` -- we simply extend `Reads` or `Writes` instead of `Format` and remove the definition of `writes` or `reads` as appropriate.
+We can easily adapt this code to create a separate `Reads` or `Writes`---we simply extend `Reads` or `Writes` instead of `Format` and remove the definition of `writes` or `reads` as appropriate.
 
 <div class="callout callout-warning">
 *Internationalization*
 
-Note the construction of the `JsError`, which mimics the way Play handles internationalization of error messages. Each type of error has its own *error code*, allowing us to build internationalization tables on the client. The [built-in error codes](link-error-codes) are rather poorly documented -- a list can be found in the Play source code.
+Note the construction of the `JsError`, which mimics the way Play handles internationalization of error messages. Each type of error has its own *error code*, allowing us to build internationalization tables on the client. The [built-in error codes](link-error-codes) are rather poorly documented---a list can be found in the Play source code.
 
 
 </div>

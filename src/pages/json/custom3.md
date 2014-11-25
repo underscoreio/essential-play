@@ -1,6 +1,6 @@
 ## Custom Formats: Part 3
 
-In this final section, we cover a common use-case -- creating `Reads`, `Writes`, and `Formats` for generalised hierarchies of types.
+In this final section, we cover a common use-case---creating `Reads`, `Writes`, and `Formats` for generalised hierarchies of types.
 
 ### *OFormats* and *OWrites*
 

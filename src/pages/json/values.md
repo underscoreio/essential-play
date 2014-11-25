@@ -57,7 +57,7 @@ JsObject(Seq(
 </div>
 </div>
 
-The Scala code above is much longer than raw JSON -- the `JsString` and `JsNumber` wrappers add to the verbosity.  Fortunately, Play provides two methods on [`play.api.libs.json.Json`] that omit a lot of the boilerplate:
+The Scala code above is much longer than raw JSON---the `JsString` and `JsNumber` wrappers add to the verbosity.  Fortunately, Play provides two methods on [`play.api.libs.json.Json`] that omit a lot of the boilerplate:
 
  - `Json.arr(...)` creates a `JsArray`. The method takes any number of parameters, each of which must be a `JsValue` or a type that can be implicitly converted to one.
 
@@ -170,7 +170,7 @@ Json.prettyPrint(Json.obj("name" -> "Dave", "age" -> 35))
 
 ### Deconstructing and Traversing JSON Data
 
-Getting data out of a request is just the first step in reading it. A client can pass us any data it likes -- valid or invalid -- so we need to know how to traverse `JsValues` and extract the fields we need:
+Getting data out of a request is just the first step in reading it. A client can pass us any data it likes---valid or invalid---so we need to know how to traverse `JsValues` and extract the fields we need:
 
 #### Pattern Matching
 
@@ -221,7 +221,7 @@ val likes: Seq[JsValue] = json \\ "likes"
 // == Seq(JsArray(...), JsArray(...))
 ~~~
 
-This begs the question: what happens when we use `\` and `apply` and the specified field *doesn't* exist? We can see from the Scaladoc for [`play.api.libs.json.JsValue`] that each method returns a `JsValue` -- how do the methods represent failure?
+This begs the question: what happens when we use `\` and `apply` and the specified field *doesn't* exist? We can see from the Scaladoc for [`play.api.libs.json.JsValue`] that each method returns a `JsValue`---how do the methods represent failure?
 
 We lied earlier about the subtypes of `JsValue`. There is a actually a sixth subtype, `JsUndefined`, that Play uses to represent the failure to find a field:
 

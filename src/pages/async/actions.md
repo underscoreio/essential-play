@@ -6,7 +6,7 @@ In the previous sections we saw how to create and compose `Futures` to schedule 
 
 Play is built using `Futures` from the bottom up. Whenever we process a request, our action is executed in a thread on the *default application thread pool*.
 
-All of the actions we have written so far have been *synchronous* -- they run from beginning to end in a single continuous block. The thread Play allocates to the request is tied up for the duration -- only when we return a `Result` can Play recycle the thread to service another request.
+All of the actions we have written so far have been *synchronous*---they run from beginning to end in a single continuous block. The thread Play allocates to the request is tied up for the duration---only when we return a `Result` can Play recycle the thread to service another request.
 
 At high load there can be more incoming requests than there are threads in the application thread pool. If this happens, pending requests must be scheduled for when a thread becomes free. As long as actions are short-running this provides graceful degredation under load. However, long-running actions can cause scheduling problems and latency spikes:
 
@@ -56,7 +56,7 @@ The most common causes for long-running actions are blocking I/O operations:
  - large amounts of file access;
  - requests to remote web services.
 
-We cannot eliminate blocking by converting a synchronous action to an asynchronous one -- we are simply shifting the work to a different thread. However, by splitting a synchronous chain of blocking operations up into a chain of asynchronously executing `Futures`, we can make the work easier to schedule at high load.
+We cannot eliminate blocking by converting a synchronous action to an asynchronous one---we are simply shifting the work to a different thread. However, by splitting a synchronous chain of blocking operations up into a chain of asynchronously executing `Futures`, we can make the work easier to schedule at high load.
 
 ### Take Home Points
 

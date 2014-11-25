@@ -2,7 +2,7 @@
 
 I/O operations are the biggest sources of latency in web applications. Database queries, file access, and requests to external web services all take orders of magnitude more time than application code running in-memory. Most libraries in the Java and Scala ecosystems use *blocking I/O*, which is as much of a latency problem for asynchronous applications as it is for synchronous ones.
 
-In this section we will look at *non-blocking I/O* -- I/O that *calls us back* when it completes. Application code doesn't need to block waiting for a result, which frees up resources and provides a huge boost to the sbalability of our web applications.
+In this section we will look at *non-blocking I/O*---I/O that *calls us back* when it completes. Application code doesn't need to block waiting for a result, which frees up resources and provides a huge boost to the sbalability of our web applications.
 
 Although non-blocking I/O is gaining in popularity, libraries are still rare in today's Java and Scala ecosystems. Play provides one of the notable Scala examples in the form of its non-blocking web services client, *Play WS*, which is the focus of this section.
 
@@ -46,13 +46,13 @@ def index = Action.async { request =>
 
 Let's dissect this line by line:
 
- - `WS.url("http://example.com")` creates a [`play.api.libs.ws.WSRequestHolder`] -- an object we use to build and send a request;
+ - `WS.url("http://example.com")` creates a [`play.api.libs.ws.WSRequestHolder`]---an object we use to build and send a request;
 
  - `WSRequestHolder` contains a set of methods like `withFollowRedirects` and `withRequestTimeout` that allow us to specify parameters and behaviours  before sending the request. These methods return new `WSRequestHolders`, allowing us to chain them together before we actually "hit send";
 
  - the `get` method actually sends the request, returning a `Future` of a [`play.api.libs.ws.WSResponse`].
 
-The `get` operation is non-blocking -- Play creates a `Future` to hold the eventual result and schedules it for later evaluation when the remote server responds (or times out). The remainder of the code in `index` sets up the chain of operations to execute on the response:
+The `get` operation is non-blocking---Play creates a `Future` to hold the eventual result and schedules it for later evaluation when the remote server responds (or times out). The remainder of the code in `index` sets up the chain of operations to execute on the response:
 
  - extract the `json` from the `WSResponse`;
  - wrap the JSON in an `Ok` result;

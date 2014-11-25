@@ -76,7 +76,7 @@ val f1: Future[Int]    = Future(ultimateAnswer)
 val f2: Future[String] = f1.map(conversion)
 ~~~
 
-We can call `map` as many times as we want. The order and the timing of the calls is insignificant -- the value of `f1` will be delivered to `f2` and `f3` once only when `f1` completes:
+We can call `map` as many times as we want. The order and the timing of the calls is insignificant---the value of `f1` will be delivered to `f2` and `f3` once only when `f1` completes:
 
 ~~~ scala
 val f1: Future[Int]    = Future { ultimateAnswer }
@@ -160,7 +160,7 @@ val total: Future[Double] = for {
 } yield t1 + t2 + t3
 ~~~
 
-These examples are easy to read -- each one demonstrates the elegance of using `for` syntax to sequence asynchronous code. However, we should note an an important semantic difference between the two. One of the examples will complete much faster than the other.
+These examples are easy to read---each one demonstrates the elegance of using `for` syntax to sequence asynchronous code. However, we should note an an important semantic difference between the two. One of the examples will complete much faster than the other.
 
 What is the difference between the two examples and which will finish fastest? To answer this we must look at their expanded forms:
 
@@ -194,11 +194,11 @@ val total: Future[Double] =
   }
 ~~~
 
-In the *single expression* example, the calls to `getTraffic` are nested inside one another -- the code *sequences* the calls, waiting until one completes before initiating the next.
+In the *single expression* example, the calls to `getTraffic` are nested inside one another---the code *sequences* the calls, waiting until one completes before initiating the next.
 
 The *create-then-compose* example, by contrast, initiates each of the calls immediately and then sequences the combination of their results.
 
-Both examples are resource-efficient and non-blocking but they sequence operations differently -- *create-then-compose* will typically complete in about one third the time. This is something to watch out for when combining futures using for-comprehensions.
+Both examples are resource-efficient and non-blocking but they sequence operations differently---*create-then-compose* will typically complete in about one third the time. This is something to watch out for when combining futures using for-comprehensions.
 
 <div class="callout callout-info">
 *Sequencing Futures using For-Comprehensions*

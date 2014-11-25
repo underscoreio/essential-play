@@ -22,7 +22,7 @@ object Global extends GlobalSettings {
 
 ### Custom Routing Error Pages
 
-We can change the default routing error page by overriding the `onHandlerNotFound` method. We can return whatever `Content-Type` we like as an error message -- here's an example that returns JSON for the client to interpret:
+We can change the default routing error page by overriding the `onHandlerNotFound` method. We can return whatever `Content-Type` we like as an error message---here's an example that returns JSON for the client to interpret:
 
 ~~~ scala
 import play.api.libs.concurrent.Execution.Implicits.defaultContext

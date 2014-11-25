@@ -24,9 +24,9 @@ GET /download/*filename ↩
   controllers.DownloadController.file(filename: String)
 ~~~
 
-The first example assocates a single URI with a parameterless method. The match must be exact -- only `GET` requests to `/hello` will be routed. Even a trailing slash in the URI (`/hello/`) will cause a mismatch.
+The first example assocates a single URI with a parameterless method. The match must be exact---only `GET` requests to `/hello` will be routed. Even a trailing slash in the URI (`/hello/`) will cause a mismatch.
 
-The second example introduces a *single-segment parameter*, written using a leading colon (':'). Single-segment parameters match any continuous set of characters *excluding* forward slashes ('/'). The parameter is extracted and passed to the method call -- the rest of the URI must match exactly.
+The second example introduces a *single-segment parameter*, written using a leading colon (':'). Single-segment parameters match any continuous set of characters *excluding* forward slashes ('/'). The parameter is extracted and passed to the method call---the rest of the URI must match exactly.
 
 The third example uses two single-segment parameters to extract two parts of the URI. Again, the rest of the URI must match exactly.
 
@@ -38,7 +38,7 @@ When a request comes in, Play attempts to route it to an action. It examines eac
 
 Routes match if the HTTP method has the relevant value and the URI matches the shape of the pattern. Play supports all eight HTTP methods: `OPTIONS`, `GET`, `HEAD`, `POST`, `PUT`, `DELETE`, `TRACE`, and `CONNECT`.
 
-:Routing examples -- mappings from HTTP data to Scala code
+:Routing examples---mappings from HTTP data to Scala code
 
 ---------------------------------------------------------------------------------------------
 HTTP method and URI                Scala method call or result
@@ -109,7 +109,7 @@ GET /notify controllers.NotificationController. ↩
   notify(username: String, message: Option[String])
 ~~~
 
-We can mix and match required and optional query parameters as we see fit -- in the example, `username` is required and `message` is optional. However, *path* parameters are always required -- the following route fails to compile because the path parameter `:message` cannot be optional:
+We can mix and match required and optional query parameters as we see fit---in the example, `username` is required and `message` is optional. However, *path* parameters are always required---the following route fails to compile because the path parameter `:message` cannot be optional:
 
 ~~~ coffee
 GET /notify/:username/:message controllers.NotificationController. ↩
