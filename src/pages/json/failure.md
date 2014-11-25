@@ -8,7 +8,7 @@ In this section we will look at replacing Play's default 400 and 500 error pages
 
 ### The *Global* Object
 
-We can configure various HTTP-handling aspects of our applications by creating an object called `Global` in the `_root_` package. The object should extend [play.api.GlobalSettings], which provides various methods that we can override:
+We can configure various HTTP-handling aspects of our applications by creating an object called `Global` in the `_root_` package. The object should extend [`play.api.GlobalSettings`], which provides various methods that we can override:
 
 ~~~ scala
 package _root_
@@ -82,7 +82,7 @@ object Global extends GlobalSettings {
 
 ### Take Home Points
 
-We can customise various aspects of our application's general behaviour by providing a `_root_.Global` object. The object must extend [play.api.GlobalSettings].
+We can customise various aspects of our application's general behaviour by providing a `_root_.Global` object. The object must extend [`play.api.GlobalSettings`].
 
 `GlobalSettings` contains several methods that we can override to custom error responses:
 

@@ -1,6 +1,6 @@
 ## Modelling JSON
 
-Play models JSON data using a family of case classes of type [play.api.libs.json.JsValue], representing each of the data types in the [JSON specification](link-json-spec).
+Play models JSON data using a family of case classes of type [`play.api.libs.json.JsValue`], representing each of the data types in the [JSON specification](link-json-spec).
 
 ~~~ scala
 package play.api.libs.json
@@ -57,7 +57,7 @@ JsObject(Seq(
 </div>
 </div>
 
-The Scala code above is much longer than raw JSON -- the `JsString` and `JsNumber` wrappers add to the verbosity.  Fortunately, Play provides two methods on [play.api.libs.json.Json] that omit a lot of the boilerplate:
+The Scala code above is much longer than raw JSON -- the `JsString` and `JsNumber` wrappers add to the verbosity.  Fortunately, Play provides two methods on [`play.api.libs.json.Json`] that omit a lot of the boilerplate:
 
  - `Json.arr(...)` creates a `JsArray`. The method takes any number of parameters, each of which must be a `JsValue` or a type that can be implicitly converted to one.
 
@@ -141,7 +141,7 @@ def index = Action(parse.json) { request =>
 <div class="callout callout-warning">
 *Parsing and Stringifying JSON*
 
-We typically don't have to directly parse stringified JSON If we do, we can use the `parse` method of [play.api.libs.json.Json]
+We typically don't have to directly parse stringified JSON If we do, we can use the `parse` method of [`play.api.libs.json.Json`]
 
 ~~~ scala
 Json.parse("""{ "name": "Dave", "age": 35 }""")
@@ -221,7 +221,7 @@ val likes: Seq[JsValue] = json \\ "likes"
 // == Seq(JsArray(...), JsArray(...))
 ~~~
 
-This begs the question: what happens when we use `\` and `apply` and the specified field *doesn't* exist? We can see from the Scaladoc for [play.api.libs.json.JsValue] that each method returns a `JsValue` -- how do the methods represent failure?
+This begs the question: what happens when we use `\` and `apply` and the specified field *doesn't* exist? We can see from the Scaladoc for [`play.api.libs.json.JsValue`] that each method returns a `JsValue` -- how do the methods represent failure?
 
 We lied earlier about the subtypes of `JsValue`. There is a actually a sixth subtype, `JsUndefined`, that Play uses to represent the failure to find a field:
 

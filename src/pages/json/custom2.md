@@ -171,7 +171,7 @@ Finally, when building `Formats` we have to supply both a constructor and an ext
 
 #### Applying the DSL to a Java Class
 
-We will finish with one last DSL example -- a `Format` that extracts the temporal components (hour, minute, day, month, etc) from an instance of [org.joda.time.DateTime] class. Here we define our own constructor and extractor and use them in the `apply` method of our builder:
+We will finish with one last DSL example -- a `Format` that extracts the temporal components (hour, minute, day, month, etc) from an instance of [`org.joda.time.DateTime`] class. Here we define our own constructor and extractor and use them in the `apply` method of our builder:
 
 ~~~ scala
 import org.joda.time._

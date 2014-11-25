@@ -4,7 +4,7 @@ In the previous section we saw how to use `Writes` and `Json.toJson` to convert 
 
 ### Meet *Reads*
 
-We parse incoming JSON using instances of the [play.api.libs.json.Reads] trait. Play also defines a`Json.reads` macro and `Json.fromJson` method that compliment `Json.writes` and `Json.toJson`. Here's a synopsis:
+We parse incoming JSON using instances of the [`play.api.libs.json.Reads`] trait. Play also defines a`Json.reads` macro and `Json.fromJson` method that compliment `Json.writes` and `Json.toJson`. Here's a synopsis:
 
 ~~~ scala
 import play.api.libs.json._
@@ -33,16 +33,16 @@ Json.fromJson[Person](Json.obj(
 
 So far so good -- reading JSON data is at least superficially similar to writing it.
 
-[play.api.libs.json.Reads]
+[`play.api.libs.json.Reads`]
 
 ### Embracing Failure
 
-The main difference between reading and writing JSON is that reading can *fail*. `Reads` handles this by wrapping return values in an `Either`-like data structure called [play.api.libs.json.JsResult].
+The main difference between reading and writing JSON is that reading can *fail*. `Reads` handles this by wrapping return values in an `Either`-like data structure called [`play.api.libs.json.JsResult`].
 
 `JsResult[A]` has two subtypes:
 
- - [play.api.libs.json.JsSuccess] represents the result of a successful read;
- - [play.api.libs.json.JsError] represents the result of a failed read.
+ - [`play.api.libs.json.JsSuccess`] represents the result of a successful read;
+ - [`play.api.libs.json.JsError`] represents the result of a failed read.
 
 Like `Form`, `JsResult` has a `fold` method that allows us to branch based on the success/failure of a read:
 
@@ -185,7 +185,7 @@ def index = Action { request =>
 
 ### Take Home Points
 
-We convert Scala data to JSON using instances of [play.api.libs.json.Reads].
+We convert Scala data to JSON using instances of [`play.api.libs.json.Reads`].
 
 Play provides a `Json.reads` macro and `Json.fromJson` method that mirror `Json.writes` and `Json.toJson`.
 

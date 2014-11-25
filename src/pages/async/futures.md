@@ -1,6 +1,6 @@
 ## Futures
 
-The underpinning of our concurrent programming model is the [scala.concurrent.Future] trait. A `Future[A]` represents an asynchronous computation that *will calculate a value of type `A` at some point in the future*.
+The underpinning of our concurrent programming model is the [`scala.concurrent.Future`] trait. A `Future[A]` represents an asynchronous computation that *will calculate a value of type `A` at some point in the future*.
 
 `Futures` are a general tool from the Scala core library, but they are used heavily in Play. We'll start by looking at the general case, and tie them into Play later on in this chapter.
 
@@ -103,7 +103,7 @@ The result of calling `flatMap` is a new future that:
  - waits for the second `Future` to complete;
  - yields the result of the second `Future`.
 
-This has a similar sequencing-and-flattening effect to the `flatMap` method on [scala.Option]
+This has a similar sequencing-and-flattening effect to the `flatMap` method on [`scala.Option`]
 
 ~~~ scala
 def longRunningConversion(value: Int): Future[String] = {
@@ -120,7 +120,7 @@ val f3: Future[String] = f1.flatMap(longRunningConversion)
 
 Again, the final results of `f1` and `f2` and `f3` above are `42`, `43` and `"42"` respectively.
 
-[scala.Option]
+[`scala.Option`]
 
 #### Wait... Future is a Monad?
 

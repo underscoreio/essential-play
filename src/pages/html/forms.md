@@ -2,7 +2,7 @@
 
 In the previous section we saw how to send HTML data to web site users using Twirl templates. In this section we will look at receiving HTML form data from users.
 
-Play's form handling library is based on objects of type [play.api.data.Form]. `Forms` are metadata objects that represent a combination of mapping information and form data. They allow us to perform four important operations:
+Play's form handling library is based on objects of type [`play.api.data.Form`]. `Forms` are metadata objects that represent a combination of mapping information and form data. They allow us to perform four important operations:
 
  1. *parse* incoming request data to create typed values;
  2. *validate* the incoming data, allowing us to recover if the user made a mistake;
@@ -34,7 +34,7 @@ val todoMapping: Mapping[Todo] = mapping(
 )(Todo.apply)(Todo.unapply)
 ~~~
 
-The methods `text`, `number`, and `boolean` come from [play.api.data.Forms]. They create field `Mappings` between `Strings` and the relevant type for each field of `Todo`:
+The methods `text`, `number`, and `boolean` come from [`play.api.data.Forms`]. They create field `Mappings` between `Strings` and the relevant type for each field of `Todo`:
 
 
 ~~~ scala
@@ -127,13 +127,13 @@ val todoForm: Form[Todo] = Form(mapping(
 )(Todo.apply)(Todo.unapply))
 ~~~
 
-Play provides lots of options for parsing and validating, including adding multiple and custom validation constraints to fields and mapping hierarchical and sequential data. See the [documentation for Forms](docs-forms), the Scaladoc for [play.api.data.Forms], and the Scaladoc for [play.api.data.validation.Constraints] for more information.
+Play provides lots of options for parsing and validating, including adding multiple and custom validation constraints to fields and mapping hierarchical and sequential data. See the [documentation for Forms](docs-forms), the Scaladoc for [`play.api.data.Forms`], and the Scaladoc for [`play.api.data.validation.Constraints`] for more information.
 
 ### Take Home Points
 
 In this section we saw how to create `Form` objects and use them to parse and validate incoming form data.
 
-We create `Forms` using `Mappings` defined using methods from [play.api.data.Forms].
+We create `Forms` using `Mappings` defined using methods from [`play.api.data.Forms`].
 
 We extract data from requests using the `bindFromRequest` method of `Form`. Binding may succeed or fail, so we specify behaviours in either case using the `fold` method.
 

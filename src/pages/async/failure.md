@@ -46,7 +46,7 @@ It sometimes makes sense to intercept failed futures and turn them into successe
 
 #### *recover*
 
-The `recover` method of [scala.concurrent.Future] has similar semantics to a `catch` block in regular Scala. We provide a partial function that catches and transforms into successful results:
+The `recover` method of [`scala.concurrent.Future`] has similar semantics to a `catch` block in regular Scala. We provide a partial function that catches and transforms into successful results:
 
 ~~~ scala
 val future1: Future[Int] = Future[Int] {

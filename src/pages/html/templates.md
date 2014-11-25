@@ -51,7 +51,7 @@ Template file name                 Scala object name
 `views/foo/bar/baz.scala.html`     `views.html.foo.bar.baz`
 ---------------------------------------------------------------
 
-Templates return objects of type [play.twirl.api.Html]. Play knows how to serialize `Html` values in the `Results`. This makes it easy to use templates in our `Actions`:
+Templates return objects of type [`play.twirl.api.Html`]. Play knows how to serialize `Html` values in the `Results`. This makes it easy to use templates in our `Actions`:
 
 ~~~ scala
 def index = Action { request =>
@@ -66,17 +66,17 @@ Twirl templates can also be used to generate XML, Javascript, and plain text res
 
 :Template conventions for different types of content
 
-------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
 Template type  Source folder  Filename extension  Compiled package  Return type
--------------- -------------- ------------------- ----------------- ----------------------------
-HTML           `app/views`    `.scala.html`       `views.html`      [play.twirl.api.Html]
+-------------- -------------- ------------------- ----------------- ------------------------------
+HTML           `app/views`    `.scala.html`       `views.html`      [`play.twirl.api.Html`]
 
-XML            `app/views`    `.scala.xml`        `views.xml`       [play.twirl.api.Xml]
+XML            `app/views`    `.scala.xml`        `views.xml`       [`play.twirl.api.Xml`]
 
-Javascript     `app/views`    `.scala.js`         `views.js`        [play.twirl.api.Txt]
+Javascript     `app/views`    `.scala.js`         `views.js`        [`play.twirl.api.Txt`]
 
-Plain text     `app/views`    `.scala.txt`        `views.txt`       [play.twirl.api.JavaScript]
-------------------------------------------------------------------------------------------------
+Plain text     `app/views`    `.scala.txt`        `views.txt`       [`play.twirl.api.JavaScript`]
+--------------------------------------------------------------------------------------------------
 </div>
 
 ### Parameters and Expressions
@@ -315,7 +315,7 @@ Twirl provides a `defining` method as a means of aliasing complex Scala expressi
 </div>
 </div>
 
-Play also provides a variety of pre-defined templates in the [views.html.helper] package. We will discuss some of these in the next section.
+Play also provides a variety of pre-defined templates in the [`views.html.helper`] package. We will discuss some of these in the next section.
 
 ### Nesting Templates
 
@@ -370,4 +370,4 @@ We place Twirl templates in the `app/views` folder and give them the extension `
 
 Templates are compiled to singleton Scala functions in the `views.html` package.
 
-Template functions accept whatever parameters we define and return instances of [play.twirl.api.Html]. Play understands how to serialize `Html` objects as content within `Results`. It even sets the `Content-Type` for us.
+Template functions accept whatever parameters we define and return instances of [`play.twirl.api.Html`]. Play understands how to serialize `Html` objects as content within `Results`. It even sets the `Content-Type` for us.

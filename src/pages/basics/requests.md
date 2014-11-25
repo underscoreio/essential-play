@@ -21,7 +21,7 @@ Play contains an number of *body parsers* that we can use to parse the request, 
 
 So what type does `request.body` return in the examples we've seen so far? We haven't chosen a body parser, nor have we indicated the type of body anywhere in our code. Play *cannot* know the content-type of a request at compile time, so how is this handled? The answer is quite clever -- by default our actions handle requests of type `Request[AnyContent]`.
 
-[play.api.mvc.AnyContent] allows us to *choose* how to read the request in our `Action` code. It reads the request body into a buffer and provides methods to parse it in a handful of common formats. Each method has an `Optional` result, returning `None` if the request is empty or has the wrong `Content-Type`:
+[`play.api.mvc.AnyContent`] allows us to *choose* how to read the request in our `Action` code. It reads the request body into a buffer and provides methods to parse it in a handful of common formats. Each method has an `Optional` result, returning `None` if the request is empty or has the wrong `Content-Type`:
 
 :Body parser return types
 
@@ -80,8 +80,8 @@ See Play's [documentation on body parsers](docs-body-parsers) for more informati
 
 `Request` contains two methods for inspecting HTTP headers:
 
- - the `headers` method returns a [play.api.mvc.Headers] object for inspecting general headers;
- - and `cookies` method returns a [play.api.mvc.Cookies] object for inspecting the `Cookies` header.
+ - the `headers` method returns a [`play.api.mvc.Headers`] object for inspecting general headers;
+ - and `cookies` method returns a [`play.api.mvc.Cookies`] object for inspecting the `Cookies` header.
 
 These take care of common error scenarios: missing headers, upper- and lower-case names, and so on. Values are treated as `Strings` throughout -- Play doesn't attempt to parse headers as dedicated Scala types. Here is a synopsis:
 

@@ -140,8 +140,8 @@ If Play cannot extract values of the correct type for each parameter in a route,
 
 Play parses route parameters using instances of two different *type classes*:
 
- - [play.api.mvc.PathBindable] to extract path parameters;
- - [play.api.mvc.QueryStringBindable] to extract query parameters.
+ - [`play.api.mvc.PathBindable`] to extract path parameters;
+ - [`play.api.mvc.QueryStringBindable`] to extract query parameters.
 
 We can implement custom parameter types by creating implicit values these type classes. See the linked Scaladocs for more information.
 </div>
@@ -161,7 +161,7 @@ methodAndUri.method // "GET"
 methodAndUrl.url    // "/hello/dave"
 ~~~
 
-Play generates reverse routes for each controller and action referenced in our routes file. The routes return [play.api.mvc.Call] objects that hold the HTTP method and URI from the route. Here is some pseudo-code based on example above to illustrate:
+Play generates reverse routes for each controller and action referenced in our routes file. The routes return [`play.api.mvc.Call`] objects that hold the HTTP method and URI from the route. Here is some pseudo-code based on example above to illustrate:
 
 ~~~ scala
 package routes

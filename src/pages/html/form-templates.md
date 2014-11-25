@@ -4,7 +4,7 @@ In the previous section we saw how to use `Forms` to parse incoming request data
 
 ### Forms and Inputs
 
-Play provides several built-in templates in the [views.html.helper] package for generating `<form>` and `<input>` elements. We have to pass these data from our `Form` object, so our first step is to pass this to our own templates:
+Play provides several built-in templates in the [`views.html.helper`] package for generating `<form>` and `<input>` elements. We have to pass these data from our `Form` object, so our first step is to pass this to our own templates:
 
 ~~~ scala
 @(todoForm: Form[Todo])
@@ -182,11 +182,11 @@ Sometimes small tweaks to the HTML aren't enough. We can make comprehensive chan
 
 `Forms` can be used to generate HTML as well as parse request data.
 
-There are numerous helpers in the [views.html.helper] package that we can use in our templates, including the following:
+There are numerous helpers in the [`views.html.helper`] package that we can use in our templates, including the following:
 
- - [views.html.helper.form] generates `<form>` elements from `Form` objects;
- - [views.html.helper.inputText] generates `<input type="text">` elements for specific form fields;
- - [views.html.helper.checkbox] generates `<input type="checkbox">` elements for specific form fields.
+ - [`views.html.helper.form`] generates `<form>` elements from `Form` objects;
+ - [`views.html.helper.inputText`] generates `<input type="text">` elements for specific form fields;
+ - [`views.html.helper.checkbox`] generates `<input type="checkbox">` elements for specific form fields.
 
 The HTML we generate contains values and error messages as well as basic form structure. We can use this to generate pre-populated forms or feedback to user error.
 

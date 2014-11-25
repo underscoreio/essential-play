@@ -4,7 +4,7 @@ We create Play web applications from *actions*, *controllers*, and *routes*. In 
 
 ### Hello, World!
 
-*Actions* are objects that handle web requests. They have an `apply` method that accepts a [play.api.mvc.Request] and returns a [play.api.mvc.Result]
+*Actions* are objects that handle web requests. They have an `apply` method that accepts a [`play.api.mvc.Request`] and returns a [`play.api.mvc.Result`]
 
 ~~~ scala
 Action { request =>
@@ -55,14 +55,14 @@ myProject/
 
 Let's take a closer look at the controller in the example above. The code in use comes from two places:
 
- - the [play.api.mvc] package;
- - the [play.api.mvc.Controller] trait (via inheritance).
+ - the [`play.api.mvc`] package;
+ - the [`play.api.mvc.Controller`] trait (via inheritance).
 
-The controller, called `HelloController`, is a subtype of [play.api.mvc.Controller]. It defines two `Action`-producing methods, `hello` and `helloTo`. Our routes specify which of these methods to call when a request comes in.
+The controller, called `HelloController`, is a subtype of [`play.api.mvc.Controller`]. It defines two `Action`-producing methods, `hello` and `helloTo`. Our routes specify which of these methods to call when a request comes in.
 
 Note that `Actions` and `Controllers` have different lifetimes. `Controllers` are created when our application boots and persist until it shuts down. `Actions` are created by method calls and only live long enough to handle a single `Request`. Play passes the parameters from our routes to *the method that creates the `Action`*, not to the action itself.
 
-Each of the example `Actions` creates an `Ok` response containing a simple message. `Ok` is a helper object inherited from `Controller`. It has an `apply` method  that creates `Results` with HTTP status 200. The actual return type of `Ok.apply` is [play.api.mvc.Result].
+Each of the example `Actions` creates an `Ok` response containing a simple message. `Ok` is a helper object inherited from `Controller`. It has an `apply` method  that creates `Results` with HTTP status 200. The actual return type of `Ok.apply` is [`play.api.mvc.Result`].
 
 Play uses the type of the argument to `Ok.apply` to determine the `Content-Type` of the `Result`. The `String` arguments in the example create a `Results` of type `text/plain`. Later on we'll see how to customise this behaviour and create results of different types.
 

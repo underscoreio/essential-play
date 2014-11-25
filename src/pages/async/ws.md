@@ -15,7 +15,7 @@ As of Play 2.3, the web services client is shipped in a separate JAR from core P
 libraryDependencies += ws
 ~~~
 
-This line of configuration gives us access to the [play.api.libs.ws] package in our code.
+This line of configuration gives us access to the [`play.api.libs.ws`] package in our code.
 
 
 </div>
@@ -46,11 +46,11 @@ def index = Action.async { request =>
 
 Let's dissect this line by line:
 
- - `WS.url("http://example.com")` creates a [play.api.libs.ws.WSRequestHolder] -- an object we use to build and send a request;
+ - `WS.url("http://example.com")` creates a [`play.api.libs.ws.WSRequestHolder`] -- an object we use to build and send a request;
 
  - `WSRequestHolder` contains a set of methods like `withFollowRedirects` and `withRequestTimeout` that allow us to specify parameters and behaviours  before sending the request. These methods return new `WSRequestHolders`, allowing us to chain them together before we actually "hit send";
 
- - the `get` method actually sends the request, returning a `Future` of a [play.api.libs.ws.WSResponse].
+ - the `get` method actually sends the request, returning a `Future` of a [`play.api.libs.ws.WSResponse`].
 
 The `get` operation is non-blocking -- Play creates a `Future` to hold the eventual result and schedules it for later evaluation when the remote server responds (or times out). The remainder of the code in `index` sets up the chain of operations to execute on the response:
 

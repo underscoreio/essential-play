@@ -6,7 +6,7 @@ Once we have finished our business logic, the final step of any `Action` is to c
 
 ### Setting The Status Code
 
-Play provides a convenient set of factory objects for creating `Results`. These are defined in the [play.api.mvc.Results] trait and inherited by [play.api.mvc.Controller]
+Play provides a convenient set of factory objects for creating `Results`. These are defined in the [`play.api.mvc.Results`] trait and inherited by [`play.api.mvc.Controller`]
 
 :Result codes
 
@@ -40,19 +40,19 @@ We can create `Results` using values of other Scala types, provided Play underst
 
 :Result *Content-Types*
 
------------------------------------------------------------------------------------------
-Using this Scala type...                                       Yields this result type...
--------------------------------------------------------------- --------------------------
-`String`                                                       `text/plain`
+--------------------------------------------------------------------------------------------
+Using this Scala type...                                         Yields this result type...
+---------------------------------------------------------------- ---------------------------
+`String`                                                         `text/plain`
 
-[play.twirl.api.Html] (see [Chapter 2](#chapter-html))         `text/html`
+[`play.twirl.api.Html`] (see [Chapter 3](#chapter-html))         `text/html`
 
-[play.api.libs.json.JsValue] (see [Chapter 3](#chapter-json))  `application/json`
+[`play.api.libs.json.JsValue`] (see [Chapter 4](#chapter-json))  `application/json`
 
-`scala.xml.NodeSeq`                                            `application/xml`
+`scala.xml.NodeSeq`                                              `application/xml`
 
-`Array[Byte]`                                                  `application/octet-stream`
------------------------------------------------------------------------------------------
+`Array[Byte]`                                                    `application/octet-stream`
+--------------------------------------------------------------------------------------------
 
 The process of creating a `Result` is type-safe -- Play determines the method of serialization based on the *type* we give it. If it understands what to do with our data, we get a working `Result`. If it doesn't understand the type we give it, we get a compilation error. As a consequence, the final steps in an `Action` tend to be:
 
@@ -71,7 +71,7 @@ The process of creating a `Result` is type-safe -- Play determines the method of
 <div class="callout callout-warning">
 *Custom Result Types*
 
-Play understands a limited set of result content types out-of-the-box. We can add support for our own types by defining instances of the [play.api.http.Writeable] type class. See the Scaladocs for more information:
+Play understands a limited set of result content types out-of-the-box. We can add support for our own types by defining instances of the [`play.api.http.Writeable`] type class. See the Scaladocs for more information:
 
 ~~~ scala
 // We have a custom library for manipulating iCal calendar files:
@@ -96,7 +96,7 @@ The intention of `Writeable` is to support general data formats. We wouldn't cre
 
 ### Tweaking the Result
 
-Once we have created a `Result`, we have access to a variety of methods to alter its contents. The API documentation for [play.api.mvc.Result] documents the options available:
+Once we have created a `Result`, we have access to a variety of methods to alter its contents. The API documentation for [`play.api.mvc.Result`] documents the options available:
 
  - we can change the `Content-Type` header (without changing the content) using the `as` method;
  - we can add and/or alter HTTP headers using `withHeaders`;
@@ -115,10 +115,10 @@ def ohai = Action { request =>
 
 ### Take Home Points
 
-The final step of an `Actions` is to create and return a [play.api.mvc.Result].
+The final step of an `Actions` is to create and return a [`play.api.mvc.Result`].
 
-We create `Results` using factory objects provided by [play.api.mvc.Controller]. Each factory creates `Results` with a specific HTTP status code.
+We create `Results` using factory objects provided by [`play.api.mvc.Controller`]. Each factory creates `Results` with a specific HTTP status code.
 
-We can `Results` with a variety of data types. Play provides built-in support for `String`, `JsValue`, `NodeSeq`, and `Html`. We can add our own data types by writing instances of the [play.api.http.Writeable] type class.
+We can `Results` with a variety of data types. Play provides built-in support for `String`, `JsValue`, `NodeSeq`, and `Html`. We can add our own data types by writing instances of the [`play.api.http.Writeable`] type class.
 
 Once we have created a `Result`, we can tweak headers and cookies before returning it.
