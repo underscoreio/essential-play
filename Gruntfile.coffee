@@ -158,10 +158,6 @@ module.exports = (grunt) ->
 
     target ?= "html"
 
-    distPath = "dist/" + target + "/"
-    output   = distPath + "essential-play." + target
-    grunt.file.mkdir(distPath)
-
     switch target
       when "pdf"
         output   = "--output=dist/essential-play.pdf"
