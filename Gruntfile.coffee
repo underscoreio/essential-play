@@ -19,7 +19,7 @@ module.exports = (grunt) ->
     lines.split(/[ \r\n]+/).join(" ")
 
   pandocSources = joinLines """
-    src/pages/start/foreword.md
+    src/pages/intro/index.md
     src/pages/basics/index.md
     src/pages/basics/actions.md
     src/pages/basics/routes.md
@@ -188,8 +188,6 @@ module.exports = (grunt) ->
       --latex-engine=xelatex
       #{filters}
       --variable=papersize:a4paper
-      --variable=lof:false
-      --variable=lot:false
       --variable=geometry:margin=.75in        \
       --chapters
       --number-sections
