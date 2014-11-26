@@ -166,6 +166,7 @@ module.exports = (grunt) ->
                      --filter=src/filters/pdf/callout.coffee
                      --filter=src/filters/pdf/columns.coffee
                    """
+        extras   = ""
         metadata = "src/meta/pdf.yaml"
 
       when "html"
@@ -174,18 +175,21 @@ module.exports = (grunt) ->
         filters  = joinLines """
                      --filter=src/filters/html/tables.coffee
                    """
+        extras   = ""
         metadata = "src/meta/html.yaml"
 
       when "epub"
         output   = "--output=dist/essential-play.epub"
         template = "--epub-stylesheet=dist/temp/main.css"
         filters  = ""
+        extras   = "--epub-cover-image=src/templates/images/epub-cover.png"
         metadata = "src/meta/epub.yaml"
 
       when "json"
         output   = "--output=dist/essential-play.json"
         template = ""
         filters  = ""
+        extras   = ""
         metadata = ""
 
       else
@@ -205,8 +209,8 @@ module.exports = (grunt) ->
       --highlight-style tango
       --standalone
       --self-contained
+      #{extras}
       src/meta/metadata.yaml
-      --epub-cover-image=src/images/epub_cover.png
       #{metadata}
       #{pandocSources}
     """
