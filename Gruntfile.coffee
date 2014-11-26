@@ -47,6 +47,7 @@ module.exports = (grunt) ->
     src/pages/async/ws.md
     src/pages/async/failure.md
     src/pages/links.md
+    src/pages/back.md
   """
 
   grunt.initConfig
@@ -181,6 +182,7 @@ module.exports = (grunt) ->
         template = "--epub-stylesheet=dist/temp/main.css"
         filters  = ""
         metadata = "src/meta/epub.yaml"
+        back     = "src/pages/back.md"
 
       when "json"
         output   = "--output=dist/essential-play.json"
@@ -206,11 +208,13 @@ module.exports = (grunt) ->
       --standalone
       --self-contained
       src/meta/metadata.yaml
+      --epub-cover-image=src/images/epub_cover.png
       #{metadata}
       #{pandocSources}
+      #{back}
     """
 
-    grunt.log.debug("Running: #{command}")
+    grunt.log.error("Running: #{command}")
 
     pandoc = process.exec(command)
 
