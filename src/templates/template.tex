@@ -388,6 +388,77 @@ $include-after$
 
 $endfor$
 
+% Back page ------------------------------------
+\begin{titlepage}
+\pagecolor{bookcolor}
+\color{white}
+
+\begin{tikzpicture}[overlay, remember picture]
+\node[anchor=north west, xshift=-.2cm, yshift=.2cm]
+     at (current page.north west)
+     {\includegraphics{src/templates/images/hero-left-overlay-white.pdf}};
+\end{tikzpicture}
+
+\begin{tikzpicture}[overlay, remember picture]
+\node[anchor=south east, xshift=.2cm, yshift=-.2cm]
+     at (current page.south east)
+     {\includegraphics{src/templates/images/hero-right-overlay-white.pdf}};
+\end{tikzpicture}
+
+\begin{center}
+\vspace*{2cm}
+
+$if(title)$
+{\fontsize{1.5cm}{1em} \textsf{$title$}}
+$endif$
+
+\vspace{1em}
+
+$for(author)$
+{\fontsize{1cm}{1em} \textsf{$author$}}
+$endfor$
+
+\end{center}
+
+\vspace{1em}
+
+{\fontsize{.5cm}{1em} \raggedright{
+Essential Play is a fast paced, no-nonsense introduction to the Play Web Framework for Scala. This concise introduction explains the concepts you need to know, and shows you how to use them.
+}}
+
+{\fontsize{.5cm}{1em} \raggedright{
+This is the text book used on the course of the same name, which gets development teams up and productive with the latest Play 2.x series. It is aimed at the beginner-to-intermediate Scala developers, and assumes no prior knowledge of Play.
+}}
+
+Topics covered:
+
+\begin{enumerate}
+\item Routing, controllers, and actions
+\item Manipulating requests and response
+\item Generating HTML
+\item Parsing and validating forms
+\item Reading and writing JSON
+\item Asynchronous requesting handling
+\item Calling external web services
+\end{enumerate}
+
+{\fontsize{.5cm}{1em} \raggedright{
+Whether you're building a REST API, or a REACTIVE web app, this book will lead you through the steps to build your application.
+}}
+
+\begin{bottompar}
+\begin{center}
+\includegraphics[width=5cm]{src/templates/images/brand.pdf}
+
+\vspace{1cm}
+
+Copyright 2014 $author$.
+\end{center}
+\end{bottompar}
+
+\end{titlepage}
+
+
 % The end ---------------------------------------
 
 \end{document}
