@@ -85,7 +85,7 @@ def index = Future {
 }
 ~~~
 
-The default application thread pool is sufficient for most cases, but advanced users can tweak its parameters and allocate extra thread pools if required. See Play's [documentation on thread pools](docs-thread-pools) for more information.
+The default application thread pool is sufficient for most cases, but advanced users can tweak its parameters and allocate extra thread pools if required. See Play's [documentation on thread pools][docs-thread-pools] for more information.
 
 <div class="callout callout-danger">
 *Scala's Default ExecutionContext*

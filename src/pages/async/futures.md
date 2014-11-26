@@ -234,7 +234,7 @@ Both examples are resource-efficient and non-blocking but they sequence operatio
 
 ### *Future.sequence*
 
-For comprehensions are a great way to combine the results of several futures, but they aren't suitable for combining the results of *arbitrarily sized* sets of futures. For this we need the `sequence` method of [Future's companion object](scala.concurrent.Future$). Here's a simplified type signature:
+For comprehensions are a great way to combine the results of several futures, but they aren't suitable for combining the results of *arbitrarily sized* sets of futures. For this we need the `sequence` method of [Future's companion object][scala.concurrent.Future$]. Here's a simplified type signature:
 
 ~~~ scala
 package scala.concurrent

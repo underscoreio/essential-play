@@ -73,7 +73,7 @@ def action = Action(myDataParser) { request =>
 }
 ~~~
 
-See Play's [documentation on body parsers](docs-body-parsers) for more information.
+See Play's [documentation on body parsers][docs-body-parsers] for more information.
 </div>
 
 ### Headers and Cookies

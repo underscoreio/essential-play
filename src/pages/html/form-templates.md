@@ -51,7 +51,7 @@ The generated HTML contains a `<form>` element and an `<input>` and `<label>` fo
 <div class="callout callout-warning">
 *Internationalization*
 
-Notice the text `"format.boolean"` in the generated HTML. This is an uninternationalized message that has crept through due to a missing value in Play's default string tables. We can fix the broken message by providing our own [internationalization](docs-i18n) for our application. See the linked documentation for details.
+Notice the text `"format.boolean"` in the generated HTML. This is an uninternationalized message that has crept through due to a missing value in Play's default string tables. We can fix the broken message by providing our own [internationalization][docs-i18n] for our application. See the linked documentation for details.
 </div>
 
 ### Pre-Filling Forms
@@ -162,14 +162,14 @@ The extra parameters are keyword/value pairs of type `(Symbol, String)`. Most ke
  - `'_help` adds a line of help text to the element;
  - `'_id` alters the `id` attribute of the `<dl>` tag (as opposed to the `<input>`).
 
-See the Play [documentation on field constructors](docs-field-constructors) for a complete list of special keywords.
+See the Play [documentation on field constructors][docs-field-constructors] for a complete list of special keywords.
 
 <div class="callout callout-warning">
 *Custom Field Constructors*
 
-Sometimes small tweaks to the HTML aren't enough. We can make comprehensive changes to the HTML structure by specifying a *field constructor* in our template. See the [documentation on field constructors](docs-field-constructors) for more information.
+Sometimes small tweaks to the HTML aren't enough. We can make comprehensive changes to the HTML structure by specifying a *field constructor* in our template. See the [documentation on field constructors][docs-field-constructors] for more information.
 
-[This StackOverflow post](link-using-bootstrap-with-play) contains information on using a custom field constructor to generate [Twitter Bootstrap][link-twitter-bootstrap] compatible form HTML.
+[This StackOverflow post][link-using-bootstrap-with-play] contains information on using a custom field constructor to generate [Twitter Bootstrap][link-twitter-bootstrap] compatible form HTML.
 </div>
 
 ### Take Home Points

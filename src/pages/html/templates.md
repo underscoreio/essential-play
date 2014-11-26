@@ -99,7 +99,7 @@ Twirl templates can have any number of parameters of arbitrary types. They also 
 
 The template body is compiled to a single Scala expression that appends all the static and dynamic parts to a single `Html` object. Twirl uses runtime pattern matching to convert embedded expressions to HTML. Expressions are escaped to prevent malicious code injection.
 
-Twirl embedded expression syntax is inspired by Scala syntax. Here is a brief synopsis---for more information see Play's [documentation on template syntax](docs-templates).
+Twirl embedded expression syntax is inspired by Scala syntax. Here is a brief synopsis---for more information see Play's [documentation on template syntax][docs-templates].
 
 #### Simple Expressions
 

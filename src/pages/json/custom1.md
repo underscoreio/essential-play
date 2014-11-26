@@ -43,7 +43,7 @@ We can easily adapt this code to create a separate `Reads` or `Writes`---we simp
 <div class="callout callout-warning">
 *Internationalization*
 
-Note the construction of the `JsError`, which mimics the way Play handles internationalization of error messages. Each type of error has its own *error code*, allowing us to build internationalization tables on the client. The [built-in error codes](link-error-codes) are rather poorly documented---a list can be found in the Play source code.
+Note the construction of the `JsError`, which mimics the way Play handles internationalization of error messages. Each type of error has its own *error code*, allowing us to build internationalization tables on the client. The [built-in error codes][link-error-codes] are rather poorly documented---a list can be found in the Play source code.
 
 
 </div>

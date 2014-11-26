@@ -125,7 +125,7 @@ val todoForm: Form[Todo] = Form(mapping(
 )(Todo.apply)(Todo.unapply))
 ~~~
 
-Play provides lots of options for parsing and validating, including adding multiple and custom validation constraints to fields and mapping hierarchical and sequential data. See the [documentation for Forms](docs-forms), the Scaladoc for [`play.api.data.Forms`], and the Scaladoc for [`play.api.data.validation.Constraints`] for more information.
+Play provides lots of options for parsing and validating, including adding multiple and custom validation constraints to fields and mapping hierarchical and sequential data. See the [documentation for Forms][docs-forms], the Scaladoc for [`play.api.data.Forms`], and the Scaladoc for [`play.api.data.validation.Constraints`] for more information.
 
 ### Take Home Points
 
