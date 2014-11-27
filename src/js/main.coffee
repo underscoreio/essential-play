@@ -1,6 +1,6 @@
-# $      = require 'jquery'
-# navbar = require './navbar'
+$   = require 'jquery'
+toc = require './toc'
 
-# $ ->
-#   navbar.init()
-#   return
+$ ->
+  toc.init('.toc-toggle', '.toc-contents')
+  return
