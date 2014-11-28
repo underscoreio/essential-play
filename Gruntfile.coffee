@@ -21,6 +21,28 @@ module.exports = (grunt) ->
   joinLines = (lines) ->
     lines.split(/[ \r\n]+/).join(" ")
 
+  runCommand = (command, done, options = {}) ->
+    grunt.log.write("Running shell command: #{command}\n")
+
+    proc = process.exec(command, options)
+
+    proc.stdout.on 'data', (d) -> grunt.log.write(d)
+    proc.stderr.on 'data', (d) -> grunt.log.error(d)
+
+    proc.on 'error', (err) ->
+      grunt.log.error("Shell command failed with: #{err}")
+      done(false)
+
+    proc.on 'exit', (code) ->
+      if code == 0
+        grunt.log.write("Shell command exited with code 0")
+        done()
+      else
+        grunt.log.error("Shell command exited with code #{code}")
+        done(false)
+
+    return
+
   meta = yaml.safeLoad(fs.readFileSync('./src/meta/metadata.yaml', 'utf8'))
 
   unless typeof meta.filenameStem == "string"
@@ -129,8 +151,6 @@ module.exports = (grunt) ->
   grunt.renameTask "watch", "watchImpl"
 
   grunt.registerTask "pandoc", "Run pandoc", (target) ->
-    done = this.async()
-
     target ?= "html"
 
     switch target
@@ -190,63 +210,19 @@ module.exports = (grunt) ->
       #{meta.pages.join(" ")}
     """
 
-    grunt.log.write("Running: #{command}")
-
-    pandoc = process.exec(command)
-
-    pandoc.stdout.on 'data', (d) ->
-      grunt.log.write(d)
-      return
-
-    pandoc.stderr.on 'data', (d) ->
-      grunt.log.error(d)
-      return
-
-    pandoc.on 'error', (err) ->
-      grunt.log.error("Failed with: #{err}")
-      done(false)
-
-    pandoc.on 'exit', (code) ->
-      if code == 0
-        grunt.verbose.subhead("pandoc exited with code 0")
-        done()
-      else
-        grunt.log.error("pandoc exited with code #{code}")
-        done(false)
-
-    return
+    runCommand(command, this.async())
 
   grunt.registerTask "exercises", "Download and build exercises", (target) ->
     unless meta.exercisesRepo
       return
 
-    done = this.async()
+    command = joinLines """
+      rm -rf #{meta.filenameStem}-code &&
+      git clone #{meta.exercisesRepo} &&
+      zip -r #{meta.filenameStem}-code.zip #{meta.filenameStem}-code
+    """
 
-    grunt.log.write("Running: #{command}")
-
-    pandoc = process.exec(command)
-
-    pandoc.stdout.on 'data', (d) ->
-      grunt.log.write(d)
-      return
-
-    pandoc.stderr.on 'data', (d) ->
-      grunt.log.error(d)
-      return
-
-    pandoc.on 'error', (err) ->
-      grunt.log.error("Failed with: #{err}")
-      done(false)
-
-    pandoc.on 'exit', (code) ->
-      if code == 0
-        grunt.verbose.subhead("pandoc exited with code 0")
-        done()
-      else
-        grunt.log.error("pandoc exited with code #{code}")
-        done(false)
-
-    return
+    runCommand(command, this.async(), { cwd: 'dist' })
 
   grunt.registerTask "json", [
     "pandoc:json"
@@ -278,12 +254,6 @@ module.exports = (grunt) ->
     "pandoc:epub"
   ]
 
-  # grunt.registerTask "zip", [
-  #   "all"
-  #   "exec:exercises"
-  #   "exec:zip"
-  # ]
-
   grunt.registerTask "serve", [
     "build"
     "connect:server"
@@ -299,4 +269,5 @@ module.exports = (grunt) ->
 
   grunt.registerTask "default", [
     "all"
+    "exercises"
   ]
