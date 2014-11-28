@@ -11,6 +11,4 @@ Thumbs.db
 /dist/
 /node_modules/
 
-# Built copy of the site:
-essential-play.pdf
-essential-play.html
+*.sublime-workspace
