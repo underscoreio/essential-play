@@ -1,5 +1,40 @@
 ---
+# Used by Pandoc to print covers:
 title: Essential Play
 author: "Dave Gurnell and Noel Welsh"
 date: "Pre-Release, November 2014"
+# Used by Grunt to name output files:
+filenameStem: "essential-play"
+# Used by Grunt to create a ZIP of source code:
+exercisesRepo: "git@github.com:underscoreio/essential-play-code.git"
+# Used by Grunt to assemble pandoc command line:
+pages:
+  - src/pages/intro/index.md
+  - src/pages/intro/conventions.md
+  - src/pages/basics/index.md
+  - src/pages/basics/actions.md
+  - src/pages/basics/routes.md
+  - src/pages/basics/requests.md
+  - src/pages/basics/results.md
+  - src/pages/basics/failure.md
+  - src/pages/html/index.md
+  - src/pages/html/templates.md
+  - src/pages/html/forms.md
+  - src/pages/html/form-templates.md
+  - src/pages/json/index.md
+  - src/pages/json/values.md
+  - src/pages/json/writes.md
+  - src/pages/json/reads.md
+  - src/pages/json/formats.md
+  - src/pages/json/custom1.md
+  - src/pages/json/custom2.md
+  - src/pages/json/custom3.md
+  - src/pages/json/failure.md
+  - src/pages/async/index.md
+  - src/pages/async/futures.md
+  - src/pages/async/executioncontexts.md
+  - src/pages/async/actions.md
+  - src/pages/async/ws.md
+  - src/pages/async/failure.md
+  - src/pages/links.md
 ...

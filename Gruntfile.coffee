@@ -2,6 +2,8 @@
 
 path    = require 'path'
 process = require 'child_process'
+yaml    = require 'js-yaml'
+fs      = require 'fs'
 
 "use strict"
 
@@ -9,58 +11,44 @@ module.exports = (grunt) ->
   minify = grunt.option('minify') ? false
 
   grunt.loadNpmTasks "grunt-browserify"
+  grunt.loadNpmTasks "grunt-contrib-clean"
   grunt.loadNpmTasks "grunt-contrib-connect"
   grunt.loadNpmTasks "grunt-contrib-less"
   grunt.loadNpmTasks "grunt-contrib-watch"
-  grunt.loadNpmTasks "grunt-exec"
+  # grunt.loadNpmTasks "grunt-exec"
   grunt.loadNpmTasks "grunt-css-url-embed"
 
   joinLines = (lines) ->
     lines.split(/[ \r\n]+/).join(" ")
 
-  pandocSources = joinLines """
-    src/pages/intro/index.md
-    src/pages/intro/conventions.md
-    src/pages/basics/index.md
-    src/pages/basics/actions.md
-    src/pages/basics/routes.md
-    src/pages/basics/requests.md
-    src/pages/basics/results.md
-    src/pages/basics/failure.md
-    src/pages/html/index.md
-    src/pages/html/templates.md
-    src/pages/html/forms.md
-    src/pages/html/form-templates.md
-    src/pages/json/index.md
-    src/pages/json/values.md
-    src/pages/json/writes.md
-    src/pages/json/reads.md
-    src/pages/json/formats.md
-    src/pages/json/custom1.md
-    src/pages/json/custom2.md
-    src/pages/json/custom3.md
-    src/pages/json/failure.md
-    src/pages/async/index.md
-    src/pages/async/futures.md
-    src/pages/async/executioncontexts.md
-    src/pages/async/actions.md
-    src/pages/async/ws.md
-    src/pages/async/failure.md
-    src/pages/links.md
-  """
+  meta = yaml.safeLoad(fs.readFileSync('./src/meta/metadata.yaml', 'utf8'))
+
+  unless typeof meta.filenameStem == "string"
+    grunt.fail.fatal("'filename' in metadata must be a string")
+
+  unless !meta.exercisesRepo || typeof meta.exercisesRepo == "string"
+    grunt.fail.fatal("'exercisesRepo' in metadata must be a string or null")
+
+  unless Array.isArray(meta.pages)
+    grunt.fail.fatal("'pages' in metadata must be an array of strings")
 
   grunt.initConfig
+    clean:
+      main:
+        src: "dist"
+
     less:
       main:
         options:
           paths: [
             "node_modules"
+            "lib/css"
             "src/css"
           ]
           compress: minify
           yuicompress: minify
         files:
-          "dist/temp/main.noembed.css" : "src/css/main.less"
+          "dist/temp/main.noembed.css" : "lib/css/main.less"
 
     cssUrlEmbed:
       main:
@@ -71,7 +59,7 @@ module.exports = (grunt) ->
 
     browserify:
       main:
-        src:  "src/js/main.coffee"
+        src:  "lib/js/main.coffee"
         dest: "dist/temp/main.js"
         cwd:  "."
         options:
@@ -89,7 +77,7 @@ module.exports = (grunt) ->
         livereload: true
       css:
         files: [
-          "src/css/**/*"
+          "lib/css/**/*"
         ]
         tasks: [
           "less"
@@ -98,7 +86,7 @@ module.exports = (grunt) ->
         ]
       js:
         files: [
-          "src/js/**/*"
+          "lib/js/**/*"
         ]
         tasks: [
           "browserify"
@@ -106,7 +94,7 @@ module.exports = (grunt) ->
         ]
       templates:
         files: [
-          "src/templates/**/*"
+          "lib/templates/**/*"
         ]
         tasks: [
           "pandoc:html"
@@ -132,19 +120,6 @@ module.exports = (grunt) ->
           "pandoc:epub"
         ]
 
-    exec:
-      exercises:
-        cmd: joinLines """
-               rm -rf essential-play-code &&
-               git clone git@github.com:underscoreio/essential-play-code.git &&
-               zip -r essential-play-code.zip essential-play-code
-             """
-        cwd: "dist"
-      zip:
-        cmd: "zip essential-play.zip essential-play.pdf essential-play.html essential-play.epub essential-play-code.zip"
-        cwd: "dist"
-
-
     connect:
       server:
         options:
@@ -160,33 +135,33 @@ module.exports = (grunt) ->
 
     switch target
       when "pdf"
-        output   = "--output=dist/essential-play.pdf"
-        template = "--template=src/templates/template.tex"
+        output   = "--output=dist/#{meta.filenameStem}.pdf"
+        template = "--template=lib/templates/template.tex"
         filters  = joinLines """
-                     --filter=src/filters/pdf/callout.coffee
-                     --filter=src/filters/pdf/columns.coffee
+                     --filter=lib/filters/pdf/callout.coffee
+                     --filter=lib/filters/pdf/columns.coffee
                    """
         extras   = ""
         metadata = "src/meta/pdf.yaml"
 
       when "html"
-        output   = "--output=dist/essential-play.html"
-        template = "--template=src/templates/template.html"
+        output   = "--output=dist/#{meta.filenameStem}.html"
+        template = "--template=lib/templates/template.html"
         filters  = joinLines """
-                     --filter=src/filters/html/tables.coffee
+                     --filter=lib/filters/html/tables.coffee
                    """
         extras   = ""
         metadata = "src/meta/html.yaml"
 
       when "epub"
-        output   = "--output=dist/essential-play.epub"
+        output   = "--output=dist/#{meta.filenameStem}.epub"
         template = "--epub-stylesheet=dist/temp/main.css"
         filters  = ""
-        extras   = "--epub-cover-image=src/templates/images/epub-cover.png"
+        extras   = "--epub-cover-image=src/covers/epub-cover.png"
         metadata = "src/meta/epub.yaml"
 
       when "json"
-        output   = "--output=dist/essential-play.json"
+        output   = "--output=dist/#{meta.filenameStem}.json"
         template = ""
         filters  = ""
         extras   = ""
@@ -212,10 +187,42 @@ module.exports = (grunt) ->
       #{extras}
       src/meta/metadata.yaml
       #{metadata}
-      #{pandocSources}
+      #{meta.pages.join(" ")}
     """
 
-    grunt.log.error("Running: #{command}")
+    grunt.log.write("Running: #{command}")
+
+    pandoc = process.exec(command)
+
+    pandoc.stdout.on 'data', (d) ->
+      grunt.log.write(d)
+      return
+
+    pandoc.stderr.on 'data', (d) ->
+      grunt.log.error(d)
+      return
+
+    pandoc.on 'error', (err) ->
+      grunt.log.error("Failed with: #{err}")
+      done(false)
+
+    pandoc.on 'exit', (code) ->
+      if code == 0
+        grunt.verbose.subhead("pandoc exited with code 0")
+        done()
+      else
+        grunt.log.error("pandoc exited with code #{code}")
+        done(false)
+
+    return
+
+  grunt.registerTask "exercises", "Download and build exercises", (target) ->
+    unless meta.exercisesRepo
+      return
+
+    done = this.async()
+
+    grunt.log.write("Running: #{command}")
 
     pandoc = process.exec(command)
 
@@ -271,11 +278,11 @@ module.exports = (grunt) ->
     "pandoc:epub"
   ]
 
-  grunt.registerTask "zip", [
-    "all"
-    "exec:exercises"
-    "exec:zip"
-  ]
+  # grunt.registerTask "zip", [
+  #   "all"
+  #   "exec:exercises"
+  #   "exec:zip"
+  # ]
 
   grunt.registerTask "serve", [
     "build"
@@ -291,5 +298,5 @@ module.exports = (grunt) ->
   ]
 
   grunt.registerTask "default", [
-    "zip"
+    "all"
   ]

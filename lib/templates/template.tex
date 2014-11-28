@@ -45,7 +45,7 @@ $if(mainfont)$
 $else$
     \setmainfont[%
       Color=primary,
-      Path=src/fonts/Lato/,
+      Path=lib/fonts/Lato/,
       BoldItalicFont=Lato-BlackItalic,
       BoldFont=Lato-Bold,
       ItalicFont=Lato-Italic]{Lato-Regular}
@@ -56,7 +56,7 @@ $if(sansfont)$
 $else$
     \setsansfont[%
       Color=primary,
-      Path=src/fonts/Lato/,
+      Path=lib/fonts/Lato/,
       BoldItalicFont=Lato-BlackItalic,
       BoldFont=Lato-Bold,
       ItalicFont=Lato-Italic]{Lato-Regular}
@@ -251,13 +251,13 @@ $endfor$
 \begin{tikzpicture}[overlay, remember picture]
 \node[anchor=north west, xshift=-.2cm, yshift=.2cm]
      at (current page.north west)
-     {\includegraphics{src/templates/images/hero-left-overlay-white.pdf}};
+     {\includegraphics{lib/templates/images/hero-left-overlay-white.pdf}};
 \end{tikzpicture}
 
 \begin{tikzpicture}[overlay, remember picture]
 \node[anchor=south east, xshift=.2cm, yshift=-.2cm]
      at (current page.south east)
-     {\includegraphics{src/templates/images/hero-right-overlay-white.pdf}};
+     {\includegraphics{lib/templates/images/hero-right-overlay-white.pdf}};
 \end{tikzpicture}
 
 \begin{center}
@@ -281,7 +281,7 @@ $endif$
 
 \begin{bottompar}
 \begin{center}
-\includegraphics[width=5cm]{src/templates/images/brand.pdf}
+\includegraphics[width=5cm]{lib/templates/images/brand.pdf}
 
 \vspace{1cm}
 
@@ -396,13 +396,13 @@ $endfor$
 \begin{tikzpicture}[overlay, remember picture]
 \node[anchor=north west, xshift=-.2cm, yshift=.2cm]
      at (current page.north west)
-     {\includegraphics{src/templates/images/hero-left-overlay-white.pdf}};
+     {\includegraphics{lib/templates/images/hero-left-overlay-white.pdf}};
 \end{tikzpicture}
 
 \begin{tikzpicture}[overlay, remember picture]
 \node[anchor=south east, xshift=.2cm, yshift=-.2cm]
      at (current page.south east)
-     {\includegraphics{src/templates/images/hero-right-overlay-white.pdf}};
+     {\includegraphics{lib/templates/images/hero-right-overlay-white.pdf}};
 \end{tikzpicture}
 
 \begin{center}
@@ -448,7 +448,7 @@ Whether you're building a REST API, or a REACTIVE web app, this book will lead y
 
 \begin{bottompar}
 \begin{center}
-\includegraphics[width=5cm]{src/templates/images/brand.pdf}
+\includegraphics[width=5cm]{lib/templates/images/brand.pdf}
 
 \vspace{1cm}
 

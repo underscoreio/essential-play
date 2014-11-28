@@ -23,23 +23,17 @@ grunt html
 grunt epub
 ~~~
 
+The default grunt behaviour is to build all formats:
+
+~~~
+grunt
+~~~
+
 All targets are placed in the `dist` directory.
 
-Run the following to build all formats, start a web server to serve them all,
+Run the following to build all formats, start a web server to serve them,
 and rebuild if you change any files:
 
 ~~~
 grunt watch
-~~~
-
-Use the following to build all a ZIP of all formats:
-
-~~~
-grunt zip
-~~~
-
-The default grunt behaviour is to run `zip`:
-
-~~~
-grunt
 ~~~
