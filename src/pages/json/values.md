@@ -1,6 +1,6 @@
 ## Modelling JSON
 
-Play models JSON data using a family of case classes of type [`play.api.libs.json.JsValue`], representing each of the data types in the [JSON specification](link-json-spec).
+Play models JSON data using a family of case classes of type [`play.api.libs.json.JsValue`], representing each of the data types in the [JSON specification](link-json-spec):
 
 ~~~ scala
 package play.api.libs.json
@@ -104,7 +104,7 @@ JsObject(Seq(
 
 ### JSON *Requests* and *Results*
 
-Play contains built-in functionality for extracting `JsValues` from `Requests[AnyContent]` and serializing them in `Results`:
+As we saw in Chappter 2, Play contains built-in functionality for extracting `JsValues` from `Requests[AnyContent]` and serializing them in `Results`:
 
 ~~~ scala
 def index = Action { request =>
@@ -128,7 +128,9 @@ If we're writing API endpoint that *must* accept JSON, we can use the built-in J
 ~~~ scala
 import play.api.mvc.BodyParsers.parse
 
+// If we use the Action.apply(bodyParser)(handlerFunction) method here...
 def index = Action(parse.json) { request =>
+  // ...the request body is automaically JSON -- no need to call `asJson`:
   val json: JsValue = request.body
 
   Ok(Json.obj(
@@ -141,7 +143,7 @@ def index = Action(parse.json) { request =>
 <div class="callout callout-warning">
 *Parsing and Stringifying JSON*
 
-We typically don't have to directly parse stringified JSON If we do, we can use the `parse` method of [`play.api.libs.json.Json`]
+As Play provides us with the means to extract `JsValues` from incoming `Requests`, we typically don't have to directly parse stringified JSON ourselves. If we do, we can use the `parse` method of [`play.api.libs.json.Json`]:
 
 ~~~ scala
 Json.parse("""{ "name": "Dave", "age": 35 }""")
@@ -177,7 +179,12 @@ Getting data out of a request is just the first step in reading it. A client can
 One way of deconstructing `JsValues` is to use *pattern matching*. This is convenient as the subtypes are all case classes and case objects:
 
 ~~~ scala
-val json = Json.parse(/* ... */)
+val json = Json.parse("""
+{
+  "name": "Dave",
+  "likes": [ "Scala", "Coffee", "Pianos" ]
+}
+""")
 
 json match {
   case JsObject(fields) => println("Object:\n  " + (fields mkString "  \n"))
@@ -226,27 +233,34 @@ This begs the question: what happens when we use `\` and `apply` and the specifi
 We lied earlier about the subtypes of `JsValue`. There is a actually a sixth subtype, `JsUndefined`, that Play uses to represent the failure to find a field:
 
 ~~~ scala
-case class JsUndefined(/* ... */) extends JsValue
+case class JsUndefined(error: => String) extends JsValue
 ~~~
 
 The `\` and `apply` methods of `JsUndefined` each themselves return `JsUndefined`. This means we can freely traverse JSON data using sequences of operations without worrying about failure:
 
 ~~~ scala
-val x: JsValue = json \ "badname" // => JsUndefined(...)
-val y: JsValue = json(2)          // => JsUndefined(...)
-val z: JsValue = json(2) \ "name" // => JsUndefined(...)
+val x: JsValue = json \ "badname"
+// => JsUndefined("'badname' is undefined on ...")
+
+val y: JsValue = json(2)
+// => JsUndefined("Array index out of bounds ...")
+
+val z: JsValue = json(2) \ "name"
+// => JsUndefined("'name' is undefined on ...")
 ~~~
 
-Note that we have ignored the contents of `JsUndefined` as they typically aren't used in user code.
+#### Parsing Methods
 
-A useful trick for exploring JSON in the REPL, or in unit tests, we can use the `as` method to extract values:
+We can use two methods, `as` and `asOpt`, to convert JSON data to regular Scala types.
+
+The `as` method is most useful when exploring JSON in the REPL or unit tests:
 
 ~~~ scala
 val name = (json(0) \ "name").as[String]
 // => name: String = Dave
 ~~~
 
-We say only for use in the REPL or tests because if `as` cannot convert to the type requested, a run-time exception is thrown:
+If `as` cannot convert the data to the type requested, it throws a run-time exception. This makes it dangerous for use in production code:
 
 ~~~ scala
 val name = (json(0) \ "name").as[Int]
@@ -255,12 +269,20 @@ val name = (json(0) \ "name").as[Int]
 //    ))
 ~~~
 
-If you think using `as` would be handy, hang on, because there is a better way which we will come to. But if you still really want to use `as` prefer the `asOpt` variant. This evaluates to a `None` if it cannot convert the JSON value:
+The `asOpt` method provides a safer way to extract data---it attempts to parse the JSON as the desired type, and returns `None` if it fails. This is a better choice for use in application code:
 
 ~~~ scala
 scala> val name = (json(0) \ "name").asOpt[Int]
 // => name: Option[Int] = None
 ~~~
+
+<div class="callout callout-warning">
+*Extracting data with `as` and `asOpt`*
+
+We might reasonably ask the questions: what Scala data types to `as` and `asOpt` work with, and how do they know the JSON encodings of those types?
+
+Each method accepts an `implicit` parameter of type `Reads[T]` that explains how to parse JSON as the target type `T`. Play provides default `Reads` implementations for basic types such as `String` and `Seq[Int]`, and we can define custom `Reads` for our own types. We will cover `Reads` in detail later in this Chapter.
+</div>
 
 #### Putting It All Together
 

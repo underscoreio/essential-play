@@ -16,4 +16,4 @@ By the end of the course we will have a solid foundation in each of the main lib
 As coursework we will build a simple chat application from the ground up. We will start with a very basic web site and end up building a complete service-oriented architecture with each concern separated out to a separate microservice.
 -->
 
-Many thanks to [Richard Dallaway][link-twitter-richard], [Jonathan Ferguson][link-twitter-jono], [Noel Welsh][link-twitter-noel], and the team at [Underscore][link-underscore] for their invaluable contributions and proof reading.
+Many thanks to [Richard Dallaway][link-twitter-richard], [Jonathan Ferguson][link-twitter-jono], and the team at [Underscore][link-underscore] for their invaluable contributions and extensive proof reading.

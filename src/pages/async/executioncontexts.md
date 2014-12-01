@@ -70,7 +70,7 @@ Modern asynchronous programming libraries use *thread pools* to avoid these prob
  3. execute the future;
  4. repeat from step 1.
 
-There are many parameters to thread pools that we can tweak: the number of threads in the pool, the capacity to allocate extra threads at high load, the algorithm used to select free threads, and so on. Fortunately, in many cases we can simply use sensible defaults provided by libraries like Play.
+There are many parameters to thread pools that we can tweak: the number of threads in the pool, the capacity to allocate extra threads at high load, the algorithm used to select free threads, and so on. The book [Java Concurrency in Practice](link-jcip) by Brian Goetz et al discusses these in detail. Fortunately, in many cases we can simply use sensible defaults provided by libraries like Play.
 </div>
 
 ### Play's *ExecutionContext*
@@ -85,12 +85,12 @@ def index = Future {
 }
 ~~~
 
-The default application thread pool is sufficient for most cases, but advanced users can tweak its parameters and allocate extra thread pools if required. See Play's [documentation on thread pools][docs-thread-pools] for more information.
+The default application thread pool is sufficient for most cases, but advanced users can tweak its parameters and allocate extra thread pools using configuration files. See Play's [documentation on thread pools][docs-thread-pools] for more information.
 
 <div class="callout callout-danger">
 *Scala's Default ExecutionContext*
 
-The Scala standard library also provides a default `ExecutionContext`. This is suitable for use in regular Scala applications, but we **should not use it in Play web applications.**
+The Scala standard library also provides a default `ExecutionContext`. This is suitable for use in regular Scala applications, but we can't use Play's configuration files to configure it:
 
 ~~~ scala
 // DON'T USE THIS:

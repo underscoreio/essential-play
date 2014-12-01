@@ -34,6 +34,14 @@ def index = Action.async { request =>
 We can use methods such as `map` and `flatMap` to split long multi-stage workload into sequences of shorter `Futures`, allowing Play to schedule the work more easily across the thread pool along-side other pending requests:
 
 ~~~ scala
+import scala.concurrent.ExecutionContext
+import play.api.libs.concurrent.Execution.defaultContext
+
+def getTraffic(hostname: String)
+    (implicit context: ExecutionContext): Future[Double] = {
+  // ...non-blocking HTTP code...
+}
+
 def traffic = Action.async { request =>
   val traffic1 = getTraffic("server1")
   val traffic2 = getTraffic("server2")

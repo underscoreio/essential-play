@@ -35,10 +35,10 @@ val address = Address(29, "Acacia Road")
 val json: JsValue = addressWrites.writes(address)
 
 // The end result is as follows:
-assert(json == Json.obj("number" -> 29, "street" -> "Acacia Road"))
+// Json.obj("number" -> 29, "street" -> "Acacia Road")
 ~~~
 
-### Implicit Writes
+### Implicit *Writes*
 
 Let's look at a more complicated example---what happens when we try to define a `Writes` for a nested data structure?
 
@@ -77,6 +77,14 @@ We can use our new `personWrites` to serialize data just as we did with `address
 ~~~ scala
 val json: JsValue = personWrites.writes( ↩
   Person("Eric Wimp", Address(29, "Acacia Road")))
+
+// => Json.obj(
+//   "name" -> "Eric Wimp",
+//   "street" -> Json.obj(
+//     "number" -> 29,
+//     "street" -> "Acacia Road"
+//   )
+// )
 ~~~
 
 However, using different `Writes` objects to serialize each type in our application is inconvenient---we have to remember a lot of different identifiers, and we can't write generic code to serialize data of an arbitrary type.
@@ -136,6 +144,6 @@ Because `Writes` is a type class, we can conveniently apply the *type class patt
 
 We convert Scala data to JSON using instances of [`play.api.libs.json.Writes`].
 
-Play provides a convenient macro, `Json.writes`, to define a `Writes` for case classes. If we're not dealing with case classes, we have to create `Writes` by hand.
+Play provides a convenient macro, `Json.writes`, to define a `Writes` for case classes. If we're not dealing with case classes, we have to create `Writes` by hand. We'll cover hand-written *Writes* in detail later on.
 
 We can use the `Json.toJson` method to serialize any data type for which we have an `implicit` `Writes` in scope. We therefore typically define `Writes` in companion objects or singleton objects, and bring them into scope wherever we need them to create `Results`.

@@ -234,7 +234,7 @@ Both examples are resource-efficient and non-blocking but they sequence operatio
 
 ### *Future.sequence*
 
-For comprehensions are a great way to combine the results of several futures, but they aren't suitable for combining the results of *arbitrarily sized* sets of futures. For this we need the `sequence` method of [Future's companion object][scala.concurrent.Future$]. Here's a simplified type signature:
+For comprehensions are a great way to combine the results of several futures, but they aren't suitable for combining the results of *arbitrarily sized* sets of futures. For this we need the `sequence` method of [`Future's` companion object][`scala.concurrent.Future$`]. Here's a simplified type signature:
 
 ~~~ scala
 package scala.concurrent
@@ -245,7 +245,7 @@ object Future {
 }
 ~~~
 
-We can use this method to convert any sequence[^sequence] of futures into a future containing a sequence of the results. We can use this method to generalise our traffic monitoring example to any number of hosts:
+We can use this method to convert any sequence of futures into a future containing a sequence of the results. We can use this method to generalise our traffic monitoring example to any number of hosts:
 
 ~~~ scala
 def totalTraffic(hostnames: Seq[String]): Future[Double] = {
@@ -259,7 +259,7 @@ def totalTraffic(hostnames: Seq[String]): Future[Double] = {
 }
 ~~~
 
-[^sequence]: `Future.sequence` actually accepts a `TraversableOnce` and returns a `Future` of the same type of sequence. Subtypes of `TraversableOnce` include sequences, sets, lazy streams, and many of other types of collection not covered here, making `Future.sequence` a useful and versatile method.
+Note: `Future.sequence` actually accepts a `TraversableOnce` and returns a `Future` of the same type of sequence. Subtypes of `TraversableOnce` include sequences, sets, lazy streams, and many of other types of collection not covered here, making `Future.sequence` a useful and versatile method.
 
 ### Take Home Points
 

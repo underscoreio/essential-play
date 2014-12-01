@@ -6,7 +6,7 @@ Fortunately, Play provides a *format DSL* for creating `Reads`, `Writes`, and `F
 
 ### Using Play's Format DSL
 
-Let's start with an example of a `Reads` for our `Address` class:
+Let's start with an example of a `Reads`. Later on we'll see how the same pattern applies for `Writes` and `Formats`. We can write a `Reads` for our `Address` class as follows:
 
 ~~~ scala
 import play.api.libs.json._
@@ -17,6 +17,8 @@ implicit val addressReads: Reads[Address] = (
   (JsPath \ "street").read[String]
 )(Address.apply)
 ~~~
+
+In a nutshell, this code parses a JSON object by extracting its `"number"` field as an `Int`, its `"street"` field as a `String`, combining them via the `and` method, and feeding them into the `Addres.apply` method.
 
 We have a lot more flexibility using this syntax than we do with `Json.reads`. We can change the field names for `"number"` and `"street"`, introduce default values for fields, validate that the house number is greater than zero, and so on.
 
@@ -130,7 +132,7 @@ There are equivalent sets of builders for `Writes` and `Formats` types. All we h
 
 Instead of using `tupled`, we can call our builder's `apply` method to create a `Reads` that aggregates values in a different way.
 
-As we can see in the table above, the `apply` method of `CanBuild2` accepts a "constructor" parameter of type `(A, B) => C` and returns a `Reads[C]`:
+As we can see in the table above, the `apply` method of `CanBuild2` accepts a constructor-like function of type `(A, B) => C` and returns a `Reads[C]`:
 
 ~~~ scala
 val constructor = (a: Int, b: String) => Address(a, b)
@@ -149,9 +151,9 @@ val addressReads = (
 // => Reads[Address]
 ~~~
 
-As we can see from the types in the `CanBuild` table, we can combine more than two `Reads` using this approach. There are `CanBuild` types up to `CanBuild21`, each of which has an `apply` method that accepts a constructor with a corresponding number of parameters.
+As we can see from the types in the table, we can combine more than two `Reads` using this approach. There are `CanBuild` types up to `CanBuild21`, each of which has an `apply` method that accepts a constructor with a corresponding number of parameters.
 
-When building `Writes`, we supply "extractor" functions instead of "constructors". Extractors accept a single parameter and return an `Option` of a tuple of the correct number of values. The semantics are identical to the `unapply` method on a case class's companion object:
+When building `Writes`, we supply extractor functions instead of constructors. Extractor functions accept a single parameter and return a tuple of the correct number of values. The semantics are identical to the `unapply` method on a case class's companion object:
 
 ~~~ scala
 (
@@ -160,7 +162,9 @@ When building `Writes`, we supply "extractor" functions instead of "constructors
 )(unlift(Address.unapply))
 ~~~
 
-Finally, when building `Formats` we have to supply both a constructor and an extractor function: one to combine the values in a read operation, and one to split them up in a write:
+Note the use of `unlift` here, which converts the `unapply` method of type `Address => Option[(Int, String)]` to a function (technically a partial function) of type `Address => (Int, String)`. `unlift` is a utility method imported from `play.api.libs.functional.syntax` that has identical semantics to [`Function.unlift`][`scala.Function$`] from the Scala standard library.
+
+When building `Formats` we have to supply both a constructor and an extractor function: one to combine the values in a read operation, and one to split them up in a write:
 
 ~~~ scala
 (
@@ -196,6 +200,8 @@ implicit val dateTimeFormat: Format[DateTime] = (
   (JsPath \ "milli").format[Int]
 )(createDateTime, extractDateTimeFields)
 ~~~
+
+Note that we don't need to use `unlift` with `extractDateTimeFields` here because our method already returns a non-`Optional` tuple of the correct size.
 
 ### Take Home Points
 

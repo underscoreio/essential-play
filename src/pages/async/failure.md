@@ -85,7 +85,7 @@ val future2: Future[String] = future1.transform(
 
 ### Creating Failures
 
-We occasionally want to create a future containing a new exception. It is undignified for a functional programmers to write `throw` in our code, so we tend to use the `Future.failed` method instead:
+We occasionally want to create a future containing a new exception. It is considered bad style to write `throw` in Scala code, so we tend to use the `Future.failed` method instead:
 
 ~~~ scala
 val future3 = Future.failed[Int](new Exception("Oh noes!"))
@@ -95,7 +95,7 @@ Stack information is preserved correctly in the `Future` as we might expect.
 
 ### Failures in For-Comprehensions
 
-Failure propagation in `Futures` has similar semantics to the propagation of `None` in `Options`. Once a failure occurs, it is propagated by calls to `map` and `flatMap`, shortcutting any mapping functions we provide. This gives `for` comprehensions over `Futures` familiar error-handling semantics:
+Failure propagation in `Futures` has similar semantics to the propagation of `None` in `Options`. Once a failure occurs, it is propagated by calls to `map` and `flatMap`, shortcutting any mapping functions we provide. This gives for-comprehensions over `Futures` familiar error-handling semantics:
 
 ~~~ scala
 val result = for {

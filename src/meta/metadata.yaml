@@ -3,6 +3,9 @@
 title: Essential Play
 author: "Dave Gurnell and Noel Welsh"
 date: "Pre-Release, November 2014"
+# Used by Pandoc to generate the PDF cover...
+# see src/css/book.css for HTML/ePub covers:
+coverColor: "A0C556"
 # Used by Grunt to name output files:
 filenameStem: "essential-play"
 # Used by Grunt to create a ZIP of source code:
@@ -10,6 +13,7 @@ exercisesRepo: "git@github.com:underscoreio/essential-play-code.git"
 # Used by Grunt to assemble pandoc command line:
 pages:
   - src/pages/intro/index.md
+  - src/pages/intro/pre-release.md
   - src/pages/intro/conventions.md
   - src/pages/basics/index.md
   - src/pages/basics/actions.md

@@ -1,6 +1,6 @@
 ## Reading JSON
 
-In the previous section we saw how to use `Writes` and `Json.toJson` to convert domain objects to JSON. In this section we will look at the opposite process---reading JSON data from a `Request` and converting it to domain objects.
+In the previous section we saw how to use `Writes` and `Json.toJson` to convert domain objects to JSON. In this section we will look at the opposite process---reading JSON data from a `Request` and converting them to domain objects.
 
 ### Meet *Reads*
 
@@ -33,8 +33,6 @@ Json.fromJson[Person](Json.obj(
 
 So far so good---reading JSON data is at least superficially similar to writing it.
 
-[`play.api.libs.json.Reads`]
-
 ### Embracing Failure
 
 The main difference between reading and writing JSON is that reading can *fail*. `Reads` handles this by wrapping return values in an `Either`-like data structure called [`play.api.libs.json.JsResult`].
@@ -44,7 +42,7 @@ The main difference between reading and writing JSON is that reading can *fail*.
  - [`play.api.libs.json.JsSuccess`] represents the result of a successful read;
  - [`play.api.libs.json.JsError`] represents the result of a failed read.
 
-Like `Form`, `JsResult` has a `fold` method that allows us to branch based on the success/failure of a read:
+Like `Form`, which we covered in [Chapter 3](#chapter3), `JsResult` has a `fold` method that allows us to branch based on the success/failure of a read:
 
 ~~~ scala
 // Attempt to read JSON as an Address---might succeed or fail:

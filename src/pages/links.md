@@ -7,6 +7,7 @@
 [docs-thread-pools]:                      https://www.playframework.com/documentation/2.3.x/ThreadPools
 
 [link-error-codes]:                       https://github.com/playframework/playframework/blob/2.3.x/framework/src/play/src/main/resources/messages.default#L21-L51
+[link-jcip]:                              http://www.amazon.com/Java-Concurrency-Practice-Brian-Goetz/dp/0321349601
 [link-json-spec]:                         http://json.org
 [link-non-blocking]:                      http://en.wikipedia.org/wiki/Non-blocking_algorithm
 [link-play]:                              http://playframework.com
@@ -26,7 +27,7 @@
 [`play.api.libs.json.DefaultWrites`]:     https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.DefaultWrites
 [`play.api.libs.json.Format`]:            https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Format
 [`play.api.libs.json.JsError`]:           https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsError
-[`play.api.libs.json.Json`]:              https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Json
+[`play.api.libs.json.Json`]:              https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.Json$
 [`play.api.libs.json.JsResult`]:          https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsResult
 [`play.api.libs.json.JsSuccess`]:         https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsSuccess
 [`play.api.libs.json.JsValue`]:           https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.libs.json.JsValue
@@ -57,6 +58,7 @@
 [`play.twirl.api.JavaScript`]:            https://github.com/playframework/twirl/blob/master/api/src/main/scala/play/twirl/api/Formats.scala
 [`play.twirl.api.Txt`]:                   https://github.com/playframework/twirl/blob/master/api/src/main/scala/play/twirl/api/Formats.scala
 [`play.twirl.api.Xml`]:                   https://github.com/playframework/twirl/blob/master/api/src/main/scala/play/twirl/api/Formats.scala
+[`scala.Function$`]:                      http://www.scala-lang.org/api/2.11.2/#scala.Function$
 [`scala.concurrent.ExecutionContext`]:    http://www.scala-lang.org/api/2.11.2/#scala.concurrent.ExecutionContext
 [`scala.concurrent.Future$`]:             http://www.scala-lang.org/api/2.11.2/#scala.concurrent.Future$
 [`scala.concurrent.Future`]:              http://www.scala-lang.org/api/2.11.2/#scala.concurrent.Future
