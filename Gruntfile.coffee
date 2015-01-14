@@ -120,8 +120,8 @@ module.exports = (grunt) ->
         ]
         tasks: [
           "pandoc:html"
-          "pandoc:pdf"
-          "pandoc:epub"
+          # "pandoc:pdf"
+          # "pandoc:epub"
         ]
       pages:
         files: [
@@ -129,17 +129,15 @@ module.exports = (grunt) ->
         ]
         tasks: [
           "pandoc:html"
-          "pandoc:pdf"
-          "pandoc:epub"
+          # "pandoc:pdf"
+          # "pandoc:epub"
         ]
       metadata:
-        files: [
-          "src/meta/**/*"
-        ]
+        files: [ "src/meta/**/*" ]
         tasks: [
           "pandoc:html"
-          "pandoc:pdf"
-          "pandoc:epub"
+          # "pandoc:pdf"
+          # "pandoc:epub"
         ]
 
     connect:
