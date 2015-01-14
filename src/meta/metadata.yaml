@@ -15,8 +15,10 @@ pages:
   - src/pages/intro/index.md
   - src/pages/intro/pre-release.md
   - src/pages/intro/conventions.md
-  - src/pages/intro/installing-sbt.md
-  - src/pages/intro/using-sbt.md
+  - src/pages/start/index.md
+  - src/pages/start/install.md
+  - src/pages/start/commands.md
+  - src/pages/start/config.md
   - src/pages/basics/index.md
   - src/pages/basics/actions.md
   - src/pages/basics/routes.md
