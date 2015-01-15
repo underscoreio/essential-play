@@ -276,7 +276,7 @@ module.exports = (grunt) ->
   ]
 
   grunt.registerTask "watch", [
-    "all"
+    "html"
     "connect:server"
     "watchImpl"
     "serve"
