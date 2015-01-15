@@ -1,4 +1,5 @@
 [docs-body-parsers]:                      https://www.playframework.com/documentation/2.3.x/ScalaBodyParsers
+[docs-build]:                             https://playframework.com/documentation/2.3.x/Build
 [docs-field-constructors]:                https://www.playframework.com/documentation/2.3.x/ScalaCustomFieldConstructors
 [docs-forms]:                             https://www.playframework.com/documentation/2.2.0/ScalaForms
 [docs-i18n]:                              https://www.playframework.com/documentation/2.3.x/ScalaI18N
@@ -15,7 +16,9 @@
 [link-paulp-sbt-install]:                 https://github.com/paulp/sbt-extras
 [link-play]:                              http://playframework.com
 [link-play-install]:                      https://playframework.com/download
-[link-sbt-install]:                       http://www.scala-sbt.org/download.html
+[link-sbt-install]:                       http://www.scala-sbt.org/0.13/tutorial/Setup.html
+[link-sbt-tutorial]:                      http://www.scala-sbt.org/0.13/tutorial/index.html
+[link-sbteclipse]:                        https://github.com/typesafehub/sbteclipse/
 [link-twitter-bootstrap]:                 http://getbootstrap.com
 [link-twitter-jono]:                      http://twitter.com/jonoabroad
 [link-twitter-noel]:                      http://twitter.com/noelwelsh

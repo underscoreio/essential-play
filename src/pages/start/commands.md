@@ -1,4 +1,4 @@
-## Using SBT with Play
+## Using SBT
 
 In this section we will cover the main SBT commands needed to compile, run, test, and deploy a Play project. Some of these commands are standard to vanilla SBT while others are customised by Play. In this section we will concentrate on *what* the commands are and how they work. In the next section we will discuss *how* Play is changing the defaults.
 
@@ -341,9 +341,9 @@ The contents of `target/universal/stage` can be copied onto a remote web server 
 
 The contents of the application archive are the same as the contents of the `target/universal/stage` directory.
 
-### Setting Up IDEs
+### Working With Eclipse
 
-**Eclipse**---The sample SBT project includes an SBT plugin called `sbt-eclipse` that generates project files for Eclipse. Run the `eclipse` command to see this in action:
+The sample SBT project includes a plugin called [sbteclipse](link-sbteclipse) that generates project files for Eclipse. Run the `eclipse` command to see this in action:
 
 ~~~
 [app] $ eclipse
@@ -354,6 +354,12 @@ The contents of the application archive are the same as the contents of the `tar
 [app] $
 ~~~
 
-Now start Eclipse and import your SBT project using **File menu > Import... > General > Existing files into workspace** and select the root directory of the project source tree in the *Select root directory* field. Click *Finish* to add a project called `app` to the Eclipse workspace.
+Now start Eclipse and import your SBT project using *File menu > Import... > General > Existing files into workspace* and select the root directory of the project source tree in the *Select root directory* field. Click *Finish* to add a project called `app` to the Eclipse workspace.
 
-**Intellij IDEA integration**---Newer versions of the Scala plugin for Intellij IDEA support direct import of SBT projects from within the IDE. Choose **File menu > Import... > SBT** and select the root directory of the project source tree. The import wizard will do the rest automatically.
+### Working With Intellij IDEA
+
+Newer versions of the Scala plugin for Intellij IDEA support direct import of SBT projects from within the IDE. Choose *File menu > Import... > SBT* and select the root directory of the project source tree. The import wizard will do the rest automatically.
+
+### Configuring SBT
+
+A full discussion of how to write SBT project configurations is beyond the scope of this book. For more information we recommend reading the [tutorial on the SBT web site](link-sbt-tutorial) and the [build documentation on the Play web site](link-play-sbt-docs). The sample projects and exercises for this book will provide a good starting point for your own projects.
