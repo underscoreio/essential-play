@@ -1,4 +1,5 @@
 [docs-body-parsers]:                      https://www.playframework.com/documentation/2.3.x/ScalaBodyParsers
+[docs-build]:                             https://playframework.com/documentation/2.3.x/Build
 [docs-field-constructors]:                https://www.playframework.com/documentation/2.3.x/ScalaCustomFieldConstructors
 [docs-forms]:                             https://www.playframework.com/documentation/2.2.0/ScalaForms
 [docs-i18n]:                              https://www.playframework.com/documentation/2.3.x/ScalaI18N
@@ -6,11 +7,18 @@
 [docs-templates]:                         https://www.playframework.com/documentation/2.3.x/ScalaTemplates
 [docs-thread-pools]:                      https://www.playframework.com/documentation/2.3.x/ThreadPools
 
+[link-activator-install]:                 http://www.typesafe.com/community/core-tools/activator-and-sbt
 [link-error-codes]:                       https://github.com/playframework/playframework/blob/2.3.x/framework/src/play/src/main/resources/messages.default#L21-L51
+[link-exercises]:                         https://github.com/underscoreio/essential-play-code
 [link-jcip]:                              http://www.amazon.com/Java-Concurrency-Practice-Brian-Goetz/dp/0321349601
 [link-json-spec]:                         http://json.org
 [link-non-blocking]:                      http://en.wikipedia.org/wiki/Non-blocking_algorithm
+[link-paulp-sbt-install]:                 https://github.com/paulp/sbt-extras
 [link-play]:                              http://playframework.com
+[link-play-install]:                      https://playframework.com/download
+[link-sbt-install]:                       http://www.scala-sbt.org/0.13/tutorial/Setup.html
+[link-sbt-tutorial]:                      http://www.scala-sbt.org/0.13/tutorial/index.html
+[link-sbteclipse]:                        https://github.com/typesafehub/sbteclipse/
 [link-twitter-bootstrap]:                 http://getbootstrap.com
 [link-twitter-jono]:                      http://twitter.com/jonoabroad
 [link-twitter-noel]:                      http://twitter.com/noelwelsh
