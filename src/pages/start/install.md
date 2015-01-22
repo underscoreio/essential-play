@@ -19,7 +19,7 @@ Despite all of this convenience, there are two important drawbacks that we shoul
  2. the first build of a project may consequently take a long time.
 
 <div class="callout callout-warning">
-**Default cache locations**
+*Default cache locations*
 
 SBT is implemented on top of a dependency manager called *Ivy*. Downloaded library dependencies are cached as JARs under `${user.home}/.ivy2`. The SBT launcher also uses `${user.home}/.sbt` to store configuration files, account-wide plugins, and temporary caches.
 </div>
@@ -42,7 +42,7 @@ As we saw in the previous section, there are various ways to install SBT. Here a
 
 The exercises and sample code in this book are all packaged using project-local copies of SBT. To grab the exercises, simply clone our [Github repository](link-exercises) and run SBT using the `sbt.sh` or `sbt.bat` scripts provided:
 
-~~~
+~~~ bash
 bash$ git clone https://github.com/underscoreio/essential-play-code.git
 
 bash$ cd essential-play-code
@@ -56,14 +56,15 @@ bash$ ./sbt.sh
 
 Your prompt should change to "app", which is the name of the Play project we've set up. You are now interacting with SBT. Compile the project using the `compile` command to check everything is working:
 
-~~~
+~~~ bash
 [app] $ compile
 # Lots of output here...
 # The first run will take a while...
 [info] Updating {file:/Users/dave/dev/projects/essential-play-code/}app...
 [info] Resolving jline#jline;2.12 ...
 [info] Done updating.
-[info] Compiling 3 Scala sources and 1 Java source to /Users/dave/dev/projects/essential-play-code/target/scala-2.11/classes...
+[info] Compiling 3 Scala sources and 1 Java source to ↩
+       /Users/dave/dev/projects/essential-play-code/target/scala-2.11/classes...
 [success] Total time: 7 s, completed 13-Jan-2015 11:15:39
 
 [app] $
@@ -71,7 +72,7 @@ Your prompt should change to "app", which is the name of the Play project we've 
 
 If the project compiles successfully, try running it. Enter `run` to start a development web server, and access it at [http://localhost:9000](http://localhost:9000) to test out the app:
 
-~~~
+~~~ bash
 [app] $ run
 
 --- (Running the application from SBT, auto-reloading is enabled) ---

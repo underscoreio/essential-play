@@ -10,7 +10,7 @@ SBT can be started in two modes: *interactive mode* and *batch mode*. Batch mode
 
 We start interactive mode be running SBT with no command line arguments. SBT displays a command prompt where we can enter commands such as `compile`, `run`, and `clean` to build our code. Pressing `Ctrl+D` quits SBT when we're done:
 
-~~~
+~~~ bash
 bash$ ./sbt.sh
 
 [app] $ compile
@@ -23,7 +23,7 @@ bash$
 
 We start batch mode by issuing commands as arguments when starting SBT. SBT executes the commands immediately and then exits back to the OS. The commands -- `compile`, `run`, `clean` and so on -- are the same in both modes:
 
-~~~
+~~~ bash
 bash$ ./sbt.sh compile
 # SBT compiles our code and we end up back on the OS command prompt...
 
@@ -31,17 +31,17 @@ bash$
 ~~~
 
 <div class="callout callout-info">
-**The SBT command prompt**
+*The SBT command prompt*
 
 The default SBT command prompt is a single echelon:
 
-~~~
+~~~ bash
 >
 ~~~
 
 Play changes this to the name of the project surrounded by square brackets:
 
-~~~
+~~~ bash
 [app] $
 ~~~
 
@@ -49,7 +49,7 @@ You will find the prompt changing as you switch back and forth between Play proj
 </div>
 
 <div class="callout callout-warning">
-**Non-Play directory structure**
+*Directory structure of non-Play projects*
 
 By default SBT uses two directories to store application and test code:
 
@@ -150,7 +150,7 @@ object AppController extends Controller {
 
 Now re-run the `compile` command:
 
-~~~
+~~~ bash
 [app] $ compile
 [info] Compiling 1 Scala source to ↩
        /Users/dave/dev/projects/essential-play-code/target/scala-2.11/classes...
@@ -162,7 +162,7 @@ Now re-run the `compile` command:
 One Scala file compiled in one second. Much better! Incremental compilation means we can rely on `compile` and `test:compile` to do the right thing to recompile our code---we rarely need to use `clean` to rebuild from scratch.
 
 <div class="callout callout-info">
-**Compiling in interactive mode**
+*Compiling in interactive mode*
 
 Another reason our first `compile` command was slow was because SBT spent a lot of time loading the Scala compiler for the first time. If we keep SBT open in interactive mode, subsequent `compile` commands become much faster.
 </div>
@@ -171,7 +171,7 @@ Another reason our first `compile` command was slow was because SBT spent a lot 
 
 We can prefix any SBT command with a *tilde* character -- `~` -- to run the command in *watch mode*. SBT watches our codebase and reruns the specified task whenever we change a source file. Type `~compile` at the prompt to see this in action:
 
-~~~
+~~~ bash
 [app] $ ~compile
 [success] Total time: 0 s, completed 13-Jan-2015 12:31:09
 1. Waiting for source changes... (press enter to interrupt)
@@ -179,7 +179,7 @@ We can prefix any SBT command with a *tilde* character -- `~` -- to run the comm
 
 SBT tells us it is "waiting for source changes". Whenever we edit a source file it will trigger the `compile` task and incrementally recompile the changed code. Let's see this by introducing a compilation error to `AppController.scala`. Open the source file again and delete the closing double quote character from `"Hello Name!"`. As soon as we save the file we see the following in SBT:
 
-~~~
+~~~ bash
 [info] Compiling 1 Scala source to ↩
        /Users/dave/dev/projects/essential-play-code/target/scala-2.11/classes...
 [error] /Users/dave/dev/projects/essential-play-code/app/ ↩
@@ -198,7 +198,7 @@ SBT tells us it is "waiting for source changes". Whenever we edit a source file 
 
 The compiler has picked up the error and produced some error messages as a result. If we fix the error again and save the file, the error messages disappear:
 
-~~~
+~~~ bash
 [success] Total time: 0 s, completed 13-Jan-2015 12:33:55
 3. Waiting for source changes... (press enter to interrupt)
 ~~~
@@ -206,7 +206,7 @@ The compiler has picked up the error and produced some error messages as a resul
 Watch mode is extremely useful for getting instant feedback during development. Simply press *Enter* when you're done to return to the SBT command prompt.
 
 <div class="callout callout-info">
-**Watch mode and other tasks**
+*Watch mode and other tasks*
 
 We can use watch mode with *any* SBT command. For example:
 
@@ -223,7 +223,7 @@ Play customises SBT's standard `run` command to provide a command that starts a 
 
 Let's see this in action. First `clean` the codebase, then enter `run` at the SBT prompt:
 
-~~~
+~~~ bash
 [app] $ clean
 [success] Total time: 0 s, completed 13-Jan-2015 12:44:07
 [app] $ run
@@ -240,7 +240,7 @@ Let's see this in action. First `clean` the codebase, then enter `run` at the SB
 
 SBT starts up a web server on `/0:0:0:0:0:0:0:0:9000` (which means `localhost:9000` in IPv6-speak) and waits for a browser to connect. Open up `http://localhost:9000` in a web browser and watch the SBT console to see what happens. Play receives the incoming request and recompiles and runs the application to respond:
 
-~~~
+~~~ bash
 [info] Compiling 3 Scala sources and 1 Java source to ↩
        /Users/dave/dev/projects/essential-play-code/target/scala-2.11/classes...
 [info] play - Application started (Dev)
@@ -249,7 +249,7 @@ SBT starts up a web server on `/0:0:0:0:0:0:0:0:9000` (which means `localhost:90
 If we reload the web page without changing any source code, Play simply serves up the response again. However, if we edit the code and reload the page, Play recompiles the application before responding.
 
 <div class="callout callout-info">
-**Differences between `run` and watch mode**
+*Differences between `run` and watch mode*
 
 The `run` command is a great way to get instant feedback when developing an application. However, we have to send a request to the web browser to get Play to recompile the code. By contrast, watch mode recompiles the application as soon as we change a file.
 
@@ -260,7 +260,7 @@ Sometimes using `~compile` or `~test` can be a more efficient way of working. It
 
 The `test` and `testOnly` commands are used to run unit tests. `test` runs all unit tests for the application; `testOnly` runs a single test suite. Let's use `test` to test our sample application:
 
-~~~
+~~~ bash
 [app] $ test
 [info] Compiling 1 Scala source to ↩
        /Users/dave/dev/projects/essential-play-code/target/scala-2.10/test-classes...
@@ -283,7 +283,7 @@ Because this is the first time we've run `test`, SBT starts by compiling the tes
 
 We don't have many tests for our sample application so testing is fast. If we had lots of test suites we could focus on  single suite using the `testOnly` command. `testOnly` takes the fully qualified class name of the desired suite as an argument:
 
-~~~
+~~~ bash
 [app] $ testOnly controllers.AppControllerSpec
 [info] ScalaTest
 [info] Run completed in 44 milliseconds.
@@ -304,7 +304,7 @@ As with `compile`, both of these commands can run in watch mode by prefixing the
 
 The `stage` command bundles the compiled application and all of its dependencies into a single directory under the directory `target/universal/stage`. Let's see this in action:
 
-~~~
+~~~ bash
 [app] $ stage
 [info] Packaging /Users/dave/dev/projects/essential-play-code/ ↩
        target/scala-2.10/app_2.10-0.1-SNAPSHOT-sources.jar ...
@@ -331,7 +331,7 @@ model contains 10 documentable templates
 
 Now press `Ctrl+D` to quit SBT and take a look at the package created by the `stage` command:
 
-~~~
+~~~ bash
 bash$ ls -l target/universal/stage/
 total 0
 drwxr-xr-x   4 dave  staff   136 14 Jan 14:11 bin
@@ -347,7 +347,7 @@ total 40
 
 SBT has created a directory `target/universal/stage` containing all the dependencies we need to run the application. It has also created two executable scripts under `target/universal/stage/bin` to set an appropriate classpath and run the application from the command prompt. If we run one of these scripts, the app starts up and allows us to connect as usual:
 
-~~~
+~~~ bash
 bash$ target/universal/stage/bin/app
 Play server process ID is 22594
 [info] play - Application started (Prod)
@@ -356,7 +356,7 @@ Play server process ID is 22594
 
 The contents of `target/universal/stage` can be copied onto a remote web server and run as a standalone application. We can use standard Unix commands such as `rsync` and `scp` to achieve this. Sometimes, however, it is more convenient to have an archive to distribute. We can use the `dist` command to create a ZIP of `target/universal/stage` for easy distribution:
 
-~~~
+~~~ bash
 [app] $ dist
 [info] Wrote /Users/dave/dev/projects/essential-play-code/ ↩
        target/scala-2.10/app_2.10-0.1-SNAPSHOT.pom
@@ -371,7 +371,7 @@ The contents of `target/universal/stage` can be copied onto a remote web server 
 
 The sample SBT project includes a plugin called [sbteclipse](link-sbteclipse) that generates project files for Eclipse. Run the `eclipse` command to see this in action:
 
-~~~
+~~~ bash
 [app] $ eclipse
 [info] About to create Eclipse project files for your project(s).
 [info] Successfully created Eclipse project files for project(s):
@@ -390,7 +390,7 @@ Newer versions of the Scala plugin for Intellij IDEA support direct import of SB
 
 Play projects use the following directory structure, which is slightly different to the standard structure of an SBT project:
 
-~~~
+~~~ bash
 root/
  +- app/
      +- assets/
