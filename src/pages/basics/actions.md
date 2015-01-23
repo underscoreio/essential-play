@@ -80,3 +80,105 @@ The backbone of a Play web application is made up of `Actions`, `Controllers`, a
 We typically place controllers in a `Controllers` package in the `app/controllers` folder. Routes go in the `conf/routes` file (no filename extension).
 
 In the next section we will take a closer look at routes.
+
+
+### Exercise: Time is of the Essence
+
+The `chapter3-time` directory in the exercises repository contains an unfinished Play application for telling the time.
+
+Complete this application by filling in the missing actions and routes. Implement the three missing actions in `app/controllers/TimeController` as described in the comments and complete the `conf/routes` file to hook up the specified URLs.
+
+We've written this project using the [Joda Time](link-joda-time) library to handle time formatting and time zone conversion. Don't worry if you haven't used the library before---the `TimeHelpers` trait in `TimeController.scala` contains all of the functionality needed to complete the task at hand.
+
+Test your code using `curl` if you're using Linux or OS X, or a browser if you're using Windows:
+
+~~~ bash
+bash$ curl -v 'http://localhost:9000/time'
+# HTTP headers...
+4:18 PM⏎
+
+bash$ curl -v 'http://localhost:9000/time/zones'
+# HTTP headers...
+Africa/Abidjan
+Africa/Accra
+Africa/Addis_Ababa
+# etc...
+
+bash$ curl -v 'http://localhost:9000/time/CET'
+# HTTP headers...
+5:21 PM⏎
+
+bash$
+~~~
+
+<div class="callout callout-info">
+*Tip: be agile!*
+
+Make things easy for yourself by coding small units of end-to-end functionality. Start by implementing the simplest possible action that you can test on the command line:
+
+~~~ scala
+// Action:
+def time = Action { request =>
+  Ok("TODO: Complete")
+}
+
+// Route:
+GET /time controllers.TimeController.time
+~~~
+
+Write the route for this action and test it using `curl` before you move on. The faster you get to running your code, the faster you will learn by any mistakes you make.
+</div>
+
+Questions:
+
+1. What happens when you connect to the application using the following URL? Why does this not work as expected and how can you work around the behaviour?
+
+    ~~~ bash
+    bash$ curl -v 'http://localhost:9000/time/Africa/Abidjan'
+    ~~~
+
+2. What happens when you send a `POST` request to the application?
+
+    ~~~ bash
+    bash$ curl -v -X POST 'http://localhost:9000/time/Africa/Abidjan'`
+    ~~~
+
+<div class="solution">
+The actions in `TimeController.scala` are straightforward. The main task at hand is converting the output from `TimeHelpers` to a `String` so we can wrap it in an `Ok()` response:
+
+~~~ scala
+def time = Action { request =>
+  Ok(timeToString(localTime))
+}
+
+def timeIn(zoneId: String) = Action { request =>
+  val time = localTimeInZone(zoneId)
+  Ok(time map timeToString getOrElse "Time zone not recognized.")
+}
+
+def zones = Action { request =>
+  Ok(zoneIds mkString "\n")
+}
+~~~
+
+The routes are also straightforward, although we included one gotcha to trip you up. You must place the route for `TimeController.zones` *above* the route for `TimeController.timeIn` to prevent the text `zones` being treated as the name of a time zone:
+
+~~~ bash
+GET /time        controllers.TimeController.time
+GET /time/zones  controllers.TimeController.zones
+GET /time/:zone  controllers.TimeController.timeIn(zone: String)
+~~~
+
+The answers to the questions are as follows:
+
+1. The mistake here is that we haven't escaped the `/` in `Africa/Abidjan`. Play interprets this as a path with three segments but our route will only match two segments. The result is a 404 response.
+
+    If we encode the value as `Africa%2FAbidjan` the application will respond as desired. The `%2F` is decoded by Play before the argument is passed to `timeIn`:
+
+    ~~~ bash
+    bash$ curl 'http://localhost:9000/time/Africa%2FAbidjan'
+    4:38 PM⏎
+    ~~~
+
+2. Our routes are only configured to match incoming `GET` requests so `POST` requests result in a 404 response.
+</div>
