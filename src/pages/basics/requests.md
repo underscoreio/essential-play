@@ -25,21 +25,21 @@ So what type does `request.body` return in the examples we've seen so far? We ha
 
 :Body parser return types
 
-----------------------------------------------------------------------------------------------------
-Method of `AnyContent`          Request content type            Return type
-------------------------------- ------------------------------- ------------------------------------
-`asText`                        `text/plain`                    `Option[String]`
+--------------------------------------------------------------------------------------------------------
+Method of `AnyContent`          Request content type                Return type
+------------------------------- ----------------------------------- ------------------------------------
+`asText`                        `text/plain`                        `Option[String]`
 
-`asFormUrlEncoded`              `application/form-url-encoded`  `Option[Map[String, Seq[String]]]`
+`asFormUrlEncoded`              `application/x-www-form-urlencoded` `Option[Map[String, Seq[String]]]`
 
-`asMultipartFormData`           `multipart/form-data`           `Option[MultipartFormData]`
+`asMultipartFormData`           `multipart/form-data`               `Option[MultipartFormData]`
 
-`asJson`                        `application/json`              `Option[JsValue]`
+`asJson`                        `application/json`                  `Option[JsValue]`
 
-`asXml`                         `application/xml`               `Option[NodeSeq]`
+`asXml`                         `application/xml`                   `Option[NodeSeq]`
 
-`asRaw`                         any                             `Option[RawBuffer]`
-----------------------------------------------------------------------------------------------------
+`asRaw`                         any                                 `Option[RawBuffer]`
+--------------------------------------------------------------------------------------------------------
 
 <div class="callout callout-warning">
 *Custom Body Parsers*
