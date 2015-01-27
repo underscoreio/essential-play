@@ -11,6 +11,7 @@ the final step of any `Action` is to convert the result into a `Result`.
 In this section we will see how to create `Results`,
 populate them with content, and add headers and cookies.
 
+
 ### Setting The Status Code
 
 Play provides a convenient set of factory objects for creating `Results`.
@@ -46,6 +47,7 @@ val result1: Result = Ok("Success!")
 val result2: Result = NotFound("Is it behind the fridge?")
 val result3: Result = Status(401)("Access denied, Dave.")
 ~~~
+
 
 ### Adding Content
 
@@ -125,6 +127,7 @@ but we might write one to support a format such as XLS, Markdown, or iCal.
 
 </div>
 
+
 ### Tweaking the Result
 
 Once we have created a `Result`,
@@ -159,6 +162,7 @@ def ohai = Action { request =>
 }
 ~~~
 
+
 ### Take Home Points
 
 The final step of an `Actions` is
@@ -176,3 +180,187 @@ by writing instances of the [`play.api.http.Writeable`] type class.
 
 Once we have created a `Result`,
 we can tweak headers and cookies before returning it.
+
+
+### Exercise: Comma Separated values
+
+The `chapter3-time` directory in the exercises contains
+an unfinished Play application for
+converting various data formats to CSV.
+Complete the application by filling in the missing action
+in `app/controllers/CsvController.scala`.
+
+The action is more complicated than the examples in previous exercises.
+It must accept data POSTed to it by the client and convert it to CSV
+using the relevant helper method from `CsvHelpers`.
+
+We have included several files to help you test the code:
+`test.formdata` and `test.tsv` are text files containing test data,
+and the various `run-` shell scripts make calls to `curl`
+with the correct command line parameters.
+
+Your code should behave as follows:
+
+ -  Form data (content type `application/x-url-form-url-encoded`) should
+    be converted to CSV in columnar orientation and returned with `text/csv`
+    content type:
+
+    ~~~ bash
+    bash$ ./run-form-data-test.sh
+    # This script submits `test.formdata` with content type
+    # `application/x-url-form-url-encoded`.
+    #
+    # Curl prints HTTP data from request and response including...
+    < HTTP/1.1 200 OK
+    < Content-Type: text/csv
+
+    A,B,C
+    100,200,300
+    110,220,330
+    111,222,
+    ~~~
+
+ -  Post data of type `text/plain` or `text/tsv` should be treated as tab
+    separated values. The tabs should be replaced with commas and the result
+    returned with content type `text/csv`:
+
+    ~~~ bash
+    bash$ ./run-tsv-test.sh
+    # This script submits `test.tsv` with content type `text/tsv`.
+    #
+    # Curl prints HTTP data from request and response including...
+    < HTTP/1.1 200 OK
+    < Content-Type: text/csv
+
+    A,B,C
+    1,2,3
+
+    bash$ ./run-plain-text-test.sh
+    # This script submits `test.tsv` with content type `text/plain`.
+    #
+    # Curl prints HTTP data from request and response including...
+    < HTTP/1.1 200 OK
+    < Content-Type: text/csv
+
+    A,B,C
+    1,2,3
+    ~~~
+
+ -  Any other type of post data should yield a 400 response with a sensible
+    error message:
+
+    ~~~ bash
+    bash$ ./run-bad-request-test.sh
+    # This script submits `test.tsv` with content type `foo/bar`.
+    #
+    # Curl prints HTTP data from request and response including...
+    < HTTP/1.1 400 Bad Request
+    < Content-Type: text/plain
+
+    Expected application/x-www-form-url-encoded, text/tsv, or text/plain
+    ~~~
+
+Answer the following question when you are done:
+
+Are your handlers for `text/plain` and `text/tsv` interchangeable?
+What happens when you remove one of the handlers
+and submit a file of the corresponding type?
+Does play compensate by running the other handler?
+
+<div class="solution">
+There are several parts to this solution:
+create handler functions for the various content types,
+ensure that the results have the correct status code and content type,
+and chain the handlers together to implement our `Action`.
+We will address each part in turn.
+
+First let's create handlers for each content type.
+We have three types to consider:
+`application/x-www-form-url-encoded`, `text/plain`, and `text/tsv`.
+Play has built-in body parsers for the first two.
+The methods in `CsvHelpers` do most of the rest of the work:
+
+~~~ scala
+def formDataResult(request: Request[AnyContent]): Option[Result] =
+  request.body.asFormUrlEncoded map formDataToCsv map csvResult
+
+def plainTextResult(request: Request[AnyContent]): Option[Result] =
+  request.body.asText map tsvToCsv map csvResult
+~~~
+
+The `text/tsv` conten type is trickier, however.
+We can't use `request.body.asText`---it returns `None`
+because Play assumes the request content is binary.
+We have to use `request.body.asRaw` to get a `RawBuffer`,
+extract the `Array[Byte]` within, and create a `String`:
+
+~~~ scala
+def rawBufferResult(request: Request[AnyContent]): Option[Result] =
+  request.contentType flatMap {
+    case "text/tsv" => request.body.asRaw map rawBufferToCsv map csvResult
+    case _          => None
+  }
+~~~
+
+Note the pass-through clause for content types other than `"text/tsv"`.
+We have no control over the types of data the client may send our way,
+so we always have to provide a mechanism for dealing with the unexpected.
+
+Also note that the conversion method in `rawBufferToCsv` assumes
+unicode character encoding---don't write code like this
+in your production applications!
+
+Each of the handler functions uses a common `csvResult` method
+to convert the `String` CSV data to a `Result`
+with the correct status code and content type:
+
+~~~ scala
+def csvResult(csvData: String): Result =
+  Ok(csvData).withHeaders("Content-Type" -> "text/csv")
+~~~
+
+We also need a handler for the case where
+we don't know how to parse the request.
+In this case we return a `BadRequest` result
+with a content type of `"text/plain"`:
+
+~~~ scala
+val failResult: Result =
+    BadRequest("Expected application/x-www-form-url-encoded, " +
+               "text/tsv, or text/plain")
+~~~
+
+Finally, we need to string this all together.
+Because each of our handlers returns an `Option[Result]`,
+we can use the standard methods to chain them together:
+
+~~~ scala
+def toCsv = Action { request =>
+  formDataResult(request) orElse
+    plainTextResult(request) orElse
+    rawBufferResult(request) getOrElse
+    failResult
+}
+~~~
+
+The answer to the question is as follows.
+Although we are using `"text/plain"` and `"text/tsv"` interchangeably,
+Play treats the two content types differently:
+
+ -  `"text/plain"` is parsed as plain text.
+    `request.body.asText` returns `Some` and
+    `request.body.asRaw` returns `None`;
+
+ -  `"text/tsv"` is parsed as binary data.
+    `request.body.asText` returns `None` and
+    `request.body.asRaw` returns `Some`.
+
+In lieu of writing a custom `BodyParser` for `"text/tsv"` requests,
+we have to work around Play's (understandable) misinterpretation of the format.
+We read the data as a `RawBuffer` and convert it to a `String`.
+The example code for doing this is error-prone
+because it doesn't deal with character encodings correctly.
+We would have to address this ourselves in a production application.
+However, the example demonstrates the principle of dispatching
+on content type and parsing the request appropriately.
+</div>
