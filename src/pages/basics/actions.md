@@ -121,7 +121,7 @@ Don't worry if you haven't used the library before---the `TimeHelpers` trait
 in `TimeController.scala` contains all of the functionality needed
 to complete the task at hand.
 
-Test your code using `curl` if you're using Linux or OS X,
+Test your code using `curl` if you're using Linux or OS X
 or a browser if you're using Windows:
 
 ~~~ bash
@@ -163,7 +163,7 @@ Write the route for this action and test it using `curl` before you move on.
 The faster you get to running your code, the faster you will learn from any mistakes.
 </div>
 
-Questions:
+Answer the following questions when you're done:
 
 1. What happens when you connect to the application using the following URL?
 Why does this not work as expected and how can you work around the behaviour?

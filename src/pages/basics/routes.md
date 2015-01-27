@@ -301,8 +301,8 @@ This is similar to the last exercise,
 but the emphasis is on defining more complex routes.
 
 Complete this application by filling in the missing actions and routes.
-Implement the four missing actions described
-in the comments in `app/controllers/CalcController.scala`
+Implement the missing actions described in
+the comments in `app/controllers/CalcController.scala`
 and complete the `conf/routes` file to hook up the specified URLs:
 
  - `CalcController.add` and `CalcController.and` are examples
@@ -315,7 +315,7 @@ and complete the `conf/routes` file to hook up the specified URLs:
 
  - `CalcController.howToAdd` is an example of reverse routing.
 
-Test your code using `curl` if you're using Linux or OS X,
+Test your code using `curl` if you're using Linux or OS X
 or a browser if you're using Windows:
 
 ~~~ bash
@@ -335,3 +335,145 @@ bash$ curl 'http://localhost:9000/howto/add/123/to/234'
 GET /add/123/to/234
 ~~~
 
+Answer the following questions when you're done:
+
+1.  What happens when you add a URL-encodes a forward slash (`%2F`)
+    to the argument to `concat`? Is this the desired behaviour?
+
+    ~~~ bash
+    bash$ curl 'http://localhost:9000/concat/one/thing%2Fthe/other'
+    ~~~
+
+    How does the URL-decoding behaviour of Play differ
+    for normal parameters and rest-parameters?
+
+2.  Do you need to use the same parameter in `conf/routes`
+    and in your actions? What happens if they are different?
+
+3.  Is it possible to embed a parameter
+    of type `List` or `Option`  in the path part of the URL?
+    If it is, what do the resulting URLs look like?
+    If it is not, what error message do get?
+
+<div class="solution">
+As with the previous exercise the `add`, `and`, `concat`, and `sort`
+`Actions` simply involve manipulating types to build `Results`:
+
+~~~ scala
+def add(a: Int, b: Int) = Action { request =>
+  Ok((a + b).toString)
+}
+
+def and(a: Boolean, b: Boolean) = Action { request =>
+  Ok((a && b).toString)
+}
+
+def concat(args: String) = Action { request =>
+  Ok(args.split("/").map(decode).mkString)
+}
+
+def sort(numbers: List[Int]) = Action { request =>
+  Ok(numbers.sorted mkString " ")
+}
+~~~
+
+`howToAdd` is more interesting. We can avoid hard-coding
+the URL for `add` by using its reverse route:
+
+~~~ scala
+def howToAdd(a: Int, b: Int) = Action { request =>
+  val call = routes.CalcController.add(a, b)
+  Ok(call.method + " " + call.url)
+}
+~~~
+
+The `routes` file is straightforward if you follow the examples above:
+
+~~~ coffee
+GET /add/:a/to/:b       controllers.CalcController.add(a: Int, b: Int)
+GET /and/:a/with/:b     controllers.CalcController.and(a: Boolean, b: Boolean)
+GET /concat/*args       controllers.CalcController.concat(args: String)
+GET /sort               controllers.CalcController.sort(num: List[Int])
+GET /howto/add/:a/to/:b controllers.CalcController.howToAdd(a: Int, b: Int)
+~~~
+
+The answers to the questions are as follows:
+
+1.  Play treats regular path and query string parameters
+    differently from rest-parameters.
+
+    Because regular parameters are always a single path segment,
+    we know there will never be a reserved URL character
+    such as a `/`, `?`, `&` or `=` in the content.
+    Play is able to reliably decode any URL encoded characters
+    for us without fear of ambiguity.
+
+    Rest-parameters, on the other hand, can contain unencoded `/` characters.
+    Play cannot decode the content without causing ambiguity
+    so it passes the raw string captured from the URL without decoding.
+
+    To correctly handle URL encoded characters,
+    we have to split the rest parameter on instances of `/`
+    and apply the `urlDecode` function to each segment:
+
+    ~~~ scala
+    args.split("/").map(urlDecode)
+    ~~~
+
+    In example in the question, the controller should remove the `/`
+    characters from the parameter and decode the `%2F`,
+    yielding a response of `onething/theother`.
+
+2.  Play matches parameters in routes by position rather than by name,
+    so we don't have to use the same names in our routes and our controllers.
+
+    In certain circumstances this is useful.
+    In `sort`, for example, we want a singular parameter name in the URL:
+
+    ~~~ bash
+    curl 'http://localhost:9000/sort?num=1&num=3&num=2'
+    ~~~
+
+    and a plural name in the action:
+
+    ~~~ scala
+    def sort(numbers: List[Int]) = ???
+    ~~~
+
+    This can beome confusing when using named arguments on reverse routes.
+    Reverse routes take their parameter names from the `conf/routes` file,
+    *not* from our `Actions`.
+    Calls to the action and the reverse route may therefore look different:
+
+    ~~~ scala
+    // Direct call to the Action:
+    controllers.CalcController.sort(numbers = List(1, 3, 2))
+
+    // Call to the reverse route:
+    routes.controllers.CalcController.sort(num = List(1, 3, 2))
+    ~~~
+
+3.  Play uses two different type classes
+    for encoding and decoding URL parameters:
+    `PathBindable` for path parameters
+    and `QueryStringBindable` for query string parameters.
+
+    Play provides default implementations of `QueryStringBindable`
+    for `Optional` and `List` parameters,
+    but it doesn't provide `PathBindables`.
+
+    If we attempt to create a path parameter of type `List[...]`:
+
+    ~~~ coffee
+    # We've added `:num` to the `sort` route from the solution:
+    GET /sort/:num controllers.CalcController.sort(num: List[Int])
+    ~~~
+
+    we get a compile error because of the failure to find a `PathBindable`:
+
+    ~~~ bash
+    [error] /Users/dave/dev/projects/essential-play-code/chapter3-calc/conf/routes:4: ↩
+            No URL path binder found for type List[Int]. ↩
+            Try to implement an implicit PathBindable for this type.
+    ~~~
+</div>
