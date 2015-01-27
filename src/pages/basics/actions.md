@@ -107,12 +107,13 @@ In the next section we will take a closer look at routes.
 
 ### Exercise: Time is of the Essence
 
-The `chapter3-time` directory in the exercises repository contains
+The `chapter3-time` directory in the exercises contains
 an unfinished Play application for telling the time.
 
 Complete this application by filling in the missing actions and routes.
-Implement the three missing actions in `app/controllers/TimeController`
-as described in the comments and complete the `conf/routes` file to hook up the specified URLs.
+Implement the three missing actions described
+in the comments in `app/controllers/TimeController.scala`
+and complete the `conf/routes` file to hook up the specified URLs.
 
 We've written this project using the [Joda Time](link-joda-time) library
 to handle time formatting and time zone conversion.
@@ -126,7 +127,7 @@ or a browser if you're using Windows:
 ~~~ bash
 bash$ curl -v 'http://localhost:9000/time'
 # HTTP headers...
-4:18 PM⏎
+4:18 PM
 
 bash$ curl -v 'http://localhost:9000/time/zones'
 # HTTP headers...
@@ -137,7 +138,7 @@ Africa/Addis_Ababa
 
 bash$ curl -v 'http://localhost:9000/time/CET'
 # HTTP headers...
-5:21 PM⏎
+5:21 PM
 
 bash$
 ~~~
@@ -224,7 +225,7 @@ The answers to the questions are as follows:
 
     ~~~ bash
     bash$ curl 'http://localhost:9000/time/Africa%2FAbidjan'
-    4:38 PM ⏎
+    4:38 PM
     ~~~
 
 2.  Our routes are only configured to match incoming `GET` requests
