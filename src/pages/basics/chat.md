@@ -261,13 +261,19 @@ The `Action` here is simply mapping back and forth
 between HTTP data and Scala messages:
 
 ~~~ scala
-def login(username: Username, password: Password) = Action { request =>
-  AuthService.login(LoginRequest(username, password)) match {
-    case res: LoginSuccess      => Ok("Logged in!").withSessionCookie(res.sessionId)
-    case res: UserNotFound      => BadRequest("User not found or password incorrect")
-    case res: PasswordIncorrect => BadRequest("User not found or password incorrect")
+def login(username: Username, password: Password) =
+  Action { request =>
+    AuthService.login(LoginRequest(username, password)) match {
+      case res: LoginSuccess =>
+        Ok("Logged in!").withSessionCookie(res.sessionId)
+
+      case res: UserNotFound =>
+        BadRequest("User not found or password incorrect")
+
+      case res: PasswordIncorrect =>
+        BadRequest("User not found or password incorrect")
+    }
   }
-}
 ~~~
 
 ### Exercise Summary
