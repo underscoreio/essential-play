@@ -159,27 +159,49 @@ GET /notify/:username/:message controllers.NotificationController. ↩
 ### Typed Parameters
 
 We can extract path and query parameters of types other than `String`.
-Play has built-in support for `Int`, `Double`, `Long`, `Boolean`, `UUID`,
-and `Option` and `Seq` variants:
+This allows us to define `Actions` using well-typed arguments without messy parsing code.
+Play has built-in support for `Int`, `Double`, `Long`, `Boolean`, and `UUID` parameters.
+
+For example, given the following route and action definition:
 
 ~~~ coffee
-GET /add/:a/to/:b controllers.Calculator.add(a: Int, b: Int)
+GET /say/:msg/:n/times controllers.VerboseController.say(msg: String, n: Int)
 ~~~
 
-This allows us to define `Actions` using well-typed arguments
-without messy parsing code:
-
 ~~~ scala
-object Calculator extends Controller {
-  def add(a: Int, b: Int) = Action { request =>
-    Ok(s"The answer is ${a + b}")
+object VerboseController extends Controller {
+  def say(msg: String, n: Int) = Action { request =>
+    Ok(List.fill(n)(msg) mkString "\n")
   }
 }
+~~~
+
+We can send requests to URLs like `/say/Hello/5/times`
+and get back appropriate responses.
+
+Play also has built-in support for `Option` and `List` parameters in the
+query string:
+
+~~~ coffee
+GET /option-example controllers.MyController.optionExample(arg: Option[Int])
+GET /list-example   controllers.MyController.listExample(arg: List[Int])
+~~~
+
+`Optional` parameters can be specified or omitted and `List` parameters can
+be specified any number of times:
+
+~~~ coffee
+/option-example             # => MyController.optionExample(None)
+/option-example?arg=123     # => MyController.optionExample(Some(123))
+/list-example               # => MyController.listExample(Nil)
+/list-example?arg=123       # => MyController.listExample(List(123))
+/list-example?arg=12&arg=34 # => MyController.listExample(List(12, 34))
 ~~~
 
 If Play cannot extract values of the correct type for each parameter in a route,
 it returns a *400 Bad Request* response to the client.
 It doesn't consider any other routes lower in the file.
+This is standard behaviour for all types of path and query string parameter.
 
 <div class="callout callout-warning">
 *Custom Parameter Types*
@@ -270,3 +292,46 @@ let's look at the `Request` and `Result`
 handling code we can write in our actions.
 This will arm us with all the knowledge we need
 to start dealing with HTML in the next chapter.
+
+### Exercise: Calculator-as-a-Service
+
+The `chapter3-calc` directory in the exercises contains
+an unfinished Play application for performing various calculations.
+This is similar to the last exercise,
+but the emphasis is on defining more complex routes.
+
+Complete this application by filling in the missing actions and routes.
+Implement the four missing actions described
+in the comments in `app/controllers/CalcController.scala`
+and complete the `conf/routes` file to hook up the specified URLs:
+
+ - `CalcController.add` and `CalcController.and` are examples
+   involving typed parameters;
+
+ - `CalcController.concat` is an example involving a rest-parameter;
+
+ - `CalcController.sort` is an example involving a parameter with a
+   parameterized type;
+
+ - `CalcController.howToAdd` is an example of reverse routing.
+
+Test your code using `curl` if you're using Linux or OS X,
+or a browser if you're using Windows:
+
+~~~ bash
+bash$ curl 'http://localhost:9000/add/123/to/234'
+357
+
+bash$ curl 'http://localhost:9000/and/true/with/true'
+true
+
+bash$ curl 'http://localhost:9000/concat/foo/bar/baz'
+foobarbaz
+
+bash$ curl 'http://localhost:9000/sort?num=1&num=3&num=2'
+1 2 3
+
+bash$ curl 'http://localhost:9000/howto/add/123/to/234'
+GET /add/123/to/234
+~~~
+
