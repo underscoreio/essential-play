@@ -45,4 +45,5 @@ pages:
   - src/pages/async/ws.md
   - src/pages/async/failure.md
   - src/pages/links.md
+  - src/pages/solutions.md
 ...
