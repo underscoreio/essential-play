@@ -450,7 +450,7 @@ The answers to the questions are as follows:
     controllers.CalcController.sort(numbers = List(1, 3, 2))
 
     // Call to the reverse route:
-    routes.controllers.CalcController.sort(num = List(1, 3, 2))
+    routes.CalcController.sort(num = List(1, 3, 2))
     ~~~
 
 3.  Play uses two different type classes
