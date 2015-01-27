@@ -39,11 +39,9 @@ Play *cannot* know the `Content-Type` of a request at compile time,
 so how is this handled? The answer is quite clever---by default
 our actions handle requests of type `Request[AnyContent]`.
 
-[`play.api.mvc.AnyContent`] allows us to *choose* how to read the request
-in our `Action` code. It reads the request body into a buffer
-and provides methods to parse it in a handful of common formats.
-Each method has an `Optional` result, returning `None`
-if the request is empty or has the wrong `Content-Type`:
+[`play.api.mvc.AnyContent`] is a sealed trait with subtypes for several common
+content types and a set of convenience methods that return `Some`
+if the request matches the relevant type and `None` if it does not:
 
 :Body parser return types
 
@@ -60,8 +58,27 @@ Method of `AnyContent`          Request content type                Return type
 
 `asXml`                         `application/xml`                   `Option[NodeSeq]`
 
-`asRaw`                         any                                 `Option[RawBuffer]`
+`asRaw`                         any other content type              `Option[RawBuffer]`
 --------------------------------------------------------------------------------------------------------
+
+We can use these methods by implementing handlers
+for each content type we choose and chaining them together
+with calls to `map`, `flatMap`, `orElse`, and `getOrElse`:
+
+~~~ scala
+def exampleAction = Action { request =>
+  (request.body.asText map handleText) orElse
+  (request.body.asJson map handleJson) orElse
+  (request.body.asXml  map handleXml)  getOrElse
+  BadRequest("You've got me stumped!")
+}
+
+def handleText(data: String): Result = ???
+
+def handleJson(data: JsValue): Result = ???
+
+def handleXml(data: NodeSeq): Result = ???
+~~~
 
 <div class="callout callout-warning">
 *Custom Body Parsers*
