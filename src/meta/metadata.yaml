@@ -25,6 +25,7 @@ pages:
   - src/pages/basics/requests.md
   - src/pages/basics/results.md
   - src/pages/basics/failure.md
+  - src/pages/basics/chat.md
   - src/pages/html/index.md
   - src/pages/html/templates.md
   - src/pages/html/forms.md
