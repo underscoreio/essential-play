@@ -1,7 +1,9 @@
 [docs-body-parsers]:                      https://www.playframework.com/documentation/2.3.x/ScalaBodyParsers
-[docs-build]:                             https://playframework.com/documentation/2.3.x/Build
+[docs-assets]:                            https://www.playframework.com/documentation/2.3.x/Assets
+[docs-build]:                             https://www.playframework.com/documentation/2.3.x/Build
+[docs-config]:                            https://www.playframework.com/documentation/2.3.x/Configuration
 [docs-field-constructors]:                https://www.playframework.com/documentation/2.3.x/ScalaCustomFieldConstructors
-[docs-forms]:                             https://www.playframework.com/documentation/2.2.0/ScalaForms
+[docs-forms]:                             https://www.playframework.com/documentation/2.3.x/ScalaForms
 [docs-i18n]:                              https://www.playframework.com/documentation/2.3.x/ScalaI18N
 [docs-json-combinators]:                  https://www.playframework.com/documentation/2.3.x/ScalaJsonCombinators
 [docs-templates]:                         https://www.playframework.com/documentation/2.3.x/ScalaTemplates

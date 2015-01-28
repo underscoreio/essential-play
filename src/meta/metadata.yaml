@@ -16,10 +16,12 @@ pages:
   - src/pages/intro/pre-release.md
   - src/pages/intro/conventions.md
   - src/pages/start/index.md
+  - src/pages/start/exercises.md
   - src/pages/start/install.md
   - src/pages/start/commands.md
   # - src/pages/start/config.md
   - src/pages/basics/index.md
+  - src/pages/basics/structure.md
   - src/pages/basics/actions.md
   - src/pages/basics/routes.md
   - src/pages/basics/requests.md

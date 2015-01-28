@@ -3,7 +3,6 @@
 We create Play web applications from *actions*, *controllers*, and *routes*.
 In this section we will see what each part does and how to wire them together.
 
-
 ### Hello, World!
 
 *Actions* are objects that handle web requests.
