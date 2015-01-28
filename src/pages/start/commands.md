@@ -20,7 +20,7 @@ bash$ ./sbt.sh
 ~~~
 
 <div class="callout callout-warning">
-*Vanilla SBT versus SBT-with-Play*
+*SBT with and without Play*
 
 Play is distributed in two components:
 
@@ -307,9 +307,9 @@ irrespectively of whether we're using Play.
 
 ### Running a Development Web Server
 
-Play customises SBT's standard `run` command to
-provide a command that starts a development web server,
-watches for incoming connections, and incrementally recompiles our code
+We can use the `run` to run our application in a development environment.
+The command starts a development web server,
+watches for incoming connections, and recompiles our code
 whenever an incoming request is received.
 
 Let's see this in action. First `clean` the codebase,
@@ -360,6 +360,16 @@ as soon as we change a file.
 Sometimes using `~compile` or `~test` can be a more efficient way of working.
 It depends on how much code we're rewriting
 and how many compile errors we are likely to introduce during coding.
+</div>
+
+<div class="callout callout-warning">
+*Running non-Play applications*
+
+SBT's default `run` command is much simpler than the command provided by Play.
+It simply runs a command line or graphical application
+and exits when it terminates.
+Play provides the development web server
+and continuous compilation functionality.
 </div>
 
 #### Running Unit Tests
@@ -500,6 +510,14 @@ for easy distribution:
 [info]
 [success] Total time: 2 s, completed 14-Jan-2015 14:15:50
 ~~~
+
+<div class="callout callout-warning">
+*Packaging non-Play applications*
+
+The `stage` and `dist` commands are specific to the Play plugin.
+SBT contains a built-in `package` command for building use in non-Play projects
+but this functionality is beyond the scope of this book.
+</div>
 
 ### Working With Eclipse
 
