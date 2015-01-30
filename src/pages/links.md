@@ -26,6 +26,7 @@
 [link-twitter-noel]:                      http://twitter.com/noelwelsh
 [link-twitter-richard]:                   http://twitter.com/d6y
 [link-underscore]:                        http://underscore.io
+[link-underscore-gitter]:                 https://gitter.im/underscoreio/scala?utm_source=essential-play-book&utm_medium=link&utm_campaign=essential-play
 [link-using-bootstrap-with-play]:         http://stackoverflow.com/questions/10436815/how-to-use-twitter-bootstrap-2-with-play-framework-2-x
 
 [`org.joda.time.DateTime`]:               http://www.joda.org/joda-time/apidocs/index.html

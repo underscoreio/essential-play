@@ -106,7 +106,7 @@ In the next section we will take a closer look at routes.
 
 ### Exercise: Time is of the Essence
 
-The `chapter3-time` directory in the exercises contains
+The `chapter2-time` directory in the exercises contains
 an unfinished Play application for telling the time.
 
 Complete this application by filling in the missing actions and routes.

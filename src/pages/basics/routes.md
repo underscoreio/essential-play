@@ -295,7 +295,7 @@ to start dealing with HTML in the next chapter.
 
 ### Exercise: Calculator-as-a-Service
 
-The `chapter3-calc` directory in the exercises contains
+The `chapter2-calc` directory in the exercises contains
 an unfinished Play application for performing various calculations.
 This is similar to the last exercise,
 but the emphasis is on defining more complex routes.
@@ -472,7 +472,7 @@ The answers to the questions are as follows:
     we get a compile error because of the failure to find a `PathBindable`:
 
     ~~~ bash
-    [error] /Users/dave/dev/projects/essential-play-code/chapter3-calc/conf/routes:4: ↩
+    [error] /Users/dave/dev/projects/essential-play-code/chapter2-calc/conf/routes:4: ↩
             No URL path binder found for type List[Int]. ↩
             Try to implement an implicit PathBindable for this type.
     ~~~

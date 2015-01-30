@@ -1,4 +1,4 @@
-## Notes on the Pre-Release Edition
+## Notes on the Pre-Release Edition {-}
 
 <div class="callout callout-danger">
 This book is in *pre-release* status.
@@ -17,16 +17,13 @@ and Noel Welsh ( [noel@underscore.io](mailto:noel@underscore.io) ).
 
 There are two major things missing from this version of the book:
 
-First, we need a summary chapter.
-This will include a condensed discussion of
-everything we have covered in the book together with
-some closing thoughts on application structure and service oriented architecture.
+1.  We need a summary chapter.
+    This will include a condensed discussion of
+    everything we have covered in the book together with
+    some closing thoughts on application structure
+    and service oriented architecture.
 
-Second, we need to weave the exercises from
-the Essential Play training course through the text of the book.
-We currently have a complete set of exercises for Chapter 3,
-but the remaining content chapters need fleshing out with their own exercises.
-
-The code for the exercises and solutions is distributed as a ZIP file with the book.
-You can also clone the exercises from our Github repo.
-See the next chapter for details.
+2.  Second, we need to weave the exercises from
+    the Essential Play training course through the text of the book.
+    We currently have a complete set of exercises for Chapter 2,
+    but the remaining content chapters need fleshing out with their own exercises.

@@ -42,7 +42,7 @@ The main difference between reading and writing JSON is that reading can *fail*.
  - [`play.api.libs.json.JsSuccess`] represents the result of a successful read;
  - [`play.api.libs.json.JsError`] represents the result of a failed read.
 
-Like `Form`, which we covered in [Chapter 3](#chapter3), `JsResult` has a `fold` method that allows us to branch based on the success/failure of a read:
+Like `Form`, which we covered in [Chapter 2](#chapter-html), `JsResult` has a `fold` method that allows us to branch based on the success/failure of a read:
 
 ~~~ scala
 // Attempt to read JSON as an Address---might succeed or fail:

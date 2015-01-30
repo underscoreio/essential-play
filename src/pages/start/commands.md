@@ -2,17 +2,17 @@
 
 At the beginning of this chapter we cloned the Git repository
 of the exercises for this book and ran our first SBT commands
-on the sample project in the `chapter2-hello` exercise.
+on the sample project in the `chapter1-hello` exercise.
 
 Let's go back to that sample project and investigate the
 commands SBT provides for compiling, running,
 and deploying Play applications.
 
-Change to the `chapter2-hello` directory if you are not already there
+Change to the `chapter1-hello` directory if you are not already there
 and start SBT using the shell script provided:
 
 ~~~ bash
-bash$ cd essential-play-code/chapter2-hello
+bash$ cd essential-play-code/chapter1-hello
 
 bash$ ./sbt.sh
 

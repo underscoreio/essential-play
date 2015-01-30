@@ -1,4 +1,4 @@
-# Introduction
+# Introduction {-}
 
 *Essential Play* is aimed at beginner-to-intermediate Scala developers who want to get started using the [Play 2][link-play] web framework. The material presented focuses on Play version 2.3, although the approaches introduced are generally applicable to Play 2.2+.
 

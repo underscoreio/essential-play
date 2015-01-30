@@ -68,9 +68,9 @@ Using this Scala type...                                         Yields this res
 ---------------------------------------------------------------- ---------------------------
 `String`                                                         `text/plain`
 
-[`play.twirl.api.Html`] (see [Chapter 3](#chapter-html))         `text/html`
+[`play.twirl.api.Html`] (see [Chapter 2](#chapter-html))         `text/html`
 
-[`play.api.libs.json.JsValue`] (see [Chapter 4](#chapter-json))  `application/json`
+[`play.api.libs.json.JsValue`] (see [Chapter 3](#chapter-json))  `application/json`
 
 `scala.xml.NodeSeq`                                              `application/xml`
 
@@ -184,7 +184,7 @@ we can tweak headers and cookies before returning it.
 
 ### Exercise: Comma Separated values
 
-The `chapter3-time` directory in the exercises contains
+The `chapter2-time` directory in the exercises contains
 an unfinished Play application for
 converting various data formats to CSV.
 Complete the application by filling in the missing action

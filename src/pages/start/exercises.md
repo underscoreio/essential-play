@@ -17,18 +17,18 @@ dave@Jade ~/d/p/essential-play-code> git status
 # On branch exercises...
 
 bash$ ls -1
-chapter2-hello
-chapter3-calc
-chapter3-chat
+chapter1-hello
+chapter2-calc
+chapter2-chat
 # And so on...
 ~~~
 
 We have included one exercise to serve as an introduction to SBT.
-Change to the `chapter2-hello` directory and start SBT
+Change to the `chapter1-hello` directory and start SBT
 using the shell script provided:
 
 ~~~ bash
-bash$ cd chapter2-hello
+bash$ cd chapter1-hello
 
 bash$ ./sbt.sh
 # Lots of output here...
@@ -110,8 +110,7 @@ You *will* make mistakes when you first start programming Play applications,
 but mistakes are the best way to teach yourself.
 
 If you do get stuck, try asking a colleague or tutor,
-or join the chat on our Gitter chat room,
-linked from `README.md` in the source code repository.
+or join the chat on our [Gitter chat room](link-underscore-gitter).
 
 Try to get the information you need to solve the immediate problem
 without gaining complete access to the solution code.

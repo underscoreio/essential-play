@@ -1,4 +1,4 @@
-# Foreword {#foreword}
+# Foreword {#foreword} {-}
 
 *Essential Play* is aimed at beginner-to-intermediate Scala developers who want to get started using the [Play 2](link-play) web framework. By the end of the course we will have a solid foundation in each of the main libraries Play provides for building sites and services:
 
