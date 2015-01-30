@@ -108,7 +108,7 @@ Use it in watch mode to get fast turnaround as you work:
 ~~~
 </div>
 
-### Service Layer Solutions
+### Chat Services
 
 In lieu of using an actual database, `ChatService` maintains
 an in-memorydata store of messages.
@@ -209,7 +209,7 @@ def whoami(sessionId: SessionId): WhoamiResponse =
 ~~~
 </div>
 
-### Controller Layer Solutions
+### Chat Controllers
 
 `ChatController` wraps each method from `ChatService`
 with a method that does two jobs:

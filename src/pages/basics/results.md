@@ -182,7 +182,7 @@ Once we have created a `Result`,
 we can tweak headers and cookies before returning it.
 
 
-### Exercise: Comma Separated values
+### Exercise: Comma Separated Values
 
 The `chapter2-time` directory in the exercises contains
 an unfinished Play application for
