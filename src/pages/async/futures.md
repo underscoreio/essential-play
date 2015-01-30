@@ -1,17 +1,10 @@
----
-layout: page
-title: Futures
----
+## Futures
 
-# Futures
-
-The underpinning of our concurrent programming model is the [scala.concurrent.Future] trait. A `Future[A]` represents an asynchronous computation that *will calculate a value of type `A` at some point in the future*.
+The underpinning of our concurrent programming model is the [`scala.concurrent.Future`] trait. A `Future[A]` represents an asynchronous computation that *will calculate a value of type `A` at some point in the future*.
 
 `Futures` are a general tool from the Scala core library, but they are used heavily in Play. We'll start by looking at the general case, and tie them into Play later on in this chapter.
 
-[scala.concurrent.Future]: http://www.scala-lang.org/api/2.11.2/#scala.concurrent.Future
-
-## The Ultimate Answer
+### The Ultimate Answer
 
 Let's define a long-running computation:
 
@@ -51,7 +44,7 @@ Continuing to run in parallel...
 The answer is 42. Now, what was the question?
 ~~~
 
-## Composing Futures
+### Composing Futures
 
 Callbacks are a good tool for introducing `Futures`, but they aren't very useful for production code because they *don't return values*. This causes at least two problems:
 
@@ -62,7 +55,7 @@ Fortunately, there are other ways of sequencing `Futures`. We can *compose* `Fut
 
 Let's see some of the important methods for composing futures.:
 
-### Map
+#### *map*
 
 The `map` method allows us to sequence a future with a block of synchronous code. The synchronous code is represented by a simple function:
 
@@ -83,7 +76,7 @@ val f1: Future[Int]    = Future(ultimateAnswer)
 val f2: Future[String] = f1.map(conversion)
 ~~~
 
-We can call `map` as many times as we want. The order and the timing of the calls is insignificant -- the value of `f1` will be delivered to `f2` and `f3` once only when `f1` completes:
+We can call `map` as many times as we want. The order and the timing of the calls is insignificant---the value of `f1` will be delivered to `f2` and `f3` once only when `f1` completes:
 
 ~~~ scala
 val f1: Future[Int]    = Future { ultimateAnswer }
@@ -93,7 +86,7 @@ val f3: Future[Double] = f1 map { _.toDouble }
 
 The final results of `f1`, `f2` and `f3` above are `42`, `43` and `"42"` respectively.
 
-### FlatMap
+#### *flatMap*
 
 The `flatMap` method allows us to sequence a future with a block of asynchronous code. The asynchronous code is represented by a function that returns a future:
 
@@ -110,7 +103,7 @@ The result of calling `flatMap` is a new future that:
  - waits for the second `Future` to complete;
  - yields the result of the second `Future`.
 
-This has a similar sequencing-and-flattening effect to the `flatMap` method on [scala.Option]:
+This has a similar sequencing-and-flattening effect to the `flatMap` method on [`scala.Option`]
 
 ~~~ scala
 def longRunningConversion(value: Int): Future[String] = {
@@ -127,9 +120,9 @@ val f3: Future[String] = f1.flatMap(longRunningConversion)
 
 Again, the final results of `f1` and `f2` and `f3` above are `42`, `43` and `"42"` respectively.
 
-[scala.Option]: http://www.scala-lang.org/api/2.11.2/#scala.Option
+[`scala.Option`]
 
-### Wait... Future is a Monad?
+#### Wait... Future is a Monad?
 
 Functional programming enthusiasts will note that the presence of a `flatMap` method means `Future` is a *monad*. This means we can use it with regular Scala for-comprehensions.
 
@@ -143,9 +136,7 @@ def getTraffic(hostname: String): Future[Double] = {
 
 We want to combine the traffic from three separate servers to produce a single aggregated value. Here are two ways of writing the code using for-comprehensions:
 
-<div class="row">
-<div class="col-sm-6">
-**Single expression**
+*Single expression*
 
 ~~~ scala
 val total: Future[Double] = for {
@@ -154,10 +145,8 @@ val total: Future[Double] = for {
   t3 <- getTraffic("server3")
 } yield t1 + t2 + t3
 ~~~
-</div>
 
-<div class="col-sm-6">
-**Create-then-compose**
+*Create-then-compose*
 
 ~~~ scala
 val traffic1 = getTraffic("server1")
@@ -170,16 +159,12 @@ val total: Future[Double] = for {
   t3 <- traffic3
 } yield t1 + t2 + t3
 ~~~
-</div>
-</div>
 
-These examples are easy to read -- each one demonstrates the elegance of using `for` syntax to sequence asynchronous code. However, we should note an an important semantic difference between the two. One of the examples will complete much faster than the other.
+These examples are easy to read---each one demonstrates the elegance of using `for` syntax to sequence asynchronous code. However, we should note an an important semantic difference between the two. One of the examples will complete much faster than the other.
 
 What is the difference between the two examples and which will finish fastest? To answer this we must look at their expanded forms:
 
-<div class="row">
-<div class="col-sm-6">
-**Single expression**
+*Single expression*
 
 ~~~ scala
 val total: Future[Double] =
@@ -191,10 +176,8 @@ val total: Future[Double] =
     }
   }
 ~~~
-</div>
 
-<div class="col-sm-6">
-**Create-then-compose**
+*Create-then-compose*
 
 ~~~ scala
 val traffic1 = getTraffic("server1")
@@ -210,17 +193,15 @@ val total: Future[Double] =
     }
   }
 ~~~
-</div>
-</div>
 
-In the *single expression* example, the calls to `getTraffic` are nested inside one another -- the code *sequences* the calls, waiting until one completes before initiating the next.
+In the *single expression* example, the calls to `getTraffic` are nested inside one another---the code *sequences* the calls, waiting until one completes before initiating the next.
 
 The *create-then-compose* example, by contrast, initiates each of the calls immediately and then sequences the combination of their results.
 
-Both examples are resource-efficient and non-blocking but they sequence operations differently -- *create-then-compose* will typically complete in about one third the time. This is something to watch out for when combining futures using for-comprehensions.
+Both examples are resource-efficient and non-blocking but they sequence operations differently---*create-then-compose* will typically complete in about one third the time. This is something to watch out for when combining futures using for-comprehensions.
 
 <div class="callout callout-info">
-#### Summary: Sequencing Futures using For-Comprehensions
+*Sequencing Futures using For-Comprehensions*
 
  1. Work out which calculations are dependent on the results of which others:
 
@@ -251,33 +232,34 @@ Both examples are resource-efficient and non-blocking but they sequence operatio
   4. Repeat for the next step in the sequence (if any).
 </div>
 
-### Future.sequence
+### *Future.sequence*
 
-For comprehensions are a great way to combine the results of several futures, but they aren't suitable for combining the results of *arbitrarily sized* sets of futures. For this we need the `sequence` method of [Future's companion object]. Here's a simplified type signature:
-
-[Future's companion object]: http://www.scala-lang.org/api/2.11.2/#scala.concurrent.Future$
+For comprehensions are a great way to combine the results of several futures, but they aren't suitable for combining the results of *arbitrarily sized* sets of futures. For this we need the `sequence` method of [`Future's` companion object][`scala.concurrent.Future$`]. Here's a simplified type signature:
 
 ~~~ scala
 package scala.concurrent
 
 object Future {
-  def sequence[A](futures: Seq[Future[A]]): Future[Seq[A]] = // ...
+  def sequence[A](futures: Seq[Future[A]]): Future[Seq[A]] =
+    // ...
 }
 ~~~
 
-We can use this method to convert any sequence[^sequence] of futures into a future containing a sequence of the results. We can use this method to generalise our traffic monitoring example to any number of hosts:
+We can use this method to convert any sequence of futures into a future containing a sequence of the results. We can use this method to generalise our traffic monitoring example to any number of hosts:
 
 ~~~ scala
 def totalTraffic(hostnames: Seq[String]): Future[Double] = {
-  val trafficFutures: Seq[Future[Double]] = hostnames.map(getTraffic)
+  val trafficFutures: Seq[Future[Double]] =
+    hostnames.map(getTraffic)
 
-  val futureTraffics: Future[Seq[Double]] = Future.sequence(trafficFutures)
+  val futureTraffics: Future[Seq[Double]] =
+    Future.sequence(trafficFutures)
 
   futureTraffics.map(_.sum)
 }
 ~~~
 
-[^sequence]: `Future.sequence` actually accepts a `TraversableOnce` and returns a `Future` of the same type of sequence. Subtypes of `TraversableOnce` include sequences, sets, lazy streams, and many of other types of collection not covered here, making `Future.sequence` a useful and versatile method.
+Note: `Future.sequence` actually accepts a `TraversableOnce` and returns a `Future` of the same type of sequence. Subtypes of `TraversableOnce` include sequences, sets, lazy streams, and many of other types of collection not covered here, making `Future.sequence` a useful and versatile method.
 
 ### Take Home Points
 

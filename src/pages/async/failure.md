@@ -1,9 +1,4 @@
----
-layout: page
-title: Handling Failure
----
-
-# Handling Failure
+## Handling Failure
 
 In earlier sections we saw how `Futures` are implemented on top of thread pools. Each `Future` executes on a separate thread, and there is little continuity between `Futures` in terms of stack information.
 
@@ -11,7 +6,7 @@ The lack of a stack is a problem for error handling. The traditional way of sign
 
 So how do we handle failure using `Futures`? This will be the focus of this section.
 
-## Failed Futures
+### Failed Futures
 
 The first question we should ask is what happens when we throw an exception inside a `Future`:
 
@@ -34,7 +29,7 @@ The surprising result is that we get a 500 error page as usual, even though the 
 
 The answer lies in something called *failed futures*. A `Future` can actually be in one of three states: *incomplete*, *complete*, or *failed*:
 
- - *incomplete* futures still have work to do -- they have not started or have not run to completion;
+ - *incomplete* futures still have work to do---they have not started or have not run to completion;
  - *complete* futures have finished executing after successfully calculating a result;
  - *failed* futures have finished executing after being terminated by an exception.
 
@@ -45,13 +40,13 @@ When a `Future` fails, the exception thrown is cached and passed on to subsequen
 
 In our example, the failure in `ultimateQuestion` is passed on as the result of `index`. Play intercepts the failure and creates a 500 error page just as it would for a thrown exception in a synchronous action.
 
-## Transforming Failures
+### Transforming Failures
 
 It sometimes makes sense to intercept failed futures and turn them into successes. `Future` contains several methods to do this.
 
-### *recover*
+#### *recover*
 
-The `recover` method of [scala.concurrent.Future] has similar semantics to a `catch` block in regular Scala. We provide a partial function that catches and transforms into successful results:
+The `recover` method of [`scala.concurrent.Future`] has similar semantics to a `catch` block in regular Scala. We provide a partial function that catches and transforms into successful results:
 
 ~~~ scala
 val future1: Future[Int] = Future[Int] {
@@ -66,9 +61,7 @@ val future2: Future[Int] = future1.recover {
 
 If `future1` completes without an exception, `future2` completes with the same value. If `future1` fails with a `NumberFormatException`, `future2` completes with the value `43`. If `future1` fails with any other type of exception, `future2` fails as well.
 
-[scala.concurrent.Future]: http://www.scala-lang.org/api/2.11.2/#scala.concurrent.Future
-
-### *recoverWith*
+#### *recoverWith*
 
 `recoverWith` is similar to `recover` except that our handler block has to return a `Future` of a result. It is the `flatMap` to `recover's` `map`:
 
@@ -79,7 +72,7 @@ val future2: Future[Int] = future1.recoverWith {
 }
 ~~~
 
-### *transform*
+#### *transform*
 
 If `recover` is similar to `map` and `recoverWith` is similar to `flatMap`, `transform` is similar to `fold`. We supply two functions as parameters, one to handle successes and one to handle failures:
 
@@ -90,9 +83,9 @@ val future2: Future[String] = future1.transform(
 )
 ~~~
 
-## Creating Failures
+### Creating Failures
 
-We occasionally want to create a future containing a new exception. It is undignified for a functional programmers to write `throw` in our code, so we tend to use the `Future.failed` method instead:
+We occasionally want to create a future containing a new exception. It is considered bad style to write `throw` in Scala code, so we tend to use the `Future.failed` method instead:
 
 ~~~ scala
 val future3 = Future.failed[Int](new Exception("Oh noes!"))
@@ -100,9 +93,9 @@ val future3 = Future.failed[Int](new Exception("Oh noes!"))
 
 Stack information is preserved correctly in the `Future` as we might expect.
 
-## Failures in for-comprehensions
+### Failures in For-Comprehensions
 
-Failure propagation in `Futures` has similar semantics to the propagation of `None` in `Options`. Once a failure occurs, it is propagated by calls to `map` and `flatMap`, shortcutting any mapping functions we provide. This gives `for` comprehensions over `Futures` familiar error-handling semantics:
+Failure propagation in `Futures` has similar semantics to the propagation of `None` in `Options`. Once a failure occurs, it is propagated by calls to `map` and `flatMap`, shortcutting any mapping functions we provide. This gives for-comprehensions over `Futures` familiar error-handling semantics:
 
 ~~~ scala
 val result = for {
@@ -112,7 +105,7 @@ val result = for {
 } yield c + 1        // this expression is not executed
 ~~~
 
-## Take Home Points
+### Take Home Points
 
 When we use `Futures`, our code is distributed across a thread pool. There is no common stack so exceptions cannot be propagated up through function calls in a conventional manner.
 

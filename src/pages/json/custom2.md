@@ -1,17 +1,12 @@
----
-layout: page
-title: "Custom Formats: Part 2"
----
-
-# Custom Formats: Part 1
+## Custom Formats: Part 2
 
 Writing complex `Reads` using simple Scala code is difficult. Every time we unpack a field from the JSON, we have to consider potential errors such as the field being missing or of the wrong type. What is more, we have to remember the nature and location of every error we encounter for inclusion in the `JsError`.
 
 Fortunately, Play provides a *format DSL* for creating `Reads`, `Writes`, and `Formats`, based on a general functional programming pattern called *applicative builders*. In this section we will dissect the DSL and see how it all works.
 
-## Using Play's Format DSL
+### Using Play's Format DSL
 
-Let's start with an example of a `Reads` for our `Address` class:
+Let's start with an example of a `Reads`. Later on we'll see how the same pattern applies for `Writes` and `Formats`. We can write a `Reads` for our `Address` class as follows:
 
 ~~~ scala
 import play.api.libs.json._
@@ -23,17 +18,18 @@ implicit val addressReads: Reads[Address] = (
 )(Address.apply)
 ~~~
 
+In a nutshell, this code parses a JSON object by extracting its `"number"` field as an `Int`, its `"street"` field as a `String`, combining them via the `and` method, and feeding them into the `Addres.apply` method.
+
 We have a lot more flexibility using this syntax than we do with `Json.reads`. We can change the field names for `"number"` and `"street"`, introduce default values for fields, validate that the house number is greater than zero, and so on.
 
-We won't cover all of these options here -- the full DSL is described in the [Play documentation]. In the remainder of this section we will dissect the `addressReads` example above and explain how it works.
+We won't cover all of these options here---the full DSL is described in the [Play documentation][docs-json-combinators]. In the remainder of this section we will dissect the `addressReads` example above and explain how it works.
 
-[Play documentation]: https://www.playframework.com/documentation/2.3.x/ScalaJsonCombinators
 
-### Dissecting the DSL
+#### Dissecting the DSL
 
 Let's build the `addressReads` example from the ground up, examining each step in the process:
 
-#### Step 1. Describe the locations of fields
+**Step 1. Describe the locations of fields**
 
 ~~~ scala
 (JsPath \ "number")
@@ -42,7 +38,7 @@ Let's build the `addressReads` example from the ground up, examining each step i
 
 These are the same `JsPath` objects we saw in the section on `Reads`. They represent paths into a data structure (in this case the `"number"` and `"street"` fields respectively).
 
-#### Step 2. Read fields as typed values
+**Step 2. Read fields as typed values**
 
 We create `Reads` for each field using the `read` method of `JsPath`:
 
@@ -61,13 +57,13 @@ numberReads.reads(Json.obj("number" -> 29))
 
 numberReads.reads(JsNumber(29))
 // => JsError(Seq(
-//      (JsPath \ "number", Seq(ValidationError("error.path.missing")))
-//    ))
+//   (JsPath \ "number", Seq(ValidationError("error.path.missing")))
+// ))
 
 numberReads.reads(Json.obj("number" -> "29"))
 // => JsError(Seq(
-//      (JsPath \ "number", Seq(ValidationError("error.expected.jsnumber")))
-//    ))
+//   (JsPath \ "number", Seq(ValidationError("error.expected.jsnumber")))
+// ))
 ~~~
 
 `JsPath` also contains a `write` method for building `Writes`, and a `format` method for building `Formats`:
@@ -77,7 +73,7 @@ val numberWrites: Writes[Int]    = (JsPath \ "number").write[Int]
 val streetFormat: Format[String] = (JsPath \ "street").format[String]
 ~~~
 
-#### Step 3. Aggregate the fields into a tuple
+**Step 3. Aggregate the fields into a tuple**
 
 We combine our two `Reads` using an `and` method that is brought into scope implicitly from the `play.api.libs.functional.syntax` package:
 
@@ -93,20 +89,25 @@ The result of the combination is a *builder* object that we can use to create la
 
 More formally, if we combine a `Reads[A]` and a `Reads[B]` using `and`, we get a *`Reads` builder* of type `CanBuild2[Int, String]`. Builders have the following methods:
 
-|---------------------------------------------------------------------------------|
-| Type of `Reads` builder | Method   | Parameters       | Returns                 |
-|-------------------------------------------------------+-------------------------|
-| `CanBuild2[A, B]`       | `tupled` | None             | `Reads[(A, B)]`         |
-| `CanBuild2[A, B]`       | `apply`  | `(A, B) => X`    | `Reads[X]`              |
-| `CanBuild2[A, B]`       | `and`    | `Reads[C]`       | `CanBuild3[A, B, C]`    |
-|-------------------------------------------------------+-------------------------|
-| `CanBuild3[A, B, C]`    | `tupled` | None             | `Reads[(A, B, C)]`      |
-| `CanBuild3[A, B, C]`    | `apply`  | `(A, B, C) => X` | `Reads[X]`              |
-| `CanBuild3[A, B, C]`    | `and`    | `Reads[C]`       | `CanBuild4[A, B, C, D]` |
-|-------------------------------------------------------+-------------------------|
-| `CanBuild4[A, B, C, D]` | etc...   | etc...           | etc...                  |
-|=================================================================================|
-{: .table .table-bordered .table-responsive }
+: Reads builder methods
+
+------------------------------------------------------------------------
+Type of `Reads` builder  Method    Parameters      Returns
+------------------------ --------- --------------- ---------------------
+`CanBuild2[A,B]`         `tupled`  None            `Reads[(A,B)]`
+
+`CanBuild2[A,B]`         `apply`   `(A,B) => X`    `Reads[X]`
+
+`CanBuild2[A,B]`         `and`     `Reads[C]`      `CanBuild3[A,B,C]`
+
+`CanBuild3[A,B,C]`       `tupled`  None            `Reads[(A,B,C)]`
+
+`CanBuild3[A,B,C]`       `apply`   `(A,B,C) => X`  `Reads[X]`
+
+`CanBuild3[A,B,C]`       `and`     `Reads[C]`      `CanBuild4[A,B,C,D]`
+
+`CanBuild4[A,B,C,D]`     etc...    etc...          etc...
+------------------------------------------------------------------------
 
 The idea of the builder pattern is to use `and` to create progressively larger builders (up to `CanBuild21`), and then `tupled` or `apply` to create a `Reads` for our result type. Let's look at the `tupled` method as an example:
 
@@ -118,20 +119,20 @@ tupleReads.reads(Json.obj("number" -> 29, "street" -> "Acacia Road"))
 
 tupleReads.reads(Json.obj("number" -> "29", "street" -> null))
 // => JsError(Seq(
-//      (JsPath \ "number", Seq(ValidationError("error.expected.jsnumber"))),
-//      (JsPath \ "street", Seq(ValidationError("error.expected.jsstring")))
-//    ))
+//   (JsPath \ "number", Seq(ValidationError("error.expected.jsnumber"))),
+//   (JsPath \ "street", Seq(ValidationError("error.expected.jsstring")))
+// ))
 ~~~
 
 `tupleReads` is built from the `Reads` for `"number"` and `"street"`. It extracts the each field from the JSON and combines them into a tuple of type `(Int, String)`. In step 4 below we'll see how to use the `apply` method instead of `tupled` to combine the fields into an `Address`.
 
 There are equivalent sets of builders for `Writes` and `Formats` types. All we have to do is combine two `Writes` or `Formats` using `and` to create the relevant `CanBuild2` and do from there.
 
-#### Step 4. Aggregate the fields into an *Address*
+**Step 4. Aggregate the fields into an *Address* **
 
 Instead of using `tupled`, we can call our builder's `apply` method to create a `Reads` that aggregates values in a different way.
 
-As we can see in the table above, the `apply` method of `CanBuild2` accepts a "constructor" parameter of type `(A, B) => C` and returns a `Reads[C]`:
+As we can see in the table above, the `apply` method of `CanBuild2` accepts a constructor-like function of type `(A, B) => C` and returns a `Reads[C]`:
 
 ~~~ scala
 val constructor = (a: Int, b: String) => Address(a, b)
@@ -150,51 +151,59 @@ val addressReads = (
 // => Reads[Address]
 ~~~
 
-As we can see from the types in the `CanBuild` table, we can combine more than two `Reads` using this approach. There are `CanBuild` types up to `CanBuild21`, each of which has an `apply` method that accepts a constructor with a corresponding number of parameters.
+As we can see from the types in the table, we can combine more than two `Reads` using this approach. There are `CanBuild` types up to `CanBuild21`, each of which has an `apply` method that accepts a constructor with a corresponding number of parameters.
 
-When building `Writes`, we supply "extractor" functions instead of "constructors". Extractors accept a single parameter and return an `Option` of a tuple of the correct number of values. The semantics are identical to the `unapply` method on a case class's companion object:
+When building `Writes`, we supply extractor functions instead of constructors. Extractor functions accept a single parameter and return a tuple of the correct number of values. The semantics are identical to the `unapply` method on a case class's companion object:
 
 ~~~ scala
 (
-  (JsPath \ "number").writes[Int] and
-  (JsPath \ "street").writes[String]
-)(Address.unapply)
+  (JsPath \ "number").write[Int] and
+  (JsPath \ "street").write[String]
+)(unlift(Address.unapply))
 ~~~
 
-Finally, when building `Formats` we have to supply both a constructor and an extractor function: one to combine the values in a read operation, and one to split them up in a write:
+Note the use of `unlift` here, which converts the `unapply` method of type `Address => Option[(Int, String)]` to a function (technically a partial function) of type `Address => (Int, String)`. `unlift` is a utility method imported from `play.api.libs.functional.syntax` that has identical semantics to [`Function.unlift`][`scala.Function$`] from the Scala standard library.
+
+When building `Formats` we have to supply both a constructor and an extractor function: one to combine the values in a read operation, and one to split them up in a write:
 
 ~~~ scala
 (
   (JsPath \ "number").format[Int] and
   (JsPath \ "street").format[String]
-)(Address.apply, Address.unapply)
+)(Address.apply, unlift(Address.unapply))
 ~~~
 
-### Applying the DSL to a Java Class
+#### Applying the DSL to a Java Class
 
-We will finish with one last DSL example -- a `Format` that extracts the temporal components (hour, minute, day, month, etc) from an instance of [org.joda.time.DateTime] class. Here we define our own constructor and extractor and use them in the `apply` method of our builder:
+We will finish with one last DSL example---a `Format` that extracts the temporal components (hour, minute, day, month, etc) from an instance of [`org.joda.time.DateTime`] class. Here we define our own constructor and extractor and use them in the `apply` method of our builder:
 
 ~~~ scala
-def createDateTime(yr: Int, mon: Int, day: Int, hr: Int, min: Int, sec: Int, ms: Int) =
+import org.joda.time._
+
+def createDateTime(yr: Int, mon: Int, day: Int, hr: Int, min: Int, ↩
+      sec: Int, ms: Int) =
   new DateTime(yr, mon, day, hr, min, sec, ms)
 
-def extractDateTimeFields(dt: DateTime): (Int, Int, Int, Int, Int, Int, Int) =
+def extractDateTimeFields(dt: DateTime): ↩
+      (Int, Int, Int, Int, Int, Int, Int) =
   (dt.getYear, dt.getMonthOfYear, dt.getDayOfMonth,
    dt.getHourOfDay, dt.getMinuteOfHour, dt.getSecondOfMinute,
    dt.getMillisOfSecond)
 
 implicit val dateTimeFormat: Format[DateTime] = (
-  (JsPath \ "year").read[Int] and
-  (JsPath \ "month").read[Int] and
-  (JsPath \ "day").read[Int] and
-  (JsPath \ "hour").read[Int] and
-  (JsPath \ "minute").read[Int] and
-  (JsPath \ "second").read[Int] and
-  (JsPath \ "milli").read[Int]
+  (JsPath \ "year").format[Int] and
+  (JsPath \ "month").format[Int] and
+  (JsPath \ "day").format[Int] and
+  (JsPath \ "hour").format[Int] and
+  (JsPath \ "minute").format[Int] and
+  (JsPath \ "second").format[Int] and
+  (JsPath \ "milli").format[Int]
 )(createDateTime, extractDateTimeFields)
 ~~~
 
-## Take Home Points
+Note that we don't need to use `unlift` with `extractDateTimeFields` here because our method already returns a non-`Optional` tuple of the correct size.
+
+### Take Home Points
 
 In this section we introduced Play's *format DSL*, which we can use to create `Reads`, `Writes` and `Formats` for arbitrary types.
 
