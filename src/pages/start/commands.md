@@ -2,11 +2,9 @@
 
 At the beginning of this chapter we cloned the Git repository
 of the exercises for this book and ran our first SBT commands
-on the sample project in the `chapter1-hello` exercise.
-
-Let's go back to that sample project and investigate the
-commands SBT provides for compiling, running,
-and deploying Play applications.
+on the `chapter1-hello` sample project.
+Let's revisit this project to investigate the standard SBT commands
+for compiling, running, and deploying Play applications.
 
 Change to the `chapter1-hello` directory if you are not already there
 and start SBT using the shell script provided:
@@ -29,7 +27,7 @@ Play is distributed in two components:
  -  an *SBT plugin* that customises the default behaviour of SBT,
     adding and altering commands to help us build applications for the web.
 
-This section covers the behaviour of SBT with the Play plugin in place.
+This section covers the behaviour of SBT *with the Play plugin activated*.
 We have included callout boxes like this one to highlight the differences
 from vanilla SBT.
 </div>
@@ -52,13 +50,13 @@ bash$ ./sbt.sh
 [app] $ compile
 # SBT compiles our code and we end up back in SBT...
 
-[app] $ ⏎
+[app] $
 # Ctrl+D quits back to the OS command prompt
 
 bash$
 ~~~
 
-We start batch mode by issuing commands as arguments when starting SBT.
+We start SBT in batch mode by issuing commands as arguments when starting SBT.
 SBT executes the commands immediately and then exits back to the OS.
 The commands---`compile`, `run`, `clean` and so on---are the same
 in both modes:
@@ -70,7 +68,7 @@ bash$ ./sbt.sh compile
 bash$
 ~~~
 
-<div class="callout callout-info">
+<div class="callout callout-warning">
 *The SBT command prompt*
 
 The default SBT command prompt is a single echelon:
@@ -87,8 +85,6 @@ Play changes this to the name of the project surrounded by square brackets:
 
 You will find the prompt changing as you switch back and forth
 between Play projects and vanilla Scala projects.
-The prompts are equivalent except in a few cases
-where Play adds new commands or overrides SBT's default behaviour.
 </div>
 
 <div class="callout callout-warning">
@@ -186,7 +182,6 @@ bash$ ./sbt.sh
 
 In the output from `compile` SBT tells us how many source files
 it compiled and how long compilation took---7 seconds in this case!
-
 Fortunately we normally don't need to wait this long.
 The `compile` and `test:compile` commands are *incremental*---they
 automatically recompile only the files that have changed

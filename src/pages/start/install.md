@@ -1,8 +1,8 @@
 ## Installing SBT
 
-As you saw in the previous section,
-we have bundled the exercises in this book
-with the scripts and binaries you need to run SBT.
+As we discussed in the previous section,
+we have scripts and binaries for SBT with each
+exercise and solution in this book.
 This is a great setup for our purposes,
 but after you've finished this book you will want to
 install SBT properly so you can work on your own applications.
@@ -13,25 +13,24 @@ In this section we will discuss the options available to you to do this.
 SBT relies heavily on account-wide caches to store project dependencies.
 By default these caches are located in two folders:
 
- - `~/.sbt`---contains configuration files and account-wide SBT plugins;
+ - `~/.sbt` contains configuration files and account-wide SBT plugins;
 
- - `~/.ivy2`---contains library dependencies cached by library name
-   and version number (similar to the `~/.m2` directory for Maven).
+ - `~/.ivy2` contains cached library dependencies for all local projects
+   (similar to `~/.m2` for Maven).
 
-The JAR file we run to boot SBT is actually a *launcher*
+SBT downloads dependencies on demand
+and caches them for future use in `~/.ivy2`.
+In fact, the JAR we run to boot SBT is actually a *launcher*
 (typically named `sbt-launch.jar`) that downloads and caches
-the actual version of SBT we need for our project.
-We can use the same launcher to build projects requiring
-different versions of SBT and even Scala!
+the correct versions of SBT and Scala needed for our project.
 
-This means we are free to install SBT in a variety of different ways---or
-even in *multiple* ways on the same computer---without
-worrying about duplicate cached information.
-The different installs will work together seamlessly
-because they all use the same cached dependencies.
+This means we can use a single SBT launcher to compile and run
+projects with different version requirements for libraries, SBT, and Scala.
+We are equally free to install multiple local copies of SBT.
+The shared cache directories allow different installs to
+work together without conflict.
 
-Despite all of this convenience, there are two important drawbacks
-to be aware of:
+Despite this convenience there are two important drawbacks to be aware of:
 
  1. the first time we build a project we must be connected to the Internet
     for SBT to download the required dependencies;
@@ -42,8 +41,8 @@ to be aware of:
 ### Flavours of SBT
 
 SBT is available from an number of sources under a variety of different names.
-Here the main options available, any of which is a
-suitable start point for your own applications:
+Here the main options available,
+any of which is a suitable start point for your own applications:
 
  -  **System-wide vanilla SBT**---We can install a system-wide
     SBT launcher using the instructions on [the SBT web site](link-sbt-install).
@@ -79,6 +78,8 @@ suitable start point for your own applications:
     with non-standard cache directories that meant it
     did not play nicely with other installs.
 
-    Newer versions of Play are shipped with Activator instead.
-    *We recommend replacing legacy `play` tools with
-    one of the other options described above.*
+    *We recommend replacing legacy any copies of the legacy `play` command
+    with one of the other options described above.*
+    Newer versions of Play are shipped with Activator,
+    which is not a problem and interoperates well with other
+    locally installed copies of SBT.

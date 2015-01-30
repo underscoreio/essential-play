@@ -2,11 +2,10 @@
 
 The exercises and sample code in this book
 are all packaged using local copies of SBT.
-The only software you need to get started is a Java Virtual Machine.
+All you need to get started are Git, a Java runtime,
+and an Internet connection to download other dependencies.
 
-Start by cloning our [Github repository](link-exercises).
-The repository has two branches, `exercises` and `solutions`,
-each containing a set of self-contained Play projects in separate directories:
+Start by cloning the [Github repository](link-exercises) for the exercises:
 
 ~~~ bash
 bash$ git clone https://github.com/underscoreio/essential-play-code.git
@@ -23,6 +22,8 @@ chapter2-chat
 # And so on...
 ~~~
 
+The repository has two branches, `exercises` and `solutions`,
+each containing a set of self-contained Play projects in separate directories.
 We have included one exercise to serve as an introduction to SBT.
 Change to the `chapter1-hello` directory and start SBT
 using the shell script provided:
@@ -94,11 +95,14 @@ If the project compiles successfully, try running it. Enter `run` to start a dev
 
 If everything worked correctly you should see the message `"Hello world!"` in your browser. Congratulations---you have run your first Play web application!
 
-### Exercises and Solutions
+### Other Exercises in this Book
 
 The process you have used here is the same for each exercise in this book:
-simply change to the relevant exercise directory, start SBT,
-and issue the relevant commands to compile and run your code.
+
+1.  change to the relevant exercise directory;
+2.  start SBT;
+3.  issue the relevant SBT commands to compile and run your code.
+
 You will find complete solutions to each exercise in the `solutions` branch
 of the repository.
 
@@ -109,8 +113,8 @@ Resist the temptation to look at the solutions if you get stuck!
 You *will* make mistakes when you first start programming Play applications,
 but mistakes are the best way to teach yourself.
 
-If you do get stuck, try asking a colleague or tutor,
-or join the chat on our [Gitter chat room](link-underscore-gitter).
+If you do get stuck, join our [Gitter chat room](link-underscore-gitter)
+to get help from the authors and other owners of the course text.
 
 Try to get the information you need to solve the immediate problem
 without gaining complete access to the solution code.
