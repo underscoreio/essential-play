@@ -50,7 +50,7 @@ bash$ ./sbt.sh
 [app] $ compile
 # SBT compiles our code and we end up back in SBT...
 
-[app] $
+[app] $ ^D
 # Ctrl+D quits back to the OS command prompt
 
 bash$
@@ -291,19 +291,19 @@ We can use watch mode with *any* SBT command. For example:
     whenever we change a file;
 
  -  `~test` watches our code and reruns the unit tests
-    whenever we change a file;
+    whenever we change a file; and
 
  -  `~dist` watches our code and builds a new
     distributable ZIP archive whenever we change a file.
 
 This behaviour is built into SBT and works
-irrespectively of whether we're using Play.
+irrespective of whether we're using Play.
 </div>
 
 ### Running a Development Web Server
 
-We can use the `run` to run our application in a development environment.
-The command starts a development web server,
+We can use the `run` command to run our application in a development environment.
+This command starts a development web server,
 watches for incoming connections, and recompiles our code
 whenever an incoming request is received.
 
@@ -402,7 +402,7 @@ checks whether our greeting starts with the word `"Hello"`.
 
 We don't have many tests for our sample application so testing is fast.
 If we had lots of test suites we could focus
-on single suite using the `testOnly` command.
+on a single suite using the `testOnly` command.
 `testOnly` takes the fully qualified class name
 of the desired suite as an argument:
 
@@ -510,7 +510,7 @@ for easy distribution:
 *Packaging non-Play applications*
 
 The `stage` and `dist` commands are specific to the Play plugin.
-SBT contains a built-in `package` command for building use in non-Play projects
+SBT contains a built-in `package` command for building non-Play projects,
 but this functionality is beyond the scope of this book.
 </div>
 
@@ -548,7 +548,7 @@ The import wizard will do the rest automatically.
 A full discussion of how to write SBT project configurations
 is beyond the scope of this book.
 For more information we recommend reading the
-[tutorial on the SBT web site](link-sbt-tutorial)
-and the [build documentation on the Play web site](link-play-sbt-docs).
+[tutorial on the SBT web site](http://www.scala-sbt.org/0.13/tutorial/index.html)
+and the [build documentation on the Play web site](https://www.playframework.com/documentation/2.3.x/Build).
 The sample projects and exercises for this book
 will provide a good starting point for your own projects.

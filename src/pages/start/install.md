@@ -13,7 +13,7 @@ In this section we will discuss the options available to you to do this.
 SBT relies heavily on account-wide caches to store project dependencies.
 By default these caches are located in two folders:
 
- - `~/.sbt` contains configuration files and account-wide SBT plugins;
+ - `~/.sbt` contains configuration files and account-wide SBT plugins; and
 
  - `~/.ivy2` contains cached library dependencies for all local projects
    (similar to `~/.m2` for Maven).
@@ -33,16 +33,16 @@ work together without conflict.
 Despite this convenience there are two important drawbacks to be aware of:
 
  1. the first time we build a project we must be connected to the Internet
-    for SBT to download the required dependencies;
+    for SBT to download the required dependencies; and
 
  2. as we saw in the previous section,
     the first build of a project may take a long time.
 
 ### Flavours of SBT
 
-SBT is available from an number of sources under a variety of different names.
-Here the main options available,
-any of which is a suitable start point for your own applications:
+SBT is available from a number of sources under a variety of different names.
+Here are the main options available,
+any of which is a suitable starting point for your own applications:
 
  -  **System-wide vanilla SBT**---We can install a system-wide
     SBT launcher using the instructions on [the SBT web site](link-sbt-install).
@@ -71,15 +71,16 @@ any of which is a suitable start point for your own applications:
     Linux and OS X users can download the script from
     [Paul's Github page](link-paulp-sbt-install).
 
- -  **Legacy Play build tool**---Older downloads from
-    [http://playframework.com](http://playframework.com) shipped
-    with a built-in `play` command that was also an alias for SBT.
-    However, the old Play distributions configured SBT
-    with non-standard cache directories that meant it
-    did not play nicely with other installs.
 
-    *We recommend replacing legacy any copies of the legacy `play` command
-    with one of the other options described above.*
-    Newer versions of Play are shipped with Activator,
-    which is not a problem and interoperates well with other
-    locally installed copies of SBT.
+Older downloads from
+[http://playframework.com](http://playframework.com) shipped
+with a built-in `play` command that was also an alias for SBT.
+However, the old Play distributions configured SBT
+with non-standard cache directories that meant it
+did not play nicely with other installs.
+
+*We recommend replacing any copies of the legacy `play` command
+with one of the other options described above.*
+Newer versions of Play are shipped with Activator,
+which interoperates well with other
+locally installed copies of SBT.
