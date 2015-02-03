@@ -1,7 +1,7 @@
 ## Installing the Exercises
 
 The exercises and sample code in this book
-are all packaged using local copies of SBT.
+are all packaged with a copy of SBT.
 All you need to get started are Git, a Java runtime,
 and an Internet connection to download other dependencies.
 
@@ -58,7 +58,7 @@ Be prepared for delays of up to a few minutes:
 Things will speed up considerably once these files are cached.
 </div>
 
-Once SBT is initialised your prompt should change to "app",
+Once SBT is initialised, your prompt should change to "app",
 which is the name of the Play project we've set up for you.
 You are now interacting with SBT.
 Compile the project using the `compile` command
@@ -114,10 +114,11 @@ You *will* make mistakes when you first start programming Play applications,
 but mistakes are the best way to teach yourself.
 
 If you do get stuck, join our [Gitter chat room](link-underscore-gitter)
-to get help from the authors and other owners of the course text.
+to get help from the authors and other students.
 
 Try to get the information you need to solve the immediate problem
 without gaining complete access to the solution code.
 You'll proceed slower this way but you'll learn a lot faster
 and the knowledge will stick with you longer.
+
 </div>
