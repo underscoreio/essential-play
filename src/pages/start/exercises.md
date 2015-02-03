@@ -113,7 +113,7 @@ Resist the temptation to look at the solutions if you get stuck!
 You *will* make mistakes when you first start programming Play applications,
 but mistakes are the best way to teach yourself.
 
-If you do get stuck, join our [Gitter chat room](https://gitter.im/underscoreio/scala)
+If you do get stuck, join our [Gitter chat room](link-underscore-gitter)
 to get help from the authors and other students.
 
 Try to get the information you need to solve the immediate problem

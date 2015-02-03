@@ -18,6 +18,7 @@
 [link-paulp-sbt-install]:                 https://github.com/paulp/sbt-extras
 [link-play]:                              http://playframework.com
 [link-play-install]:                      https://playframework.com/download
+[link-sbt]:                               http://www.scala-sbt.org/
 [link-sbt-install]:                       http://www.scala-sbt.org/0.13/tutorial/Setup.html
 [link-sbt-tutorial]:                      http://www.scala-sbt.org/0.13/tutorial/index.html
 [link-sbteclipse]:                        https://github.com/typesafehub/sbteclipse/

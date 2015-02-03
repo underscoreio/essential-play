@@ -71,16 +71,18 @@ any of which is a suitable starting point for your own applications:
     Linux and OS X users can download the script from
     [Paul's Github page](link-paulp-sbt-install).
 
+<div class="callout callout-danger">
+*Legacy Play Distributions*
 
-Older downloads from
-[http://playframework.com](http://playframework.com) shipped
+Older downloads from [http://playframework.com](link-play) shipped
 with a built-in `play` command that was also an alias for SBT.
 However, the old Play distributions configured SBT
 with non-standard cache directories that meant it
 did not play nicely with other installs.
 
-*We recommend replacing any copies of the legacy `play` command
-with one of the other options described above.*
+We recommend replacing any copies of the legacy `play` command
+with one of the other options described above.
 Newer versions of Play are shipped with Activator,
 which interoperates well with other
 locally installed copies of SBT.
+</div>

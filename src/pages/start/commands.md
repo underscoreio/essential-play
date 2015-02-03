@@ -548,7 +548,7 @@ The import wizard will do the rest automatically.
 A full discussion of how to write SBT project configurations
 is beyond the scope of this book.
 For more information we recommend reading the
-[tutorial on the SBT web site](http://www.scala-sbt.org/0.13/tutorial/index.html)
-and the [build documentation on the Play web site](https://www.playframework.com/documentation/2.3.x/Build).
+[tutorial on the SBT web site](link-sbt-tutorial)
+and the [build documentation on the Play web site](docs-build).
 The sample projects and exercises for this book
 will provide a good starting point for your own projects.
