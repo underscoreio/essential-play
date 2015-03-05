@@ -9,7 +9,10 @@ coverColor: "A0C556"
 # Used by Grunt to name output files:
 filenameStem: "essential-play"
 # Used by Grunt to create a ZIP of source code:
-exercisesRepo: "git@github.com:underscoreio/essential-play-code.git"
+exercises:
+  repo: "git@github.com:underscoreio/essential-play-code.git"
+  name: "essential-play-code"
+tocDepth: 3
 # Used by Grunt to assemble pandoc command line:
 pages:
   - src/pages/intro/index.md
