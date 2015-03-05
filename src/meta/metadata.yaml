@@ -2,7 +2,7 @@
 # Used by Pandoc to print covers:
 title: Essential Play
 author: "Dave Gurnell and Noel Welsh"
-date: "Pre-Release, November 2014"
+date: "Early Access, November 2014"
 # Used by Pandoc to generate the PDF cover...
 # see src/css/book.css for HTML/ePub covers:
 coverColor: "A0C556"
@@ -13,7 +13,7 @@ exercisesRepo: "git@github.com:underscoreio/essential-play-code.git"
 # Used by Grunt to assemble pandoc command line:
 pages:
   - src/pages/intro/index.md
-  - src/pages/intro/pre-release.md
+  - src/pages/intro/early-access.md
   - src/pages/intro/conventions.md
   - src/pages/start/index.md
   - src/pages/start/exercises.md
