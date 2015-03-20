@@ -420,6 +420,7 @@ Because Twirl templates compile to Scala functions, we can call one template fro
 </div>
 </div>
 
+
 ### Take Home Points
 
 We create HTML in Play using a templating language called *Twirl*.
@@ -429,3 +430,76 @@ We place Twirl templates in the `app/views` folder and give them the extension `
 Templates are compiled to singleton Scala functions in the `views.html` package.
 
 Template functions accept whatever parameters we define and return instances of [`play.twirl.api.Html`]. Play understands how to serialize `Html` objects as content within `Results`. It even sets the `Content-Type` for us.
+
+
+### Exercise: Much Todo About Nothing
+
+The `chapter3-todo` directory in the exercises contains an unfinished Play application for managing a todo list.
+
+Complete this application by adding templates for the todo list and items. Your solution should:
+
+ - render a `<ul>` element for the list and `<li>` elements for each todo item;
+ - render the item label and an HTML checkbox for each item;
+ - render the `item.id` as the `id` attribute of the `<li>`.
+
+Be sure to make a clean separation between HTML boilerplate (the elements) and the content of the todo list page. Create two templates:
+
+ - `pageLayout` accepts two parameters: a `String` title and `Html` content. It wraps them in `<html>`, `<head>`, and `<body>` elements.
+
+ - `todoList` accepts a single parameter of type `TodoList`. It renders the `<ul>` and `<li>` elements described above and delegates the generic boilerplate to `pageLayout`.
+
+<div class="solution">
+The templates go in the `views` directory in separate files called `views/pageLayout.scala.html` and `views/todoList.scala.html`.
+
+Here's a minimal version of `pageLayout.scala.html`:
+
+~~~ scala
+@(title: String)(content: => Html)
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>@title</title>
+</head>
+<body>
+  <h1>@title</h1>
+  @content
+</body>
+</html>
+~~~
+
+Note the two parameter lists in the template header. We've done this to provide a nice syntax for using the template. By splitting the parameters into multiple lists, we can pass the `title` parameter as a regular Scal expression in parentheses and the `content` as an HTML expression in braces:
+
+~~~ scala
+@pageLayout("My Page") {
+  <p>This is my page!</p>
+}
+~~~
+
+Here's a minimal version of `todoList.scala.html`:
+
+~~~ scala
+@(todoList: models.TodoList)
+
+@import models._
+
+@pageLayout("Todo List") {
+  <ul class="todo-list">
+  @for(item <- todoList.items) {
+    <li id="@item.id" class="todo-item">
+      <label>
+        <input type="checkbox" @if(item.complete) { checked }>
+        @item.label
+      </label>
+    </li>
+  }
+  </ul>
+}
+~~~
+
+The template accepts a single `TodoList` parameter. Because the parameter list is always the first line in the file, it always comes before any `imports`. This means we have to fully qualify the parameter type as `models.TodoList`.
+
+The template uses a `for` comprehension to iterate through the list. Note that Twirl's `for` syntax doesn't require us to write `yield` to produce results.
+
+Finally, the template uses `if` to decide whether to write a `checked` attribute on the checkbox. We've used an `if` without an `else`, which omits the attribute if the todo item is incomplete.
+</div>

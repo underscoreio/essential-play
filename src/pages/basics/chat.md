@@ -108,10 +108,11 @@ Use it in watch mode to get fast turnaround as you work:
 ~~~
 </div>
 
+
 ### Chat Services
 
 In lieu of using an actual database, `ChatService` maintains
-an in-memorydata store of messages.
+an in-memory data store of messages.
 An immutable `Vector` is a good data type for our purposes
 because of its efficient iteration and append operations.
 
@@ -146,7 +147,7 @@ def chat(author: String, text: String): Message = {
 ~~~
 </div>
 
-###
+### Auth Services
 
 Our substitute for a database in `AuthService` consists of two in-memory
 `Maps`:
@@ -159,10 +160,9 @@ Our substitute for a database in `AuthService` consists of two in-memory
 
 The `Username`, `Password`, and `SessionId` types are all aliases for `String`.
 The offer no type safety but they do make the intent clearer in the code.
-We could easily replace the type aliases with value classes
-in the future if we desired extra type safety.
+We could easily replace the aliases with value classes if we desired extra type safety.
 
-The `login`, `logout` and `whoami` methods primarily operate on `sessions`:
+The `login`, `logout` and `whoami` methods primarily operate on `sessions`.
 
 <div class="solution">
 `login` is the most complex method. It checks the credentials in the
