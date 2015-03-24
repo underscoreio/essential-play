@@ -88,3 +88,44 @@ In this section we created a JSON format for a simple type hierarchy. This is a 
 We used a hand-written `Format` to add type metadata to the JSON in the form of a `"type"` field. We made use of existing macro-defined JSON formats to do the majority of the work.
 
 Macro-defined `Writes` and `Formats` always create `JsObjects`. For convenience, Play provides two subtypes, `OWrites` and `OFormat`, that tighten the return type on the `writes` method accordingly. We used this in our hand-written `Format` to add the `"type"` field to the outgoing JSON.
+
+### Exercise: Stable Codebase
+
+The `chapter4-json-animals` directory in the exercises
+contains an `Animal` type and subtypes.
+
+Write a JSON format for `Animal` using the techniques described above.
+Write the classname to the JSON as a field called `"type"`
+and use this field to determine which type to parse on read.
+If the user specifies an invalid `"type"`,
+fail with the error `"error.expected.animal.type"`.
+
+Ensure your format passes the unit tests provided.
+Don't alter the tests in any way!
+
+<div class="solution">
+The simplest solution involves using Play's JSON macros
+to (de)serialize `Dog`, `Insect`, and `Swallow`,
+and a custom format to handle the `"type"` parameter:
+
+~~~ scala
+val dogFormat     = Json.format[Dog]
+val insectFormat  = Json.format[Insect]
+val swallowFormat = Json.format[Swallow]
+
+implicit object AnimalFormat extends Format[Animal] {
+  def reads(in: JsValue) = (in \ "type") match {
+    case JsString("Dog")     => dogFormat.reads(in)
+    case JsString("Insect")  => insectFormat.reads(in)
+    case JsString("Swallow") => swallowFormat.reads(in)
+    case _ => JsError(JsPath \ "type", "error.expected.animal.type")
+  }
+
+  def writes(in: Animal) = in match {
+    case in: Dog     => dogFormat.writes(in)     ++ Json.obj("type" -> "Dog")
+    case in: Insect  => insectFormat.writes(in)  ++ Json.obj("type" -> "Insect")
+    case in: Swallow => swallowFormat.writes(in) ++ Json.obj("type" -> "Swallow")
+  }
+}
+~~~
+</div>

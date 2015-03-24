@@ -218,3 +218,49 @@ The general pattern for using the DSL is as follows:
  5. call the builder's `apply` method, passing in constructors and destructors (or hand-written equivalents) as appropriate.
 
 In the next section we'll look at one last common use case: defining `Reads`, `Writes` and `Formats` for hierarchies of types.
+
+### Exercise: Stable Codebase
+
+The `chapter4-json-animals` directory in the exercises
+contains an `Animal` type encoded as a `sealed trait`.
+
+Write a JSON format for `Animal` using the format DSL.
+Write the classname to the JSON as a field called `"type"`
+and use this field to determine which type to parse on read.
+If the user specifies an invalid `"type"`,
+fail with the error `"error.expected.animal.type"`.
+
+Ensure your format passes the unit tests provided.
+Don't alter the tests in any way!
+
+<div class="solution">
+The simplest solution involves using Play's JSON macros
+to de/serialize `Dog`, `Insect`, and `Swallow`,
+and writing a custom `Format` to handle the `"type"` field:
+
+~~~ scala
+implicit object TrafficLightFormat extends Format[TrafficLight] {
+  def reads(in: JsValue) = in match {
+    case JsNumberAsInt(0) => JsSuccess(Red)
+    case JsNumberAsInt(1) => JsSuccess(Amber)
+    case JsNumberAsInt(2) => JsSuccess(Green)
+    case _ => JsError("error.expected.trafficlight")
+  }
+
+  def writes(in: TrafficLight) = in match {
+    case Red   => JsNumber(0)
+    case Amber => JsNumber(1)
+    case Green => JsNumber(2)
+  }
+}
+
+object JsNumberAsInt {
+  def unapply(value: JsValue): Option[Int] = {
+    value match {
+      case JsNumber(num) => Some(num.toInt)
+      case _             => None
+    }
+  }
+}
+~~~
+</div>

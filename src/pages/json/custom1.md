@@ -21,7 +21,7 @@ Using pattern matching, we can easily create a simple format to render these col
 import play.api.libs.json._
 import play.api.data.validation.ValidationError
 
-implicit object lightFormat extends Format[Color] {
+implicit object colorFormat extends Format[Color] {
   def writes(color: Color): JsValue = color match {
     case Red   => JsString("red")
     case Green => JsString("green")
@@ -57,3 +57,52 @@ We can write instances of `Reads`, `Writes`, and `Format` by hand using pattern 
 This approach is convenient for simple atomic types, but becomes unwieldy when processing types that have internal structure.
 
 Fortunately, Play provides a simple DSL for writing more advanced `Reads`, `Writes` and `Formats`. This will be the focus of the next section.
+
+### Exercise: Red Light, Green Light
+
+The `chapter4-json-lights` directory in the exercises
+contains a `TrafficLight` type encoded as a `sealed trait`.
+
+Write a JSON format for `TrafficLight` by extending `Format` manually.
+Use the following serialization:
+
+ - `Red`   should be serialized as the number 0;
+ - `Amber` should be serialized as the number 1;
+ - `Green` should be serialized as the number 2.
+
+Ensure your format passes the unit tests provided.
+Don't alter the tests in any way!
+
+<div class="solution">
+The solution is very close to the code in the `colorFormat` example above.
+The trick is that `JsNumbers` can be floating point---we
+have to coerce the number in the data to an `Int` to match on it.
+The solution below defines a custom extractor called `JsNumberAsInt` for this purpose
+but any code that passes the tests will suffice:
+
+~~~ scala
+implicit object TrafficLightFormat extends Format[TrafficLight] {
+  def reads(in: JsValue) = in match {
+    case JsNumberAsInt(0) => JsSuccess(Red)
+    case JsNumberAsInt(1) => JsSuccess(Amber)
+    case JsNumberAsInt(2) => JsSuccess(Green)
+    case _ => JsError("error.expected.trafficlight")
+  }
+
+  def writes(in: TrafficLight) = in match {
+    case Red   => JsNumber(0)
+    case Amber => JsNumber(1)
+    case Green => JsNumber(2)
+  }
+}
+
+object JsNumberAsInt {
+  def unapply(value: JsValue): Option[Int] = {
+    value match {
+      case JsNumber(num) => Some(num.toInt)
+      case _             => None
+    }
+  }
+}
+~~~
+</div>
