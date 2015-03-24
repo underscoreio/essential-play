@@ -185,3 +185,125 @@ There are numerous helpers in the [`views.html.helper`] package that we can use 
 The HTML we generate contains values and error messages as well as basic form structure. We can use this to generate pre-populated forms or feedback to user error.
 
 We can tweak the generated HTML by passing extra parameters to helpers such as `inputText` and `checkbox`, or make broad sweeping changes using a custom field constructor.
+
+### Exercise: A Simple Formality
+
+The `chapter3-todo-form` directory in the exercises contains an application based on the model solution to the previous exercise, *Much Todo About Nothing*.
+
+Modify this application to add a form for creating new todo items. Place the form under the current todo list and allow the user to label the new todo and optionally imediately mark it complete.
+
+Start by defining a `Form[Todo]`. Either place the form in `TodoController` or create a `TodoFormHelpers` trait in a similar vein to `TodoDataHelpers`. Note that the `Todo` class in the exercise is different from the example `Todo` class used above. You will have to update the example field mapping accordingly.
+
+Once your `Form` is compiling, turn your attention to the page template. Pass a `Form` as a parameter and render the relevant HTML using the helper methods described above. Use the pre-defined `TodoController.submitTodoForm` action to handle the form submission.
+
+Finally, fill out the definition of `TodoController.submitTodoForm`. Extract the form data from the request, run the validation, and respond appropriately. If the form is valid, create a new `Todo`, add it to `todoList`, and redirect to `TodoController.index`. Otherwise return the form to the user showing any validation errors encountered.
+
+<div class="solution">
+The minimal `Form` definition provides mappings for each of the three fields: `id`, `label`, and `complete`. We use Play's `nonEmptyText` helper as a shortcut for `text.verifying(nonEmpty)`:
+
+~~~ scala
+val todoForm: Form[Todo] = Form(mapping(
+  "id"        -> text,
+  "label"     -> nonEmptyText,
+  "complete"  -> boolean
+)(Todo.apply)(Todo.unapply))
+~~~
+
+The model solution goes one step beyond this by defining a custom constraint for the optional UUID-formatted `id` field:
+
+~~~ scala
+val uuidConstraint: Constraint[String] = pattern(
+  regex = "(?i:[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})".r,
+  name  = "UUID",
+  error = "error.uuid"
+)
+
+val todoForm: Form[Todo] = Form(mapping(
+  "id"        -> optional(text.verifying(uuidConstraint)),
+  "label"     -> nonEmptyText,
+  "complete"  -> boolean
+)(Todo.apply)(Todo.unapply))
+~~~
+
+If the browser submits a form with a malformed `id`, this constraint will pick it up. The `error.uuid` code is our own invention---it won't appear in a human-friendly format in the web page if the constraint is violated, but it is fine for debugging purposes.
+
+Here is a minimal template to render this form in HTML. We've factored the code out into its own file, `todoForm.scala.html`:
+
+~~~ html
+@(form: Form[models.Todo])
+
+@helper.form(action = routes.TodoController.submitTodoForm, 'class -> "todo-form") {
+  @helper.checkbox(
+    form("complete"),
+    '_class -> "todo-complete",
+    '_label -> "",
+    '_help -> ""
+  )
+
+  @helper.inputText(
+    form("label"),
+    '_class -> "todo-label",
+    '_label -> "",
+    '_help -> "",
+    'placeholder -> "Enter a new todo"
+  )
+
+  <button type="submit">Create</button>
+}
+~~~
+
+We don't need to add the `id` field to the HTML because new `Todos` always have an `id` of `None`. If we wanted to edit `Todos` as well as create them we'd have to add a hidden field as follows:
+
+~~~ html
+<input type="hidden" name="id" value="@form("id").value">
+~~~
+
+We need to update `todoList.scala.html` and `TodoController.renderTodoList` to pass the `Form` through. Here's `renderTodoList`:
+
+~~~ scala
+def renderTodoList(todoList: TodoList, form: Form[Todo]): Html =
+  views.html.todoList(todoList, form)
+~~~
+
+and here's `todoList.scala.html`:
+
+~~~ html
+@(todoList: TodoList, form: Form[models.Todo])
+
+@import models._
+
+@pageLayout("Todo") {
+  <h2>My current todos</h2>
+
+  <!-- Render the todo list... -->
+
+  <h2>Add a new todo</h2>
+
+  @todoForm(form)
+}
+~~~
+
+With this infrastructure in place we can implement `submitTodoForm`:
+
+~~~ scala
+def submitTodoForm = Action { implicit request =>
+  todoForm.bindFromRequest().fold(
+    hasErrors = { errorForm =>
+      BadRequest(renderTodoList(todoList, errorForm))
+    },
+    success = { todo =>
+      todoList = todoList.addOrUpdate(todo)
+      Redirect(routes.TodoController.index)
+    }
+  )
+}
+~~~
+</div>
+
+**Extra credit:** If you get the create form working, as an extended exercise you could try modifying the page so that every todo item is editable. You have free reign to decide how to do this---there are many options available to you:
+
+ - You can create separate `Forms` and `Actions` for creating and editing `Todos`. You will have to define custom mappings between the `Forms` and the `Todo` class.
+
+ - You can re-use your existing `Form` and `submitTodoForm` for both purposes. You'll have to update the definition of `submitTodoForm` to examine the `id` field and see if it was submitted.
+
+See the `solutions` branch for a complete model solution using the second of these approaches.

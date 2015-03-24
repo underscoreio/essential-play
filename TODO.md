@@ -2,23 +2,23 @@ Mention the `routes` folder in the SBT directory structure.
 
 # 3.1 Actions, Controllers, and Routes
 
-`chapter2-time`
+DONE `chapter2-time`
 
 # 3.2 Routes in Depth
 
-`chapter2-calc`
+DONE `chapter2-calc`
 
 # 3.3 Parsing Requests
 
-`chapter2-csv`
+DONE `chapter2-csv`
 
 # 4.1 Twirl Templates
 
-`chapter3-todo`
+DONE `chapter3-todo-view`
 
 # 4.2 Form Handling
 
-TODO
+DONE `chapter3-todo-form`
 
 # 4.3 Generating Form HTML
 
