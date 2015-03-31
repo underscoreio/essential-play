@@ -35,7 +35,7 @@ We can use methods such as `map` and `flatMap` to split long multi-stage workloa
 
 ~~~ scala
 import scala.concurrent.ExecutionContext
-import play.api.libs.concurrent.Execution.defaultContext
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 def getTraffic(hostname: String)
     (implicit context: ExecutionContext): Future[Double] = {

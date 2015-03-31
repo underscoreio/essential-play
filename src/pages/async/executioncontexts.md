@@ -63,7 +63,7 @@ The simplest naïve approach we can take is to create a new thread for every `Fu
 
  2. At high levels of concurrency we may have many threads in operation at once. The cost of *context-switching* quickly becomes significant, causing our application to *thrash* and lose performance.
 
-Modern asynchronous programming libraries use *thread pools* to avoid these problems. Rather than create new threads on demand, they pre-allocate a fixed pool of threads and keep them running all the time. Whenever we create a new `Future` it gets passed to the thread pool for eventual execution. The pool operates in a continuous loop:
+Modern asynchronous programming libraries use *thread pools* to avoid these problems. Rather than create new threads on demand, they pre-allocate a fixed pool of threads and keep them running all the time. Whenever we create a new `Future` it gets passed to the thread pool for eventual Execution.Implicits. The pool operates in a continuous loop:
 
  1. wait for a thread to become available;
  2. wait for a future to need executing;
@@ -78,7 +78,7 @@ There are many parameters to thread pools that we can tweak: the number of threa
 Play operates several thread pools internally and provides one---the *default application thread pool*---for use in our applications. To use the thread pool, we simply have to import its `ExecutionContext` wherever we create `Futures`:
 
 ~~~ scala
-import play.api.libs.concurrent.Execution.defaultContext
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 def index = Future {
   // and so on...
@@ -97,7 +97,7 @@ The Scala standard library also provides a default `ExecutionContext`. This is s
 import scala.concurrent.ExecutionContext.Implicits.global
 
 // USE THIS INSTEAD:
-import play.api.libs.concurrent.Execution.defaultContext
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 ~~~
 </div>
 
@@ -108,7 +108,7 @@ Whenever we create a `Future`, we need to allocate it to a thread pool by provid
 Play provides a default thread pool and `ExecutionContext` on which we can schedule work. Simply importing this context is enough to use `Futures` in our code:
 
 ~~~ scala
-import play.api.libs.concurrent.Execution.defaultContext
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 val f = Future {
   // and so on ...

@@ -12,7 +12,7 @@ filenameStem: "essential-play"
 exercises:
   repo: "git@github.com:underscoreio/essential-play-code.git"
   name: "essential-play-code"
-tocDepth: 3
+tocDepth: 2
 # Used by Grunt to assemble pandoc command line:
 pages:
   - src/pages/intro/index.md
