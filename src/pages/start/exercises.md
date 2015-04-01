@@ -58,7 +58,7 @@ Be prepared for delays of up to a few minutes:
 Things will speed up considerably once these files are cached.
 </div>
 
-Once SBT is initialised, your prompt should change to "app",
+Once SBT is initialised, your prompt should change to `[app] $`,
 which is the name of the Play project we've set up for you.
 You are now interacting with SBT.
 Compile the project using the `compile` command
@@ -72,13 +72,17 @@ to check everything is working:
 [info] Resolving jline#jline;2.12 ...
 [info] Done updating.
 [info] Compiling 3 Scala sources and 1 Java source to ↩
-       /Users/dave/dev/projects/essential-play-code/target/scala-2.11/classes...
+       /Users/dave/dev/projects/essential-play-code/ ↩
+       target/scala-2.11/classes...
 [success] Total time: 7 s, completed 13-Jan-2015 11:15:39
 
 [app] $
 ~~~
 
-If the project compiles successfully, try running it. Enter `run` to start a development web server, and access it at [http://localhost:9000](http://localhost:9000) to test out the app:
+If the project compiles successfully, try running it.
+Enter `run` to start a development web server
+and access it at [http://localhost:9000](http://localhost:9000)
+to test out the app:
 
 ~~~ bash
 [app] $ run
@@ -93,7 +97,8 @@ If the project compiles successfully, try running it. Enter `run` to start a dev
 [info] play - Application started (Dev)
 ~~~
 
-If everything worked correctly you should see the message `"Hello world!"` in your browser. Congratulations---you have run your first Play web application!
+If everything worked correctly you should see the message `"Hello world!"` in your browser.
+Congratulations---you have run your first Play web application!
 
 ### Other Exercises in this Book
 
@@ -103,8 +108,16 @@ The process you have used here is the same for each exercise in this book:
 2.  start SBT;
 3.  issue the relevant SBT commands to compile and run your code.
 
-You will find complete solutions to each exercise in the `solutions` branch
-of the repository.
+You will find instructions for each exercise in the text of the book.
+Also look out for comments like the following in the exercise source code:
+
+~~~ scala
+// TODO: Complete this bit!
+~~~
+
+These tell you where you need to modify the code to complete the exercises.
+There are complete solutions to each exercise
+in the `solutions` branch of the repository.
 
 <div class="callout callout-warning">
 *Getting Help*

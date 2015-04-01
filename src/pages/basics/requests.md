@@ -35,7 +35,7 @@ return a `body` of an appropriate Scala type.
 So what type does `request.body` return in the examples we've seen so far?
 We haven't chosen a body parser,
 nor have we indicated the type of body anywhere in our code.
-Play *cannot* know the `Content-Type` of a request at compile time,
+Play cannot know the `Content-Type` of a request at compile time,
 so how is this handled? The answer is quite clever---by default
 our actions handle requests of type `Request[AnyContent]`.
 
@@ -61,12 +61,26 @@ Method of `AnyContent`          Request content type                Return type
 `asRaw`                         any other content type              `Option[RawBuffer]`
 --------------------------------------------------------------------------------------------------------
 
-We can use these methods by implementing handlers
-for each content type we choose and chaining them together
-with calls to `map`, `flatMap`, `orElse`, and `getOrElse`:
+We can use any of these methods to read the body as a specific type
+and process it in our `Action`. The `Optional` return types
+force us to deal with the possibility that
+the client sent us the wrong content type:
 
 ~~~ scala
 def exampleAction = Action { request =>
+  request.body.asXml match {
+    case Some(xml) => // Handle XML
+    case None      => BadRequest("That's no XML!")
+  }
+}
+~~~
+
+We can alternatively implement handlers for multiple content types
+and chain them together with calls to `map`, `flatMap`, `orElse`,
+and `getOrElse`:
+
+~~~ scala
+def exampleAction2 = Action { request =>
   (request.body.asText map handleText) orElse
   (request.body.asJson map handleJson) orElse
   (request.body.asXml  map handleXml)  getOrElse
@@ -100,7 +114,7 @@ import play.api.mvc.BodyParsers.parse
 
 def index = Action(parse.json) { request =>
   val body: JsValue = request.body
-  // ...
+  // ... no need to call `body.asJson` ...
 }
 ~~~
 
@@ -160,11 +174,15 @@ object RequestDemo extends Controller {
 }
 ~~~
 
-Note that the `Headers.get` method is case insensitive.
+<div class="callout callout-info">
+*Case sensitivity*
+
+The `Headers.get` method is case insensitive.
 We can grab the `Content-Type` using
 `headers.get("Content-Type")` or `headers.get("content-type")`.
 Cookie names, on the other hand, are case sensitive.
 Make sure you define your cookie names as constants to avoid case errors!
+</div>
 
 ### Methods and URIs
 
@@ -197,6 +215,10 @@ Reading the body may succeed or fail depending
 on whether the content type matches the type we expect.
 The various `body.asX` methods such as `body.asJson`
 return `Options` to force us to deal with the possibility of failure.
+
+If we're only concerned with one type of data,
+we can choose or write custom *body parsers*
+to process the body as a specific type.
 
 `Request` also contains methods to access HTTP headers, cookies,
 and various parts of the HTTP method and URI.

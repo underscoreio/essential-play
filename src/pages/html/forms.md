@@ -94,7 +94,21 @@ to create a *populated form*. This process is called *binding* the request:
 val populatedForm = todoForm.bindFromRequest()(request)
 ~~~
 
-The `bindFromRequest` method creates a new `Form`
+<div class="callout callout-info">
+*Implicit requests*
+
+The `request` parameter of `bindFromRequest` is actually `implicit`.
+We can omit it if we declare the parameter to our `Action` `implicit` as well:
+
+~~~ scala
+def submitForm = Action { implicit request =>
+  val populatedForm = todoForm.bindFromRequest()
+  // ... do something with `populatedForm` ...
+}
+~~~
+</div>
+
+`bindFromRequest` creates a new `Form`
 and populates it with data from `request`.
 Besides caching the data in its raw form,
 `Form` and attempts to parse and validate it to produce a `Todo` item.

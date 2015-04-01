@@ -6,7 +6,7 @@ This should always be the first step in any `Action`.
 If we tame incoming data using the type system,
 we remove a lot of complexity and possibility of error from our business logic.
 
-Once we have finished our business logic,
+Once we have finished processing the request,
 the final step of any `Action` is to convert the result into a `Result`.
 In this section we will see how to create `Results`,
 populate them with content, and add headers and cookies.
@@ -63,19 +63,21 @@ Here are some examples:
 
 :Result *Content-Types*
 
---------------------------------------------------------------------------------------------
-Using this Scala type...                                         Yields this result type...
----------------------------------------------------------------- ---------------------------
-`String`                                                         `text/plain`
+-------------------------------------------------------------
+Using this Scala type...          Yields this result type...
+--------------------------------- ---------------------------
+`String`                          `text/plain`
 
-[`play.twirl.api.Html`] (see [Chapter 2](#chapter-html))         `text/html`
+[`play.twirl.api.Html`]           `text/html`
+(see [Chapter 2](#chapter-html))
 
-[`play.api.libs.json.JsValue`] (see [Chapter 3](#chapter-json))  `application/json`
+[`play.api.libs.json.JsValue`]    `application/json`
+(see [Chapter 3](#chapter-json))
 
-`scala.xml.NodeSeq`                                              `application/xml`
+`scala.xml.NodeSeq`               `application/xml`
 
-`Array[Byte]`                                                    `application/octet-stream`
---------------------------------------------------------------------------------------------
+`Array[Byte]`                     `application/octet-stream`
+-------------------------------------------------------------
 
 The process of creating a `Result` is type-safe.
 Play determines the method of serialization based on the *type* we give it.
@@ -83,7 +85,7 @@ If it understands what to do with our data, we get a working `Result`.
 If it doesn't understand the type we give it, we get a compilation error.
 As a consequence the final steps in an `Action` tend to be as follows:
 
- 1. Convert the result of our business logic to a type Play can serialize:
+ 1. Convert the result of action to a type that Play can serialize:
     - HTML using a Twirl template, or;
     - a `JsValue` to return the data as JSON, or;
     - a Scala `NodeSeq` to return the data as XML, or;
@@ -190,7 +192,7 @@ converting various data formats to CSV.
 Complete the application by filling in the missing action
 in `app/controllers/CsvController.scala`.
 
-The action is more complicated than the examples in previous exercises.
+The action is more complicated than in previous exercises.
 It must accept data POSTed to it by the client and convert it to CSV
 using the relevant helper method from `CsvHelpers`.
 
@@ -307,8 +309,8 @@ We have no control over the types of data the client may send our way,
 so we always have to provide a mechanism for dealing with the unexpected.
 
 Also note that the conversion method in `rawBufferToCsv` assumes
-unicode character encoding---don't write code like this
-in your production applications!
+unicode character encoding---make sure you check for other encodings
+if you write code like this in your production applications!
 
 Each of the handler functions uses a common `csvResult` method
 to convert the `String` CSV data to a `Result`
@@ -330,7 +332,7 @@ val failResult: Result =
                "text/tsv, or text/plain")
 ~~~
 
-Finally, we need to string this all together.
+Finally, we need to put these pieces together.
 Because each of our handlers returns an `Option[Result]`,
 we can use the standard methods to chain them together:
 

@@ -122,8 +122,12 @@ val badData = Map(
 )
 
 todoForm.bind(badData).fold(
-  (errorForm: Form[Todo]) => BadRequest(views.html.todoFormTemplate(errorForm)),
-  (todo: Todo) => Redirect("/")
+  (errorForm: Form[Todo]) => {
+    BadRequest(views.html.todoFormTemplate(errorForm))
+  },
+  (todo: Todo) => {
+    Redirect("/")
+  }
 )
 ~~~
 
@@ -224,7 +228,7 @@ or make broad sweeping changes using a custom field constructor.
 ### Exercise: A Simple Formality
 
 The `chapter3-todo-form` directory in the exercises
-contains an application based on the model solution
+contains an application based on the solution
 to the previous exercise, *Much Todo About Nothing*.
 
 Modify this application to add a form for creating new todo items.
@@ -235,7 +239,7 @@ Start by defining a `Form[Todo]`.
 Either place the form in `TodoController`
 or create a `TodoFormHelpers` trait in a similar vein to `TodoDataHelpers`.
 Note that the `Todo` class in the exercise is
-different from the example `Todo` class used above.
+different from the example `Todo` class used in examples in this chapter.
 You will have to update the example field mapping accordingly.
 
 Once your `Form` is compiling, turn your attention to the page template.
@@ -267,11 +271,13 @@ The model solution goes one step beyond this by
 defining a custom constraint for the optional UUID-formatted `id` field:
 
 ~~~ scala
-val uuidConstraint: Constraint[String] = pattern(
-  regex = "(?i:[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})".r,
-  name  = "UUID",
-  error = "error.uuid"
-)
+import scala.util.matching.Regex
+
+val uuidRegex: Regex =
+  "(?i:[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})".r
+
+val uuidConstraint: Constraint[String] =
+  pattern(regex = uuidRegex, name = "UUID", error = "error.uuid")
 
 val todoForm: Form[Todo] = Form(mapping(
   "id"        -> optional(text.verifying(uuidConstraint)),
@@ -281,7 +287,7 @@ val todoForm: Form[Todo] = Form(mapping(
 ~~~
 
 If the browser submits a form with a malformed `id`, this constraint will pick it up.
-The `error.uuid` code is our own invention---it won't appear in a human-friendly format
+The `error.uuid` error code is our own invention---it won't appear in a human-friendly format
 in the web page if the constraint is violated, but it is fine for debugging purposes.
 
 Here is a minimal template to render this form in HTML.
@@ -362,7 +368,10 @@ def submitTodoForm = Action { implicit request =>
 ~~~
 </div>
 
-**Extra credit:** If you get the create form working,
+<div class="callout callout-warning">
+*Extra Credit Exercise*
+
+If you get the create form working,
 as an extended exercise you could try modifying the page
 so that every todo item is editable.
 You have free reign to decide how to do this---there
@@ -376,3 +385,4 @@ are a few options available to you:
     and see if it was submitted.
 
 See the `solutions` branch for a complete model solution using the second of these approaches.
+</div>

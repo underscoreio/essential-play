@@ -156,6 +156,18 @@ GET /notify/:username/:message controllers.NotificationController. ↩
 #     Try to implement an implicit PathBindable for this type.
 ~~~
 
+:Query string parameter examples
+
+--------------------------------------------------------------------------------
+HTTP method and URI                      Scala method call or result
+---------------------------------------- ---------------------------------------
+`GET  /send/hello/to/dave`               `ChatController.send("hello", "dave")`
+
+`GET  /send?message=hello&username=dave` `ChatController.send("hello", "dave")`
+
+`GET  /send/to/dave?message=hello`       `ChatController.send("hello", "dave")`
+--------------------------------------------------------------------------------
+
 ### Typed Parameters
 
 We can extract path and query parameters of types other than `String`.
@@ -177,10 +189,22 @@ object VerboseController extends Controller {
 ~~~
 
 We can send requests to URLs like `/say/Hello/5/times`
-and get back appropriate responses.
+and get back appropriate responses:
+
+~~~ bash
+bash$ curl -v 'http://localhost:9000/say/Hello/5/times'
+# HTTP headers...
+Hello
+Hello
+Hello
+Hello
+Hello
+
+bash$
+~~~
 
 Play also has built-in support for `Option` and `List` parameters in the
-query string:
+query string (but not in the path):
 
 ~~~ coffee
 GET /option-example controllers.MyController.optionExample(arg: Option[Int])
@@ -213,7 +237,6 @@ Play parses route parameters using instances of two different *type classes*:
 
 We can implement custom parameter types
 by creating implicit values these type classes.
-See the linked Scaladocs for more information.
 </div>
 
 ### Reverse Routing
@@ -224,22 +247,16 @@ without having to concatenate `Strings` by hand.
 
 Play generates reverse routes for us
 and places them in a `controllers.routes`
-package that we can access from our Scala code:
+package that we can access from our Scala code.
+Returning to our original routes for `HelloController`:
 
-~~~ scala
-import play.api.mvc.Call
-
-val methodAndUri: Call = routes.HelloController.helloTo("dave")
-
-methodAndUri.method // "GET"
-methodAndUrl.url    // "/hello/dave"
+~~~
+GET /hello       controllers.HelloController.hello
+GET /hello/:name controllers.HelloController.helloTo(name: String)
 ~~~
 
-Play generates reverse routes for each controller
-and action referenced in our routes file.
-The routes return [`play.api.mvc.Call`] objects
-that hold the HTTP method and URI from the route.
-Here is some pseudo-code based on example above to illustrate:
+The route compiler generates a `controllers.routes.HelloController`
+object with reverse routing methods as follows:
 
 ~~~ scala
 package routes
@@ -253,19 +270,24 @@ object HelloController {
   def helloTo(name: String): Call =
     Call("GET", "/hello/" + encodeURIComponent(name))
 }
-
-object ChatController {
-  def send(msg: String, user: String): Call =
-    Call("GET",
-      "/send/" + encodeURIComponent(msg) +
-      "/to/" + encodeURIComponent(user))
-}
-
-object DownloadController {
-  def file(filename: String): Call =
-    Call("GET", "/download/" + encodeURI(filename))
-}
 ~~~
+
+We can use reverse routes to reconstruct [`play.api.mvc.Call`] objects
+containing the information required to address `hello` and `helloTo` over HTTP:
+
+~~~ scala
+import play.api.mvc.Call
+
+val methodAndUri: Call =
+  controllers.routes.HelloController.helloTo("dave")
+
+methodAndUri.method // "GET"
+methodAndUrl.url    // "/hello/dave"
+~~~
+
+Play's HTML form templates, in particular, make use of `Call` objects
+when writing HTML for `<form>` tags.
+We'll see these in more detail next chapter.
 
 ### Take Home Points
 
@@ -287,25 +309,18 @@ Play also generates *reverse routes* that map method calls back to URIs.
 These are placed in a synthetic `routes` package
 that we can access from our Scala code.
 
-Now we have seen what we can do with routes,
-let's look at the `Request` and `Result`
-handling code we can write in our actions.
-This will arm us with all the knowledge we need
-to start dealing with HTML in the next chapter.
-
 ### Exercise: Calculator-as-a-Service
 
 The `chapter2-calc` directory in the exercises contains
-an unfinished Play application for performing various calculations.
+an unfinished Play application for performing various mathematical calculations.
 This is similar to the last exercise,
 but the emphasis is on defining more complex routes.
 
 Complete this application by filling in the missing actions and routes.
-Implement the missing actions described in
-the comments in `app/controllers/CalcController.scala`
-and complete the `conf/routes` file to hook up the specified URLs:
+Implement the missing actions marked `TODO` in `app/controllers/CalcController.scala`,
+and complete `conf/routes` to hook up the specified URLs:
 
- - `CalcController.add` and `CalcController.and` are examples
+ - `CalcController.add` and `CalcController.and` are examples of `Actions`
    involving typed parameters;
 
  - `CalcController.concat` is an example involving a rest-parameter;
@@ -337,7 +352,7 @@ GET /add/123/to/234
 
 Answer the following questions when you're done:
 
-1.  What happens when you add a URL-encodes a forward slash (`%2F`)
+1.  What happens when you add a URL-encodeD forward slash (`%2F`)
     to the argument to `concat`? Is this the desired behaviour?
 
     ~~~ bash
@@ -347,7 +362,7 @@ Answer the following questions when you're done:
     How does the URL-decoding behaviour of Play differ
     for normal parameters and rest-parameters?
 
-2.  Do you need to use the same parameter in `conf/routes`
+2.  Do you need to use the same parameter name in `conf/routes`
     and in your actions? What happens if they are different?
 
 3.  Is it possible to embed a parameter
@@ -399,14 +414,19 @@ GET /howto/add/:a/to/:b controllers.CalcController.howToAdd(a: Int, b: Int)
 
 The answers to the questions are as follows:
 
-1.  Play treats regular path and query string parameters
-    differently from rest-parameters.
+1.  If we pass a `%2F` to the route here,
+    we end up with the same undesirable `%2F` in the result.
+
+    This happens because `args` is a rest-parameter.
+    Play treats rest-parameters differently from
+    regular path and query string parameters.
 
     Because regular parameters are always a single path segment,
     we know there will never be a reserved URL character
     such as a `/`, `?`, `&` or `=` in the content.
     Play is able to reliably decode any URL encoded characters
-    for us without fear of ambiguity.
+    for us without fear of ambiguity,
+    and does so automatically before calling our `Action`.
 
     Rest-parameters, on the other hand, can contain unencoded `/` characters.
     Play cannot decode the content without causing ambiguity
@@ -427,7 +447,7 @@ The answers to the questions are as follows:
 2.  Play matches parameters in routes by position rather than by name,
     so we don't have to use the same names in our routes and our controllers.
 
-    In certain circumstances this is useful.
+    In certain circumstances this behaviour can be useful.
     In `sort`, for example, we want a singular parameter name in the URL:
 
     ~~~ bash
@@ -465,15 +485,23 @@ The answers to the questions are as follows:
     If we attempt to create a path parameter of type `List[...]`:
 
     ~~~ coffee
-    # We've added `:num` to the `sort` route from the solution:
+    # We've added `:num` to the `sort` route from the solution
+    # to change the required type class from QueryStringBindable to PathBindable:
     GET /sort/:num controllers.CalcController.sort(num: List[Int])
     ~~~
 
     we get a compile error because of the failure to find a `PathBindable`:
 
     ~~~ bash
-    [error] /Users/dave/dev/projects/essential-play-code/chapter2-calc/conf/routes:4: ↩
+    [error] /Users/dave/dev/projects/essential-play-code/ ↩
+            chapter2-calc/conf/routes:4: ↩
             No URL path binder found for type List[Int]. ↩
             Try to implement an implicit PathBindable for this type.
     ~~~
 </div>
+
+Now we have seen what we can do with routes,
+let's look at the code we can write to handle
+`Request` and `Result` objects in our applications.
+This will arm us with all the knowledge we need
+to start working with HTML and forms in the next chapter.

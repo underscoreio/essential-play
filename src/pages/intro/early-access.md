@@ -15,15 +15,15 @@ please let us know!
 and Noel Welsh ( [noel@underscore.io](mailto:noel@underscore.io) ).
 </div>
 
-There are two major things missing from this version of the book:
+At the time of writing, the following features are missing:
 
-1.  We need a summary chapter.
+1.  A summary chapter.
     This will include a condensed discussion of
     everything we have covered in the book together with
     some closing thoughts on application structure
     and service oriented architecture.
 
-2.  Second, we need to weave the exercises from
-    the Essential Play training course through the text of the book.
-    We currently have a complete set of exercises for Chapter 2,
-    but the remaining content chapters need fleshing out with their own exercises.
+2.  An additional exercise on `Futures` in Chapter 5,
+    covering async responses without using the web services API.
+
+3.  Documentation of the running "chat" exercise.

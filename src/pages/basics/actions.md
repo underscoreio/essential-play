@@ -7,9 +7,13 @@ In this section we will see what each part does and how to wire them together.
 
 *Actions* are objects that handle web requests.
 They have an `apply` method that accepts a [`play.api.mvc.Request`]
-and returns a [`play.api.mvc.Result`]
+and returns a [`play.api.mvc.Result`].
+We create them using one of several `apply` methods on the
+[`play.api.mvc.Action`] companion:
 
 ~~~ scala
+import play.api.mvc.Action
+
 Action { request =>
   Ok("Hello, world!")
 }
@@ -46,18 +50,19 @@ GET /:name controllers.HelloController.helloTo(name: String)
 We'll learn more about this DSL in the next section.
 By convention we place controllers in the `controllers` package
 in the `app/controllers` folder, and routes in a `conf/routes` configuration file.
-This is the structure of a basic Play application:
+
+The structure of our minimal Play application is as follows:
 
 ~~~ coffee
-myProject/
-  build.sbt                 # SBT project configuration
-  project/
-    plugins.sbt             # SBT plugin configuration
-  app/
-    controllers/            # Controllers and actions go here
-      HelloController.scala #
-  conf/
-    routes                  # Routes go here
+root/
+ +- app/
+ |   +- controllers/
+ |       +- HelloController.scala # Controller and actions (Scala code)
+ +- conf/
+ |   +- routes                    # Routes (Play routing DSL)
+ +- project/
+ |   +- plugins.sbt               # Load the Play plugin (SBT code)
+ +- build.sbt                     # Configure the build (SBT code)
 ~~~
 
 ### The Anatomy of a Controller
@@ -90,11 +95,12 @@ Later on we'll see how to customise this behaviour and create results of differe
 
 ### Take Home Points
 
-The backbone of a Play web application is made up of `Actions`, `Controllers`, and *routes*:
+The backbone of a Play web application is made up of `Actions`, `Controllers`, and routes:
 
- - `Actions` are functions from `Requests` to `Results`;
+ - [`Actions`][`play.api.mvc.Action`] are functions
+   from [`Requests`][`play.api.mvc.Request`] to [`Results`][`play.api.mvc.Result`];
 
- - `Controllers` are collections of action-producing methods;
+ - [`Controllers`][`play.api.mvc.Controller`] are collections of action-producing methods;
 
  - Routes map incoming `Requests` to `Action`-producing method calls on our `Controllers`.
 
