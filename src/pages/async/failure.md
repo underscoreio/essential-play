@@ -19,9 +19,7 @@ def ultimateQuestion = Future[Int] {
 def index = Action.async { request =>
   for {
     answer <- ultimateQuestion
-  } yield Ok(Json.obj(
-    "theAnswer" -> answer
-  ))
+  } yield Ok(Json.obj("theAnswer" -> answer))
 }
 ~~~
 

@@ -4,7 +4,7 @@ In the previous sections we saw how to create and compose `Futures` to schedule 
 
 ### Synchronous vs Asynchronous Actions
 
-Play is built using `Futures` from the bottom up. Whenever we process a request, our action is executed in a thread on the *default application thread pool*.
+Play is built using `Futures` from the bottom up. Whenever we process a request, our action is executed in a thread on the default application thread pool.
 
 All of the actions we have written so far have been *synchronous*---they run from beginning to end in a single continuous block. The thread Play allocates to the request is tied up for the duration---only when we return a `Result` can Play recycle the thread to service another request.
 
@@ -31,7 +31,7 @@ def index = Action.async { request =>
 
 `Action.async` differs from `Action.apply` only in that it expects us to return a `Future[Result]` instead of a `Result`. When the body of the action returns, Play is left to execute the resulting `Future`.
 
-We can use methods such as `map` and `flatMap` to split long multi-stage workload into sequences of shorter `Futures`, allowing Play to schedule the work more easily across the thread pool along-side other pending requests:
+We can use methods such as `map` and `flatMap` to split long multi-stage workload into sequences of shorter `Futures`, allowing Play to schedule the work more easily across the thread pool along-side other pending requests. Here's an `Action` for our traffic monitoring example:
 
 ~~~ scala
 import scala.concurrent.ExecutionContext
