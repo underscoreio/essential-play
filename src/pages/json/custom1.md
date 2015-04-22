@@ -60,7 +60,7 @@ Fortunately, Play provides a simple DSL for writing more advanced `Reads`, `Writ
 
 ### Exercise: Red Light, Green Light
 
-The `chapter4-json-lights` directory in the exercises
+The `chapter4-lights` directory in the exercises
 contains a `TrafficLight` type encoded as a `sealed trait`.
 
 Write a JSON format for `TrafficLight` by extending `Format` manually.
@@ -77,8 +77,8 @@ Don't alter the tests in any way!
 The solution is very close to the code in the `colorFormat` example above.
 The trick is that `JsNumbers` can be floating point---we
 have to coerce the number in the data to an `Int` to match on it.
-The solution below defines a custom extractor called `JsNumberAsInt` for this purpose
-but any code that passes the tests will suffice:
+The solution below defines a custom extractor called `JsNumberAsInt` for this purpose,
+but any solution that passes the tests will suffice:
 
 ~~~ scala
 implicit object TrafficLightFormat extends Format[TrafficLight] {

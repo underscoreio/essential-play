@@ -46,7 +46,7 @@ It is often convenient to use `Formats` to define reading and writing functional
 
 ### Exercise: Message in a Bottle
 
-The `chapter4-json-macro` directory in the exercises contains an example `Message` datatype
+The `chapter4-macro` directory in the exercises contains an example `Message` datatype
 and unit tests testing its serialization to/from JSON.
 
 Use Play's `Json.format` macro to define a `Format[Message]` that passes the unit tests.

@@ -10,6 +10,7 @@
 [docs-thread-pools]:                      https://www.playframework.com/documentation/2.3.x/ThreadPools
 
 [link-activator-install]:                 http://www.typesafe.com/community/core-tools/activator-and-sbt
+[link-advanced-scala-scalaz]:             http://underscore.io/training/courses/advanced-scala-scalaz/
 [link-error-codes]:                       https://github.com/playframework/playframework/blob/2.3.x/framework/src/play/src/main/resources/messages.default#L21-L51
 [link-exercises]:                         https://github.com/underscoreio/essential-play-code
 [link-jcip]:                              http://www.amazon.com/Java-Concurrency-Practice-Brian-Goetz/dp/0321349601

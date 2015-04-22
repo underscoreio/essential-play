@@ -4,7 +4,7 @@ In the previous section we saw how to use `Writes` and `Json.toJson` to convert 
 
 ### Meet *Reads*
 
-We parse incoming JSON using instances of the [`play.api.libs.json.Reads`] trait. Play also defines a`Json.reads` macro and `Json.fromJson` method that compliment `Json.writes` and `Json.toJson`. Here's a synopsis:
+We parse incoming JSON using instances of the [`play.api.libs.json.Reads`] trait. Play also defines a `Json.reads` macro and a `Json.fromJson` method that compliment `Json.writes` and `Json.toJson`. Here's a synopsis:
 
 ~~~ scala
 import play.api.libs.json._
@@ -20,6 +20,8 @@ Json.fromJson[Address](Json.obj(
   "number" -> 29,
   "street" -> "Acacia Road"
 ))
+// res0: play.api.libs.json.JsResult[Address] = ↩
+//   JsSuccess(Address(29,Acacia Road),)
 
 // This compiles because we have a `Reads[Person]` in scope:
 Json.fromJson[Person](Json.obj(
@@ -29,6 +31,8 @@ Json.fromJson[Person](Json.obj(
     "street" -> "Acacia Road"
   )
 ))
+// res1: play.api.libs.json.JsResult[Person] = ↩
+//   JsSuccess(Person(Eric Wimp,Address(29,Acacia Road)),)
 ~~~
 
 So far so good---reading JSON data is at least superficially similar to writing it.
@@ -86,19 +90,13 @@ val result = Json.fromJson[Person](Json.obj(
     "street" -> JsNull
   )
 ))
-
-/*
-result == JsError(List(
-  (JsPath \ "address" \ "number",  ↩
-    List(ValidationError("error.expected.jsnumber"))),
-
-  (JsPath \ "address" \ "street",  ↩
-    List(ValidationError("error.expected.jsstring"))),
-
-  (JsPath \ "name",                ↩
-    List(ValidationError("error.path.missing"))
-))
-*/
+// result: JsResult[Person] = JsError(List(
+//   (JsPath \ "address" \ "number", ↩
+//     List(ValidationError("error.expected.jsnumber"))), ↩
+//   (JsPath \ "address" \ "street", ↩
+//     List(ValidationError("error.expected.jsstring"))), ↩
+//   (JsPath \ "name", ↩
+//     List(ValidationError("error.path.missing"))))
 ~~~
 
 The most interesting parts of the data are the `JsPaths` that describe locations of the errors. Each `JsPath` describes the sequence of field and array accessors required to locate a particular value in the JSON.
