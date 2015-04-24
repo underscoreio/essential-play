@@ -35,6 +35,7 @@ pages:
   - src/pages/html/templates.md
   - src/pages/html/forms.md
   - src/pages/html/form-templates.md
+  - src/pages/html/chat.md
   - src/pages/json/index.md
   - src/pages/json/values.md
   - src/pages/json/writes.md
@@ -44,12 +45,14 @@ pages:
   - src/pages/json/custom2.md
   - src/pages/json/custom3.md
   - src/pages/json/failure.md
+  - src/pages/json/chat.md
   - src/pages/async/index.md
   - src/pages/async/futures.md
   - src/pages/async/executioncontexts.md
   - src/pages/async/actions.md
   - src/pages/async/ws.md
   - src/pages/async/failure.md
+  - src/pages/async/chat.md
   - src/pages/links.md
   - src/pages/solutions.md
 ...

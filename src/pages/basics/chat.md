@@ -35,13 +35,7 @@ with services as vertical cross-sections of the app,
 layers as horizontal cross-sections,
 and four main singleton objects implementing the functionality:
 
-\makebox[\linewidth]{\includegraphics[width=0.8\textwidth]{src/pages/basics/chat-overview.pdf}}
-
-<div class="figure">
-<div class="text-center">
-<img src="src/pages/basics/chat-overview.svg" alt="Basic structure of the chat application" />
-</div>
-</div>
+![Basic structure of the chat application](src/pages/basics/chat-overview.pdf+svg)
 
 The methods in `ChatService` and `AuthService`
 are implemented in a message-passing style,
