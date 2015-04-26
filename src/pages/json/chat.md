@@ -87,7 +87,7 @@ bash$ curl 'http://localhost:9000/api/whoami' \
 }
 ~~~
 
-# The *login* Endpoint
+### The *login* Endpoint
 
 Start by completing the `AuthApiController.login` action.
 The new action is analogous to `AuthController.login` from Chapter 3,
@@ -181,7 +181,7 @@ def login = Action { request =>
 ~~~
 </div>
 
-# The *whoami* Endpoint
+### The *whoami* Endpoint
 
 Complete this endpoint as follows:
 
@@ -237,7 +237,7 @@ def whoami = Action { request =>
 ~~~
 </div>
 
-# The *messages* and *chat* Endpoints
+### The *messages* and *chat* Endpoints
 
 At this point, the endpoints in `ChatApiController` should be easy to complete.
 The behaviour is analogous to `ChatController` from Chapter 3

@@ -144,8 +144,11 @@ def login(req: LoginRequest): Future[LoginResponse] =
     post(Json.toJson(req)).
     flatMap { response =>
       Json.fromJson[LoginResponse](response.json) match {
-        case JsSuccess(value, _) => Future.successful(value)
-        case error: JsError      => Future.failed(new Exception("Bad API response " + error))
+        case JsSuccess(value, _) =>
+          Future.successful(value)
+
+        case error: JsError =>
+          Future.failed(new Exception("Bad API response " + error))
       }
     }
 ~~~
@@ -161,13 +164,18 @@ def login(req: LoginRequest): Future[LoginResponse] =
 
 def parseResponse[A](response: WSResponse)(implicit reads: Reads[A]): Future[A] = {
   Json.fromJson[A](response.json) match {
-    case JsSuccess(value, _) => Future.successful(value)
-    case error: JsError      => Future.failed(InvalidResponseException(response, error))
+    case JsSuccess(value, _) =>
+      Future.successful(value)
+
+    case error: JsError =>
+      Future.failed(InvalidResponseException(response, error))
   }
 }
 
-case class InvalidResponseException(response: WSResponse, jsError: JsError)
-  extends Exception(s"Invalid response from API:\n${response.json}\n${jsError}")
+case class InvalidResponseException(
+  response: WSResponse,
+  jsError: JsError
+) extends Exception(s"BAD API response:\n${response.json}\n${jsError}")
 ~~~
 
 The `whoami` endpoint is trivial with our `parseResponse` helper:
@@ -208,8 +216,11 @@ and we'd have to use `flatMap` to sequence the two steps:
 def messages = Action.async { request =>
   val authResponse: Future[AuthResponse] =
     request.headers.get("Authorization") match {
-      case Some(sessionId) => authClient.whoami(sessionId)
-      case None => Future.successful(SessionNotFound("NoSessionId"))
+      case Some(sessionId) =>
+        authClient.whoami(sessionId)
+
+      case None =>
+        Future.successful(SessionNotFound("NoSessionId"))
     }
 
   authResponse map {
@@ -239,8 +250,11 @@ def messages = Action.async { request =>
 
 def authorization(request: Request[AnyContent]): Future[LoginResponse] =
   request.headers.get("Authorization") match {
-    case Some(sessionId) => authClient.whoami(sessionId)
-    case None            => Future.successful(SessionNotFound("NoSessionId"))
+    case Some(sessionId) =>
+      authClient.whoami(sessionId)
+
+    case None =>
+      Future.successful(SessionNotFound("NoSessionId"))
   }
 ~~~
 
@@ -255,8 +269,9 @@ def chat = Action.async { request =>
   authorization(request) map {
     case Credentials(sessionId, username) =>
       withRequestJsonAs[ChatRequest](request) { postReq =>
-        val message = ChatService.chat(username, postReq.text)
-        Ok(Json.toJson(ChatSuccess(message)))
+        Ok(Json.toJson(ChatSuccess(ChatService.chat(
+          username,
+          postReq.text))))
       }
 
     case SessionNotFound(sessionId) =>
@@ -264,8 +279,9 @@ def chat = Action.async { request =>
   }
 }
 
-
-private def withRequestJsonAs[A: Reads](request: Request[AnyContent])(func: A => Result): Result =
+private def withRequestJsonAs[A: Reads]
+    (request: Request[AnyContent])
+    (func: A => Result): Result =
   request.jsonAs[A] match {
     case JsSuccess(value, _) => func(value)
     case err: JsError        => BadRequest(ErrorJson(err))

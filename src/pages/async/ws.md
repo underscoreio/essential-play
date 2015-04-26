@@ -125,8 +125,9 @@ When we send a request, the library returns a `Future[WSResponse]`. We can use m
 The `chapter5-weather` directory in the exercises
 contains an unfinished application for reporting on weather data from
 [openweathermap.com](http://openweathermap.com).
-
-The application will use two API endpoints. The `weather` endpoint ([documented here](http://openweathermap.com/current)) reports current weather data:
+The application will use two API endpoints.
+The `weather` endpoint ([documented here](http://openweathermap.com/current))
+reports current weather data:
 
 ~~~ json
 bash$ curl 'http://api.openweathermap.org/data/2.5/weather?q=London,uk'
@@ -140,7 +141,8 @@ bash$ curl 'http://api.openweathermap.org/data/2.5/weather?q=London,uk'
 "id":2643743,"name":"London","cod":200}
 ~~~
 
-and the `forecast` endpoint ([documented here](http://openweathermap.com/forecast)) reports a five day forecast:
+and the `forecast` endpoint ([documented here](http://openweathermap.com/forecast))
+reports a five day forecast:
 
 ~~~ json
 bash$ curl 'http://api.openweathermap.org/data/2.5/forecast?q=London,uk'
