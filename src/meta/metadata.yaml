@@ -53,6 +53,7 @@ pages:
   - src/pages/async/ws.md
   - src/pages/async/failure.md
   - src/pages/async/chat.md
+  - src/pages/summary/index.md
   - src/pages/links.md
   - src/pages/solutions.md
 ...

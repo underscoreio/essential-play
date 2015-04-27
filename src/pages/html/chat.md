@@ -6,7 +6,7 @@ armed with our new-found knowledge of HTML and web forms.
 In the `chapter3-chat` directory in the exercises you will find
 updated source code for the internet chat application.
 We've included the relevant parts of the solution from Chapter 2
-and created new *TODOs* in `ChatController.scala` and
+and created new `TODOs` in `ChatController.scala` and
 `AuthController.scala`.
 
 ### The Login Page
@@ -98,8 +98,8 @@ call the relevant service methods, and pattern match on the results.
 
 ### The Chat Page
 
-Start by implementing a simple `ChatController.index` that
-checks the user is logged in and returns a list of `Messages` from `ChatService`.
+Now implement a simple `ChatController.index` that checks
+whether the user is logged in and returns a list of `Messages` from `ChatService`.
 Use the `withAuthenticatedUser` helper to check the login.
 
 <div class="solution">

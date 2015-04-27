@@ -14,21 +14,25 @@ GET  /api/message  controllers.ChatApiController.messages
 POST /api/message  controllers.ChatApiController.chat
 ~~~
 
-Complete the *TODO* items in `AuthApiController.scala` and `ChatApiController.scala`
-to create a complete REST API for your chat application.
-
 ### Overview of the API
 
 All endpoints accept and return JSON data:
 
- - `AuthApiController.login` accepts a posted `LoginRequest` and returns a `LoginResponse`;
- - `AuthApiController.whoami` returns a `Credentials`;
- - `ChatApiController.messages` returns a `Seq[Message]`;
- - `ChatApiController.chat` accepts a `ChatRequest` and returns nothing.
+ - `AuthApiController.login` accepts a posted `LoginRequest` and returns a `LoginResponse`
+   containing the user's `sessionId`;
+ - `AuthApiController.whoami` returns a `WhoamiResponse`
+   containing the user's `Credentials`;
+ - `ChatApiController.messages` returns a `MessagesResponse`
+   containing the `Messages` posted so far;
+ - `ChatApiController.chat` accepts a `ChatRequest` and returns a `ChatResponse`
+   containing the posted `Message`.
 
-In addition, all endpoints except for `login` require authorization.
-The client calls the `login` endpoint and retrieves a `LoginSuccess`
-in response:
+See `ChatServiceMessages.scala` and `AuthServiceMessages.scala` for
+a complete description of the request and response messages.
+
+All endpoints except for `login` require authorization,
+which is supplied via the standard HTTP `Authorization` header.
+The client calls `login` and retrieves a `LoginSuccess` in response:
 
 ~~~ bash
 bash$ curl 'http://localhost:9000/api/login' \
@@ -40,8 +44,8 @@ bash$ curl 'http://localhost:9000/api/login' \
 }
 ~~~
 
-The `sessionId` field from the `LoginSuccess` can be passed
-as an `Authorization` to authorize requests to the other endpoints:
+The `sessionId` field from the `LoginSuccess` is then passed
+as `Authorization` in requests to the other endpoints:
 
 ~~~ bash
 bash$ curl 'http://localhost:9000/api/message' \
@@ -52,7 +56,9 @@ bash$ curl 'http://localhost:9000/api/message' \
   "type":"ChatSuccess",
   "message":{"author":"alice","text":"First post!"}
 }
+~~~
 
+~~~ bash
 bash$ curl 'http://localhost:9000/api/message' \
            --header 'Content-Type: application/json' \
            --header 'Authorization: fc8cfcb2-a758-495c-8708-613ac3ff2a99' \
@@ -61,7 +67,9 @@ bash$ curl 'http://localhost:9000/api/message' \
   "type":"ChatSuccess",
   "message":{"author":"alice","text":"Second post!"}
 }
+~~~
 
+~~~ bash
 bash$ curl 'http://localhost:9000/api/message' \
            --header 'Authorization: fc8cfcb2-a758-495c-8708-613ac3ff2a99'
 {
@@ -73,7 +81,7 @@ bash$ curl 'http://localhost:9000/api/message' \
 }
 ~~~
 
-Finally, the client can use the `whoami` endpoint to retrieve the
+The client can use the `whoami` endpoint to retrieve the
 identity of the authorized user:
 
 ~~~ bash
@@ -91,14 +99,10 @@ bash$ curl 'http://localhost:9000/api/whoami' \
 
 Start by completing the `AuthApiController.login` action.
 The new action is analogous to `AuthController.login` from Chapter 3,
-except that it uses JSON instead of form data and HTML:
+except that it sends and receives JSON instead of form data and HTML.
 
-1. parse the posted JSON as a `LoginRequest`;
-2. send the request to `AuthService.login`;
-3. serialize the response as JSON and return it to the client.
-
-We've implemented JSON `Formats` for `LoginRequest` and `LoginResponse`
-in `AuthServiceMessages.scala`, so reading and writing JSON should be easy.
+We've implemented JSON `Formats` for `LoginRequest` and `LoginResponse`,
+so reading and writing JSON should be easy.
 However, you will have to handle several error scenarios:
 
 1. the request body cannot be parsed as JSON;
@@ -144,8 +148,9 @@ We can reduce the code significantly by introducing a helper method
 to parse the request body and handle missing / malformed JSON:
 
 ~~~ scala
-def withRequestJsonAs[A: Reads](request: Request[AnyContent])
-      (func: A => Result ): Result =
+def withRequestJsonAs[A: Reads]
+      (request: Request[AnyContent])
+      (func: A => Result): Result =
   request.body.asJson match {
     case Some(json) =>
       Json.fromJson[A](json) match {
@@ -193,39 +198,8 @@ You will have to handle any missing/invalid `Authorization` headers
 by sending a custom JSON error to the client in an appropriate `Result`.
 
 <div class="solution">
+Our `withAuthenticatedUser` helper from Chapter 2 comes in useful here.
 Here's complete end-to-end code for the endpoint:
-
-~~~ scala
-def whoami = Action { request =>
-  request.headers.get("Authorization") match {
-    case Some(sessionId) =>
-      AuthService.whoami(sessionId) match {
-        case res: Credentials =>
-          Ok(Json.toJson(res))
-
-        case res: SessionNotFound =>
-          NotFound(Json.toJson(res))
-      }
-
-    case None =>
-      Unauthorized(SessionNotFound("NoSessionId"))
-  }
-}
-~~~
-
-Again, we can reduce the solution by introducing a helper.
-In this case, `withAuthenticatedUser` handles the `Authorization` header
-and the call to `AuthService.whoami`:
-
-~~~ scala
-def withAuthenticatedUser(request: Request[AnyContent])(func: WhoamiResponse => Result): Result =
-  request.headers.get("Authorization") match {
-    case Some(sessionId) => func(AuthService.whoami(sessionId))
-    case None            => func(SessionNotFound("NoSessionId"))
-  }
-~~~
-
-With this helper in place, the endpoint becomes:
 
 ~~~ scala
 def whoami = Action { request =>
@@ -239,13 +213,13 @@ def whoami = Action { request =>
 
 ### The *messages* and *chat* Endpoints
 
-At this point, the endpoints in `ChatApiController` should be easy to complete.
+At this point, completing `ChatApiController` should be trivial.
 The behaviour is analogous to `ChatController` from Chapter 3
 except that it grabs the session ID from the `Authorization` header
 instead of from a cookie.
 
 <div class="solution">
-The helpers we created for `AuthApiController` make defining these endpoints straightforward:
+`withAuthenticatedUser` makes defining these endpoints straightforward:
 
 ~~~ scala
 def messages = Action { request =>

@@ -102,7 +102,6 @@ Use it in watch mode to get fast turnaround as you work:
 ~~~
 </div>
 
-
 ### Chat Services
 
 In lieu of using an actual database, `ChatService` maintains
@@ -204,13 +203,14 @@ def whoami(sessionId: SessionId): WhoamiResponse =
 ~~~
 </div>
 
-### Chat Controllers
+### Controllers
 
 `ChatController` wraps each method from `ChatService`
 with a method that does two jobs:
 translate requests and responses to and from HTTP primitives,
 and authenticate each request from the client.
 
+<div class="solution">
 The first thing to do when handling any `Request`
 is to check whether the user has authenticated with `AuthController`.
 We do this using a help method that extracts a `SessionId` from a cookie,
@@ -270,6 +270,7 @@ def login(username: Username, password: Password) =
     }
   }
 ~~~
+</div>
 
 ### Exercise Summary
 

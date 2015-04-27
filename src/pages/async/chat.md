@@ -1,107 +1,83 @@
 ## Extended Exercise: Chat Room Part 4
 
 In this final visit to our chat application we will convert our
-single codebase to a microservice-oriented architecture.
-We'll separate the auth and chat services into different applications
-that talk to one another over HTTP.
+single-server codebase to distributed microservice-oriented architecture.
+We will separate the auth and chat services into different applications
+that talk to one another over HTTP using `Futures` and Play's web services client.
 
 ### Directory and Project Structure
 
-The start-point is in the `chapter5-chat` directory in the exercises.
+The `chapter5-chat` directory in the exercises contains a template application.
 Unlike previous exercises, the SBT build is split into four *projects*,
 each with its own subdirectory:
 
- -  the `authApi` project contains the auth API microservice;
+ -  the `authApi` project contains an authentication API microservice;
 
- -  the `chatApi` project contains the chat API microservice;
+ -  the `chatApi` project contains a chat API microservice;
 
- -  the `site` project contains the chat web site,
-    which is a client to both microservices;
+ -  the `site` project contains a web site that is a client to both microservices;
 
- -  the `common` project contains code
-    that is shared across the other projects.
+ -  the `common` project contains code that is shared across the other projects.
 
-To specify a project in SBT, prefix the relevant command with the project name and a slash.
-For example, to `compile` the `authApi` project do the following:
+The build dependencies and HTTP communication between the projects are illustrated below:
+
+![Project dependencies and HTTP communication](src/pages/async/chat-projects.pdf+svg)
+
+Note that the codebases for the web site and APIs do not depend on one another,
+even though they communicate over HTTP when the app is running.
+To avoid code duplication, commonalities such as message classes and API client code are
+factored out into `common` or re-use throughout the codebase.
+
+In this exercise you will complete parts of the API clients and servers.
+We've completed the web site and most of the `common` library for you.
+
+### Using SBT
+
+Because there are four projects in SBT,
+you have to specify which one you want to compile, test or run.
+You can either do this by specifying the project name as a prefix to the command:
 
 ~~~ bash
-bash$ ./sbt.sh
-[info] Loading project definition from ↩
-       /essential-play-code/chapter5-chat/project
-[info] Set current project to root
-       (in build file:/essential-play-code/chapter5-chat/)
-
 > authApi/compile
-[info] Updating {file:/essential-play-code/chapter5-chat/}authApi...
-[info] Done updating.
-[info] Compiling 5 Scala sources and 1 Java source to ↩
-       /essential-play-code/chapter5-chat/ ↩
-         authApi/target/scala-2.11/classes...
+...
 ~~~
 
-Alternatively you can use the `project` command to switch to a project
-and run other commands like `compile` without a prefix:
+or by using the `project` command to focus on a particular project
+before issuing other commands:
 
 ~~~ bash
-dave@Jade ~/d/p/e/chapter5-chat> ./sbt.sh
-[info] Loading project definition from ↩
-       /essential-play-code/chapter5-chat/project
-[info] Set current project to root ↩
-       (in build file:/essential-play-code/chapter5-chat/)
-
 > project chatApi
 [info] Set current project to chatApi ↩
        (in build file:/essential-play-code/chapter5-chat/)
 
 [chatApi] $ compile
-[info] Updating {file:/essential-play-code/chapter5-chat/}chatApi...
-[info] Resolving jline#jline;2.12 ...
-[info] Done updating.
-[info] Compiling 5 Scala sources and 1 Java source to ↩
-       /essential-play-code/chapter5-chat/ ↩
-         chatApi/target/scala-2.11/classes...
+...
 ~~~
 
-The web site and API services have to be run on different HTTP ports,
-which we have hard-coded as follows:
-
- - `site` runs on port 9000;
- - `chatApi` runs on port 9001;
- - `authApi` runs on port 9002.
-
-HTTP ports are specified via a command line argument when starting SBT.
-We've provided three shell scripts to do this for you:
-`run-auth-api.sh`, `run-chat-api.sh', and `run-site.sh`:
+Running the projects is complicated slightly by the fact that
+each microservice has run on a different port on `localhost`.
+Play allows you to specify the port via a command line parameter when starting SBT:
 
 ~~~ bash
-bash$ ./run-auth-api.sh
-[info] Loading project definition from ↩
-       /essential-play-code/chapter5-chat/project
-[info] Set current project to root ↩
-       (in build file:/essential-play-code/chapter5-chat/)
-[info] Set current project to authApi ↩
-       (in build file:/essential-play-code/chapter5-chat/)
-
---- (Running the application from SBT, auto-reloading is enabled) ---
-
-[info] play - Listening for HTTP on /0:0:0:0:0:0:0:0:9002
-
-(Server started, use Ctrl+D to stop and go back to the console...)
+bash$ ./sbt.sh -Dhttp.port=12345
 ~~~
 
+We've written three shell scripts to hard-code the ports for you:
+
+ - `./run-site.sh` starts the web site on port 9000;
+ - `./run-chat-api.sh` starts the chat API on port 9001;
+ - `./run-auth-api.sh` starts the auth API on port 9002.
+
 You will need to run each script in a separate terminal window
-to run the complete application.
+to boot the complete application.
 
 ### Auth API
 
-The server side of the auth API is already implemented in
-`authApi/app/controllers/AuthApiController.scala`.
-Because the auth API doesn't depend on any external web services,
-we are able to reuse the synchronous solution from the end of Chapter 4.
-You should be able to run the `run-auth-api.sh` script
-and communicate with the auth server on port 9002.
-Note that we've removed the `/api` prefix from the routes
-because we only have API endpoints running on the server:
+The auth API has no dependencies on other web services,
+so the code is more or less identical to the solution from Chapter 4.
+We've already implemented the server for you---you
+should be able to run the `run-auth-api.sh` script
+and communicate with it on port 9002:
 
 ~~~ bash
 bash$ curl 'http://localhost:9002/login' \
@@ -122,15 +98,17 @@ bash$ curl 'http://localhost:9002/whoami' \
 }
 ~~~
 
+Note that we've removed the `/api` prefix from the routes
+because there are no URL naming collisions with the web site.
+
 ### Auth API Client
 
-We can communicate with the auth API using `curl`,
-but we need a Scala library to call it from the chat API and web site.
-We've created a skeleton client in `common/app/clients/AuthServiceClient.scala'
-for this purpose.
+The chat API and web site will communicate with the auth API using a
+Scala client defined in the `common` project.
+The next step is to finish the code for this client.
 
-Complete the client by filling in the *TODOs* in `AuthServiceClient.scala`.
-We've given you the URLs in the comments to call the endpoints on the server.
+Complete the client by filling in the `TODOs` in `AuthServiceClient.scala`.
+We've specified the URLs of the API endpoints in the comments.
 Use Play JSON to write and read request and response data
 and remember to set the `Authorization` header when calling out to `whoami`.
 
@@ -195,47 +173,55 @@ Let's look at the chat API next.
 
 ### Chat API
 
-The majority of the chat API is in the file
-`chatApi/app/controllers/ChatApiController.scala`.
-We've included an `authClient` at the top of the file.
-Because `authClient` is asynchronous, you'll need to write the
-`messages` and `chat` endpoints using `Action.async`.
+The majority of the chat API is in `ChatApiController.scala`.
+We've included an `authClient` at the top of the file to authenticate users.
 
 Complete each action. Use `authClient` to do any authentication and
 `ChatService` to fetch and post messages.
+Because `authClient` is asynchronous, you'll need to use `Futures` and `Action.async`.
+
 
 <div class="solution">
-Here's an end-to-end implementation of the `messages` endpoint.
-First we call `authClient.whoami`, which returns a `Future`.
-Because `ChatService` is synchronous,
-we can `map` over the `Future` to produce our result.
-If `ChatService` was asynchronous, calling it would return a `Future`
-and we'd have to use `flatMap` to sequence the two steps:
+Let's look at the `messages` endpoint first.
+The first thing we have to do is call the `whoami` method in the auth service,
+which we previously did using the `withAuthenticatedUser` helper.
+Now that the auth service is asynchronous, we have to reimplement this helper.
+
+Here's a prototype implementation that substitutes `Result` for `Future[Result]` in the code:
 
 ~~~ scala
-def messages = Action.async { request =>
-  val authResponse: Future[AuthResponse] =
-    request.headers.get("Authorization") match {
-      case Some(sessionId) =>
-        authClient.whoami(sessionId)
+def withAuthenticatedUser
+    (request: Request[AnyContent])
+    (func: LoginResponse => Future[Result]): Future[Result] =
+  request.headers.get("Authorization") match {
+    case Some(sessionId) =>
+      authClient.whoami(sessionId)
 
-      case None =>
-        Future.successful(SessionNotFound("NoSessionId"))
-    }
-
-  authResponse map {
-    case Credentials(sessionId, username) =>
-      Ok(Json.toJson(MessagesSuccess(ChatService.messages)))
-
-    case SessionNotFound(sessionId) =>
-      Unauthorized(Json.toJson(MessagesUnauthorized(sessionId)))
+    case None =>
+      Future.successful(SessionNotFound("NoSessionId"))
   }
-}
 ~~~
 
-Once again we can simplify things with a helper method.
-The `authorization` method here combines `authClient.whoami`
-with the extraction of the `Authorization` header from the `request`:
+Like many of our previous helper functions,
+this implementation makes inflexible assumptions about the return type of `func`.
+Ideally we'd like a helper that returns a `LoginResponse` and allows the
+caller to make decisions about what to do with it.
+We can do this by returning a `Future[LoginResponse]`
+and allowing the caller to use `map` or `flatMap` to sequence the next operations:
+
+~~~ scala
+def authorization(request: Request[AnyContent]): Future[LoginResponse] =
+  request.headers.get("Authorization") match {
+    case Some(sessionId) =>
+      authClient.whoami(sessionId)
+
+    case None =>
+      Future.successful(SessionNotFound("NoSessionId"))
+  }
+~~~
+
+The `messages` and `chat` actions can be implemented using a combination of
+`authorization`, the `map` method, and our previous `withRequestJsonAs` helper:
 
 ~~~ scala
 def messages = Action.async { request =>
@@ -247,22 +233,7 @@ def messages = Action.async { request =>
       Unauthorized(Json.toJson(MessagesUnauthorized(sessionId)))
   }
 }
-
-def authorization(request: Request[AnyContent]): Future[LoginResponse] =
-  request.headers.get("Authorization") match {
-    case Some(sessionId) =>
-      authClient.whoami(sessionId)
-
-    case None =>
-      Future.successful(SessionNotFound("NoSessionId"))
-  }
 ~~~
-
-The `chat` method is similar.
-We use `authorization` to check the user's credentials,
-and then `map` over the `Future` to produce a `Result`.
-We bring back the `wuthRequestJsonAs` helper from Chapter 4
-to simplify reading the JSON from the `request`:
 
 ~~~ scala
 def chat = Action.async { request =>
@@ -278,21 +249,12 @@ def chat = Action.async { request =>
       Unauthorized(Json.toJson(ChatUnauthorized(sessionId)))
   }
 }
-
-private def withRequestJsonAs[A: Reads]
-    (request: Request[AnyContent])
-    (func: A => Result): Result =
-  request.jsonAs[A] match {
-    case JsSuccess(value, _) => func(value)
-    case err: JsError        => BadRequest(ErrorJson(err))
-  }
 ~~~
 </div>
 
-Once you've completed the chat API, you should be able to
-run it with the `run-chat-api.sh` script and talk to it using `curl`.
-You'll need to start the auth API in a second terminal
-for everything to work properly:
+You should be able to run the completed API with `run-chat-api.sh`
+and talk to it on port 9001 using `curl`.
+Remember to start the auth API in a second terminal as well:
 
 ~~~ bash
 bash$ curl 'http://localhost:9002/login' \
@@ -315,15 +277,12 @@ bash$ curl 'http://localhost:9001/message' \
 
 ### Chat API Client
 
-Let's finish off the chat part of the codebase
-by writing a Scala client for the chat API.
-Open up `common/app/clients/ChatServiceClient.scala`
-and complete the *TODOs*.
+The last part of the exercise involves implementing a client for the chat API.
+Complete the `TODOs` in `ChatServiceClient.scala` using a similar
+approach to the auth API client.
 
 <div class="solution">
-The code is very similar to the auth API client.
-Here's a model solution including the helper methods
-we developed earlier:
+Here's a model solution including the helper methods we developed earlier:
 
 ~~~ scala
 def messages(sessionId: String): Future[MessagesResponse] =
@@ -345,12 +304,10 @@ def chat(sessionId: String, chatReq: ChatRequest): Future[ChatResponse] =
 The refactored web site uses the two API clients
 instead of calling the chat and auth services directly.
 Most of the code is identical to Chapter 3 so we won't make you rewrite it.
-Check `site/app/controllers/ChatController.scala`
-and `site/app/controllers/AuthController.scala` for the details.
+Check `ChatController.scala` and `AuthController.scala` for the details.
 
 You should be able to start the web site alongside the two APIs using
 the `run-site.sh` script. Watch the console for HTTP traffic on the APIs
 as you navigate around the web site.
 
-Congratulations---over the course of this book you have implemented a
-complete, distributed, microservice-driven web application in Play!
+Congratulations---you have implemented a complete, microservice-driven web application!
