@@ -35,6 +35,7 @@ pages:
   - src/pages/html/templates.md
   - src/pages/html/forms.md
   - src/pages/html/form-templates.md
+  - src/pages/html/static.md
   - src/pages/html/chat.md
   - src/pages/json/index.md
   - src/pages/json/values.md
