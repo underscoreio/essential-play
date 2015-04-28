@@ -329,3 +329,156 @@ methods like `map`, `flatMap`, and `Future.sequence`.
 
 In the next section we will see how `Futures` are scheduled
 behind the scenes using *thread pools* and `ExecutionContexts`.
+
+### Exercise: The Value of (Con)Currency
+
+The `chapter5-currency` directory in the exercises contains
+a dummy application for calculating currency conversions.
+The actual calculations are performed by the `toUSD` and `fromUSD`
+methods in the `ExchangeRateHelpers` trait, each of which is asynchronous.
+
+Complete the `convertOne` and `convertAll` actions in `CurrencyController`.
+Use `toUSD` and `fromUSD` to perform the required conversions,
+combinators on `Future` to combine the results,
+and the `formatConversion` helper to provide a plain text response.
+Here's an example of the expected output:
+
+~~~ bash
+bash$ curl 'http://localhost:9000/convert/100/gbp/to/usd'
+100 GBP = 150 USD
+
+bash$ curl 'http://localhost:9000/convert/100/eur/to/gbp'
+100 EUR = 73.33 GBP
+
+bash$ curl 'http://localhost:9000/convert/250/usd/to/all'
+250 USD = 250 USD
+250 USD = 166.67 GBP
+250 USD = 227.27 EUR
+~~~
+
+Start with the simpler of the two actions, `convertOne`.
+You are given source and target currencies and the amount of currency to exchange.
+However, you will have to perform the conversion in three steps:
+
+1. convert the source currency to USD;
+2. convert the USD amount to the target currency;
+3. format the result as a `Result[String]`.
+
+<div class="solution">
+The first step is the currency conversion itself.
+The `toUSD` and `fromUSD` methods return `Futures`,
+so the natural combinator is `flatMap`:
+
+~~~ scala
+val toAmount: Future[Double] =
+  toUSD(fromAmount, fromCurrency).
+  flatMap(usdAmount => fromUSD(usdAmount, toCurrency))
+~~~
+
+We have to format this `Future` using `formatConversion`.
+This isn't an async method, so the natural combinator is `map`:
+
+~~~ scala
+val output: Future[String] =
+  toAmount.map { toAmount =>
+    formatConversion(
+      fromAmount,
+      fromCurrency,
+      toAmount,
+      toCurrency
+    )
+  }
+~~~
+
+This sequence of `flatMap` followed by `map` can be naturally
+expressed as a `for` comprehension,
+which is a great way of writing the final result:
+
+~~~ scala
+def convertOne(
+    fromAmount: Double,
+    fromCurrency: Currency,
+    toCurrency: Currency) =
+  Action.async { request =>
+    for {
+      usdAmount <- toUSD(fromAmount, fromCurrency)
+      toAmount  <- fromUSD(usdAmount, toCurrency)
+    } yield Ok(formatConversion(
+      fromAmount,
+      fromCurrency,
+      toAmount,
+      toCurrency
+    ))
+  }
+~~~
+</div>
+
+With `convertOne` out of the way, tackle `convertAll`.
+You are given a source currency amount and asked to convert it
+to *all* other currencies in `ExchangeRateHelpers.currencies`.
+This involves transformations on `Future` and `Seq`.
+
+<div class="solution">
+Interleaving transformations on monads is messy.
+It makes sense to do all the transformations we can
+in one monad before switching to the other.
+In this exercise, this means transforming all the way
+from source `Currency` to `String` output before
+working out how to combine the results.
+Start by iterating over `currencies`,
+calculating the line of output needed for each:
+
+~~~ scala
+val outputLines: Seq[Future[String]] =
+  currencies.map { toCurrency: Double =>
+    for {
+      usdAmount <- toUSD(fromAmount, fromCurrency)
+      toAmount  <- fromUSD(usdAmount, toCurrency)
+    } yield formatConversion(
+      fromAmount,
+      fromCurrency,
+      toAmount,
+      toCurrency
+    )
+  }
+~~~
+
+Now combine these `Strings` to a single `Result`.
+We can convert the `Seq[Future[String]]` to a `Future[Seq[String]]`
+using `Future.sequence`, after which we just use `map`:
+
+~~~ scala
+val result: Future[Result] =
+  Future.sequence(outputLines).
+    map(lines => Ok(lines mkString "\n"))
+~~~
+
+The final code looks like this:
+
+~~~ scala
+def convertAll(
+    fromAmount: Double,
+    fromCurrency: Currency) =
+  Action.async { request =>
+    val outputLines: Seq[Future[String]] =
+      currencies.map { toCurrency: Double =>
+        for {
+          usdAmount <- toUSD(fromAmount, fromCurrency)
+          toAmount  <- fromUSD(usdAmount, toCurrency)
+        } yield formatConversion(
+          fromAmount,
+          fromCurrency,
+          toAmount,
+          toCurrency
+        )
+      }
+
+    Future.
+      sequence(outputLines).
+      map(lines => Ok(lines mkString "\n"))
+  }
+~~~
+
+There's a lot of redundant code between `convertOne` and `convertAll`.
+In the model solution we've factored this out into its own helper method.
+</div>

@@ -7,7 +7,6 @@
 [docs-forms]:                             https://www.playframework.com/documentation/2.3.x/ScalaForms
 [docs-i18n]:                              https://www.playframework.com/documentation/2.3.x/ScalaI18N
 [docs-json-combinators]:                  https://www.playframework.com/documentation/2.3.x/ScalaJsonCombinators
-[docs-assets]:                            https://www.playframework.com/documentation/2.3.x/Assets
 [docs-templates]:                         https://www.playframework.com/documentation/2.3.x/ScalaTemplates
 [docs-thread-pools]:                      https://www.playframework.com/documentation/2.3.x/ThreadPools
 
