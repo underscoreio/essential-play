@@ -2,7 +2,7 @@
 # Used by Pandoc to print covers:
 title: Essential Play
 author: "Dave Gurnell and Noel Welsh"
-date: "Early Access, November 2014"
+date: "Version 1.0, April 2015"
 # Used by Pandoc to generate the PDF cover...
 # see src/css/book.css for HTML/ePub covers:
 coverColor: "A0C556"
@@ -16,13 +16,11 @@ tocDepth: 2
 # Used by Grunt to assemble pandoc command line:
 pages:
   - src/pages/intro/index.md
-  - src/pages/intro/early-access.md
   - src/pages/intro/conventions.md
   - src/pages/start/index.md
   - src/pages/start/exercises.md
   - src/pages/start/install.md
   - src/pages/start/commands.md
-  # - src/pages/start/config.md
   - src/pages/basics/index.md
   - src/pages/basics/structure.md
   - src/pages/basics/actions.md
@@ -57,4 +55,29 @@ pages:
   - src/pages/summary/index.md
   - src/pages/links.md
   - src/pages/solutions.md
+previewPages:
+  - src/pages/preview/prologue.md
+  - src/pages/intro/index.md
+  - src/pages/intro/conventions.md
+  - src/pages/start/index.md
+  - src/pages/start/exercises.md
+  - src/pages/start/install.md
+  - src/pages/start/commands.md
+  - src/pages/basics/index.md
+  - src/pages/basics/structure.md
+  - src/pages/basics/actions.md
+  - src/pages/basics/routes.md
+  - src/pages/basics/requests.md
+  - src/pages/basics/results.md
+  - src/pages/basics/failure.md
+  - src/pages/basics/chat.md
+  - src/pages/html/index.md
+  - src/pages/html/templates.md
+  - src/pages/html/forms.md
+  - src/pages/html/form-templates.md
+  - src/pages/html/static.md
+  - src/pages/html/chat.md
+  - src/pages/solutions.md
+  - src/pages/preview/epilogue.md
+  - src/pages/links.md
 ...
