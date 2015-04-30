@@ -43,3 +43,33 @@ Json.fromJson[Person](Json.obj(
 Play provides the `Json.format` macro that defines `Formats` for case classes.
 
 It is often convenient to use `Formats` to define reading and writing functionality in one go. However, it is sometimes necessary or convenient to define `Reads` and `Writes` separately.
+
+### Exercise: Message in a Bottle
+
+The `chapter4-macro` directory in the exercises contains an example `Message` datatype
+and unit tests testing its serialization to/from JSON.
+
+Use Play's `Json.format` macro to define a `Format[Message]` that passes the unit tests.
+Don't alter the tests in any way!
+
+<div class="callout callout-info">
+*Plain SBT Project*
+
+The code in this exercise is a plain Scala project rather than a Play application.
+You will notice the following differences from the Play web applications you've been working with:
+
+ - the SBT prompt is a simple `>` rather than the usual colour-coded project name;
+ - application source is in the `src/main/scala` directory instead of `app`;
+ - unit test source is in the `src/test/scala` directory instead of `test`.
+
+You can still run the unit tests with the `test` and `~test` commands in SBT.
+</div>
+
+<div class="solution">
+Play's macro defines everything for us in a single line.
+Be sure to mark your format as `implicit` so the unit tests can pick it up:
+
+~~~ scala
+implicit val messageFormat = Json.format[Message]
+~~~
+</div>

@@ -63,7 +63,7 @@ The Scala code above is much longer than raw JSON---the `JsString` and `JsNumber
 
  - `Json.obj(...)` creates a `JsObject`. The method takes any number of parameters, each of which must be a pair of a `String` and a `JsValue` or convertible.
 
-Here's an example of this DSL in action. Note that the code on the left is much terser than constructor code on the right:
+Here's an example of this in action. Note that the DSL code on the left is much terser than constructor code on the right:
 
 <div class="row">
 <div class="col-sm-6">
@@ -104,7 +104,7 @@ JsObject(Seq(
 
 ### JSON *Requests* and *Results*
 
-As we saw in Chappter 2, Play contains built-in functionality for extracting `JsValues` from `Requests[AnyContent]` and serializing them in `Results`:
+As we saw in Chapter 2, Play contains built-in functionality for extracting `JsValues` from `Request[AnyContent]` and serializing them in `Results`:
 
 ~~~ scala
 def index = Action { request =>
@@ -147,10 +147,9 @@ As Play provides us with the means to extract `JsValues` from incoming `Requests
 
 ~~~ scala
 Json.parse("""{ "name": "Dave", "age": 35 }""")
-// => JsObject(Seq(
-//      "name" -> JsString("Dave"),
-//      "age"  -> JsNumber(35.0)
-//    ))
+// res0: JsValue = JsObject(Seq(
+//   ("name", JsString("Dave")),
+//   ("age",  JsNumber(35.0))))
 
 Json.parse("""[ 1, 2, 3 }""")
 // throws com.fasterxml.jackson.core.JsonParseException
@@ -160,19 +159,19 @@ The compliment of `Json.parse` is `Json.stringify`, which converts a `JsValue` t
 
 ~~~ scala
 Json.stringify(Json.obj("name" -> "Dave", "age" -> 35))
-// => """{"name":"Dave","age":35}"""
+// res1: String = """{"name":"Dave","age":35}"""
 
 Json.prettyPrint(Json.obj("name" -> "Dave", "age" -> 35))
-// => """{
-//      "name": "Dave",
-//      "age": 35
-//    }"""
+// res2: String = """{
+//    "name": "Dave",
+//    "age": 35
+// }"""
 ~~~
 </div>
 
 ### Deconstructing and Traversing JSON Data
 
-Getting data out of a request is just the first step in reading it. A client can pass us any data it likes---valid or invalid---so we need to know how to traverse `JsValues` and extract the fields we need:
+Getting data out of a request is just the first step in reading it. A client can pass us any data it likes---valid or invalid---so we need to know how to traverse `JsValues` and extract the fields we need.
 
 #### Pattern Matching
 
@@ -185,12 +184,17 @@ val json = Json.parse("""
   "likes": [ "Scala", "Coffee", "Pianos" ]
 }
 """)
+// json: play.api.libs.json.JsValue = ↩
+//   {"name":"Dave","likes":["Scala","Coffee","Pianos"]}
 
 json match {
-  case JsObject(fields) => println("Object:\n  " + (fields mkString "  \n"))
-  case JsArray(values)  => println("Array:\n  " + (values mkString "  \n"))
-  case other            => println("Single value: " + other)
+  case JsObject(fields) => "Object with fields: " + (fields mkString ", ")
+  case JsArray(values)  => "Array with values: " + (values mkString ", ")
+  case other            => "Single value: " + other
 }
+// res0: String = Object with fields: ↩
+//   (name,"Dave"), ↩
+//   (likes,["Scala","Coffee","Pianos"])
 ~~~
 
 #### Traversal Methods
@@ -214,18 +218,21 @@ val json = Json.arr(
     "likes" -> Json.arr("Scala", "Cycling", "Barbequeues")
   )
 )
+// json: play.api.libs.json.JsArray = [ ↩
+//   {"name":"Dave","likes":["Scala","Coffee","Pianos"]}, ↩
+//   {"name":"Noel","likes":["Scala","Cycling","Barbequeues"]}]
 
-// We use the `apply` method to extract the first person
 val person: JsValue = json(0)
-// == JsObject(...)
+// person: play.api.libs.json.JsValue = ↩
+//   {"name":"Dave","likes":["Scala","Coffee","Pianos"]}
 
-// We use `\` to extract the person's name:
 val name: JsValue = person \ "name"
-// == JsString("Dave")
+// name: play.api.libs.json.JsValue = "Dave"
 
-// Finally, we use `\\` to extract all likes from the data:
 val likes: Seq[JsValue] = json \\ "likes"
-// == Seq(JsArray(...), JsArray(...))
+// likes: Seq[play.api.libs.json.JsValue] = ArrayBuffer( ↩
+//   ["Scala","Coffee","Pianos"], ↩
+//   ["Scala","Cycling","Barbequeues"])
 ~~~
 
 This begs the question: what happens when we use `\` and `apply` and the specified field *doesn't* exist? We can see from the Scaladoc for [`play.api.libs.json.JsValue`] that each method returns a `JsValue`---how do the methods represent failure?
@@ -236,18 +243,24 @@ We lied earlier about the subtypes of `JsValue`. There is a actually a sixth sub
 case class JsUndefined(error: => String) extends JsValue
 ~~~
 
-The `\` and `apply` methods of `JsUndefined` each themselves return `JsUndefined`. This means we can freely traverse JSON data using sequences of operations without worrying about failure:
+The `\`, `apply`, and `\\` methods of `JsUndefined` each themselves return `JsUndefined`. This means we can freely traverse JSON data using sequences of operations without worrying about failure:
 
 ~~~ scala
 val x: JsValue = json \ "badname"
-// => JsUndefined("'badname' is undefined on ...")
+// x: play.api.libs.json.JsValue = JsUndefined( ↩
+//   'badname' is undefined on object: [{"name":"Dave", ...
 
 val y: JsValue = json(2)
-// => JsUndefined("Array index out of bounds ...")
+// y: play.api.libs.json.JsValue = JsUndefined( ↩
+//   Array index out of bounds in [{"name":"Dave", ...
 
 val z: JsValue = json(2) \ "name"
-// => JsUndefined("'name' is undefined on ...")
+// z: play.api.libs.json.JsValue = JsUndefined( ↩
+//   'name' is undefined on object: JsUndefined( ↩
+//     Array index out of bounds in [{"name":"Dave",...
 ~~~
+
+In the example, the expression to calculate `z` actually fails twice: first at the call to `apply(2)` and second at the call to `\ "name"`. The implementation of `JsUndefined` carries the errors over into the final result, where the error message (if we choose to examine it) tells us exactly what went wrong.
 
 #### Parsing Methods
 
@@ -257,23 +270,26 @@ The `as` method is most useful when exploring JSON in the REPL or unit tests:
 
 ~~~ scala
 val name = (json(0) \ "name").as[String]
-// => name: String = Dave
+// name: String = Dave
 ~~~
 
 If `as` cannot convert the data to the type requested, it throws a run-time exception. This makes it dangerous for use in production code:
 
 ~~~ scala
 val name = (json(0) \ "name").as[Int]
-// => play.api.libs.json.JsResultException: JsResultException(List(
-//      JsPath -> List(ValidationError(error.expected.jsnumber))
-//    ))
+// play.api.libs.json.JsResultException: ↩
+//   JsResultException(List( ↩
+//      (JsPath, List(ValidationError(error.expected.jsnumber)))))
+//   at ...
+//   at ...
+//   at ...
 ~~~
 
 The `asOpt` method provides a safer way to extract data---it attempts to parse the JSON as the desired type, and returns `None` if it fails. This is a better choice for use in application code:
 
 ~~~ scala
 scala> val name = (json(0) \ "name").asOpt[Int]
-// => name: Option[Int] = None
+// name: Option[Int] = None
 ~~~
 
 <div class="callout callout-warning">

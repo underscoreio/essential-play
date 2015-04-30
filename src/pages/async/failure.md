@@ -19,9 +19,7 @@ def ultimateQuestion = Future[Int] {
 def index = Action.async { request =>
   for {
     answer <- ultimateQuestion
-  } yield Ok(Json.obj(
-    "theAnswer" -> answer
-  ))
+  } yield Ok(Json.obj("theAnswer" -> answer))
 }
 ~~~
 
@@ -115,4 +113,8 @@ If we return a failed `Future` from an asynchronous action, Play responds as we 
 
 We can use failed `Futures` deliberately as a means of propagating errors through our code. We can create failed `Futures` with `Future.failed` and transform failures into successes using `recover`, `recoverWith`, or `transform`.
 
-**We should use failed futures only in rare circumstances.** Unlike `Either` and `Option`, `Future` doesn't require developers to handle errors, so heavy reliance on failed futures can lead to uncaught errors. As Scala developers we should always prefer using types as a defence mechanism rather than hiding them away to be ignored.
+<div class="callout callout-danger">
+*Failed Futures as Error Handling*
+
+We should use failed futures only in rare circumstances. Unlike `Either` and `Option`, `Future` doesn't require developers to handle errors, so heavy reliance on failed futures can lead to uncaught errors. As Scala developers we should always prefer using types as a defence mechanism rather than hiding them away to be ignored.
+</div>

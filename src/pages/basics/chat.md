@@ -35,13 +35,7 @@ with services as vertical cross-sections of the app,
 layers as horizontal cross-sections,
 and four main singleton objects implementing the functionality:
 
-\makebox[\linewidth]{\includegraphics[width=0.8\textwidth]{src/pages/basics/chat-overview.pdf}}
-
-<div class="figure">
-<div class="text-center">
-<img src="src/pages/basics/chat-overview.svg" alt="Basic structure of the chat application" />
-</div>
-</div>
+![Basic structure of the chat application](src/pages/basics/chat-overview.pdf+svg)
 
 The methods in `ChatService` and `AuthService`
 are implemented in a message-passing style,
@@ -111,7 +105,7 @@ Use it in watch mode to get fast turnaround as you work:
 ### Chat Services
 
 In lieu of using an actual database, `ChatService` maintains
-an in-memorydata store of messages.
+an in-memory data store of messages.
 An immutable `Vector` is a good data type for our purposes
 because of its efficient iteration and append operations.
 
@@ -119,14 +113,15 @@ The three methods of `ChatService` perform simple operations on the store.
 They don't do any authentication checks---we leave these up to `ChatController`:
 
 <div class="solution">
-`clear` resets `postedMessages` to an empty `Vector`:
+The `clear` method resets `postedMessages` to an empty `Vector`:
 
 ~~~ scala
 def clear(): Unit =
   postedMessages = Vector[Message]()
 ~~~
 
-`messages` returns `postedMessages`. We don't need to worry about exposing
+The `messages` method returns `postedMessages`.
+We don't need to worry about exposing
 a direct reference to the `Vector` because it is immutable:
 
 ~~~ scala
@@ -134,8 +129,8 @@ def messages: Seq[Message] =
   postedMessages
 ~~~
 
-`chat` creates a new `Message`, appends it to the data store,
-and returns it:
+The `chat` method creates a new `Message`,
+appends it to the data store, and returns it:
 
 ~~~ scala
 def chat(author: String, text: String): Message = {
@@ -146,7 +141,7 @@ def chat(author: String, text: String): Message = {
 ~~~
 </div>
 
-###
+### Auth Services
 
 Our substitute for a database in `AuthService` consists of two in-memory
 `Maps`:
@@ -155,14 +150,13 @@ Our substitute for a database in `AuthService` consists of two in-memory
    for all registered users (there is no option to register for a new account);
 
  - `sessions` stores `SessionIds` and `Usernames`
-   for all *currently active* users.
+   for all *currently authenticated* users.
 
 The `Username`, `Password`, and `SessionId` types are all aliases for `String`.
 The offer no type safety but they do make the intent clearer in the code.
-We could easily replace the type aliases with value classes
-in the future if we desired extra type safety.
+We could easily replace the aliases with value classes if we desired extra type safety.
 
-The `login`, `logout` and `whoami` methods primarily operate on `sessions`:
+The `login`, `logout` and `whoami` methods primarily operate on `sessions`.
 
 <div class="solution">
 `login` is the most complex method. It checks the credentials in the
@@ -190,7 +184,7 @@ def generateSessionId: String =
 
 `logout` is much simpler because we always expect it to succeed.
 If the client passes us a valid `SessionId`, we remove it from `sessions`.
-Otherwise we simply noop:
+Otherwise we simply do nothing:
 
 ~~~ scala
 def logout(sessionId: SessionId): Unit =
@@ -209,13 +203,14 @@ def whoami(sessionId: SessionId): WhoamiResponse =
 ~~~
 </div>
 
-### Chat Controllers
+### Controllers
 
 `ChatController` wraps each method from `ChatService`
 with a method that does two jobs:
 translate requests and responses to and from HTTP primitives,
 and authenticate each request from the client.
 
+<div class="solution">
 The first thing to do when handling any `Request`
 is to check whether the user has authenticated with `AuthController`.
 We do this using a help method that extracts a `SessionId` from a cookie,
@@ -275,10 +270,11 @@ def login(username: Username, password: Password) =
     }
   }
 ~~~
+</div>
 
 ### Exercise Summary
 
-In this extended exercises we have implemented an application
+In this extended exercise we have implemented an application
 using a simple service-oriented architecture.
 We have made a clean split between *service level* code
 written in 100% strongly typed Scala,

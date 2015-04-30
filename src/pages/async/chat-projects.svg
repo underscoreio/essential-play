@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="384px" height="311.732px" viewBox="0 0 384 311.732" enable-background="new 0 0 384 311.732" xml:space="preserve">
+<rect x="63.965" y="96.012" fill="#FFFFFF" stroke="#000000" stroke-width="0.75" stroke-miterlimit="10" width="112" height="64"/>
+<rect x="207.965" y="96.012" fill="#FFFFFF" stroke="#000000" stroke-width="0.75" stroke-miterlimit="10" width="112" height="64"/>
+<rect x="135.965" y="16.011" fill="#FFFFFF" stroke="#000000" stroke-width="0.75" stroke-miterlimit="10" width="112" height="64"/>
+<rect x="135.965" y="176.116" fill="#FFFFFF" stroke="#000000" stroke-width="0.75" stroke-miterlimit="10" width="112" height="77"/>
+<g>
+	<g>
+		<line fill="none" stroke="#009444" stroke-width="2" stroke-miterlimit="10" x1="150.74" y1="93.213" x2="161.188" y2="82.765"/>
+		<g>
+			<polygon fill="#009444" points="156.185,96.182 144.628,99.279 147.724,87.721 			"/>
+		</g>
+		<g>
+			<polygon fill="#009444" points="164.157,88.209 167.255,76.652 155.696,79.749 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<line fill="none" stroke="#ED1C24" stroke-width="1.9" stroke-miterlimit="10" x1="192" y1="76.675" x2="192" y2="178.55"/>
+		<g>
+			<path fill="#ED1C24" d="M185.787,170.631c0-0.204,0.101-0.403,0.286-0.521c0.287-0.183,0.669-0.098,0.853,0.189l5.075,7.969
+				l5.075-7.969c0.183-0.288,0.565-0.373,0.853-0.189c0.287,0.184,0.37,0.567,0.189,0.853l-5.596,8.787
+				c-0.113,0.178-0.31,0.286-0.521,0.286s-0.408-0.108-0.521-0.286l-5.596-8.787C185.818,170.86,185.787,170.745,185.787,170.631
+				C185.787,170.428,185.787,170.745,185.787,170.631z"/>
+		</g>
+	</g>
+</g>
+<text transform="matrix(1 0 0 1 99.7695 108.6748)"><tspan x="0" y="0" font-family="'Helvetica'" font-size="10">Chat API</tspan><tspan x="-5.787" y="9.6" fill="#58595B" font-family="'Helvetica'" font-size="8">localhost:9001</tspan></text>
+<text transform="matrix(1 0 0 1 244.0459 108.6748)"><tspan x="0" y="0" font-family="'Helvetica'" font-size="10">Auth API</tspan><tspan x="-6.063" y="9.6" fill="#58595B" font-family="'Helvetica'" font-size="8">localhost:9002</tspan></text>
+<text transform="matrix(1 0 0 1 171.4937 29.0112)"><tspan x="0" y="0" font-family="'Helvetica'" font-size="10">Web Site</tspan><tspan x="-5.511" y="9.6" fill="#58595B" font-family="'Helvetica'" font-size="8">localhost:9000</tspan></text>
+<text transform="matrix(1 0 0 1 171.6821 189.1162)" font-family="'Helvetica'" font-size="10">Common</text>
+<text transform="matrix(1 0 0 1 153.9409 296.1748)" fill="#006838" font-family="'Helvetica'" font-size="10">HTTP Communication</text>
+<g>
+	<g>
+		
+			<line fill="none" stroke="#009444" stroke-width="2" stroke-miterlimit="10" x1="137.329" y1="292.175" x2="122.552" y2="292.175"/>
+		<g>
+			<polygon fill="#009444" points="135.579,286.226 145.94,292.208 135.579,298.191 			"/>
+		</g>
+		<g>
+			<polygon fill="#009444" points="124.304,286.226 113.94,292.208 124.304,298.191 			"/>
+		</g>
+	</g>
+</g>
+<text transform="matrix(1 0 0 1 153.9893 279.6055)" fill="#BE1E2D" font-family="'Helvetica'" font-size="10">SBT project dependencies</text>
+<g>
+	<g>
+		
+			<line fill="none" stroke="#ED1C24" stroke-width="1.9" stroke-miterlimit="10" x1="144.504" y1="275.605" x2="113.989" y2="275.605"/>
+		<g>
+			<path fill="#ED1C24" d="M136.586,269.392c-0.205,0-0.404,0.102-0.521,0.286c-0.184,0.287-0.1,0.669,0.188,0.853l7.971,5.075
+				l-7.971,5.075c-0.287,0.184-0.371,0.565-0.188,0.853c0.182,0.287,0.566,0.37,0.852,0.189l8.787-5.596
+				c0.178-0.114,0.285-0.311,0.285-0.521s-0.107-0.407-0.285-0.521l-8.787-5.596C136.814,269.423,136.699,269.392,136.586,269.392
+				C136.381,269.392,136.699,269.392,136.586,269.392z"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		
+			<line fill="none" stroke="#ED1C24" stroke-width="1.9" stroke-miterlimit="10" x1="217.55" y1="178.985" x2="239.127" y2="157.407"/>
+		<g>
+			<path fill="#ED1C24" d="M227.543,177.779c0.145-0.145,0.214-0.357,0.167-0.571c-0.073-0.332-0.404-0.542-0.737-0.469
+				l-9.224,2.047l2.047-9.224c0.073-0.334-0.137-0.664-0.47-0.737c-0.332-0.073-0.663,0.14-0.736,0.47l-2.256,10.17
+				c-0.046,0.206,0.017,0.421,0.166,0.57s0.364,0.212,0.57,0.166l10.17-2.256C227.359,177.919,227.463,177.859,227.543,177.779
+				C227.688,177.635,227.463,177.859,227.543,177.779z"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		
+			<line fill="none" stroke="#ED1C24" stroke-width="1.9" stroke-miterlimit="10" x1="166.45" y1="178.985" x2="144.873" y2="157.407"/>
+		<g>
+			<path fill="#ED1C24" d="M165.245,168.992c-0.144-0.145-0.357-0.214-0.571-0.167c-0.333,0.073-0.543,0.403-0.469,0.737
+				l2.046,9.224l-9.223-2.047c-0.333-0.073-0.664,0.137-0.737,0.469c-0.074,0.333,0.139,0.663,0.469,0.737l10.17,2.256
+				c0.206,0.046,0.421-0.017,0.57-0.166s0.212-0.364,0.167-0.57l-2.256-10.17C165.384,169.176,165.325,169.072,165.245,168.992
+				C165.101,168.848,165.325,169.072,165.245,168.992z"/>
+		</g>
+	</g>
+</g>
+<text transform="matrix(1 0 0 1 167.2236 55.7676)"><tspan x="0" y="0" font-family="'MyriadPro-Regular'" font-size="8">ChatController </tspan><tspan x="-0.404" y="9.6" font-family="'MyriadPro-Regular'" font-size="8">AuthController</tspan></text>
+<text transform="matrix(1 0 0 1 89.6338 135.7676)"><tspan x="0" y="0" font-family="'MyriadPro-Regular'" font-size="8">ChatApiController</tspan><tspan x="10.484" y="9.6" font-family="'MyriadPro-Regular'" font-size="8">ChatService</tspan></text>
+<text transform="matrix(1 0 0 1 233.3447 135.7676)"><tspan x="0" y="0" font-family="'MyriadPro-Regular'" font-size="8">AuthApiController</tspan><tspan x="10.483" y="9.6" font-family="'MyriadPro-Regular'" font-size="8">AuthService</tspan></text>
+<text transform="matrix(1 0 0 1 162.2993 208.3135)"><tspan x="0" y="0" font-family="'MyriadPro-Regular'" font-size="8">ChatServiceClient</tspan><tspan x="-0.404" y="9.601" font-family="'MyriadPro-Regular'" font-size="8">AuthServiceClient</tspan><tspan x="-6.392" y="19.2" font-family="'MyriadPro-Regular'" font-size="8">ChatServiceMessages</tspan><tspan x="-6.796" y="28.8" font-family="'MyriadPro-Regular'" font-size="8">AuthServiceMessages</tspan></text>
+<g>
+	<g>
+		<line fill="none" stroke="#009444" stroke-width="2" stroke-miterlimit="10" x1="232.562" y1="93.213" x2="222.113" y2="82.765"/>
+		<g>
+			<polygon fill="#009444" points="235.531,87.768 238.628,99.326 227.07,96.229 			"/>
+		</g>
+		<g>
+			<polygon fill="#009444" points="227.559,79.795 216.001,76.699 219.098,88.257 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		
+			<line fill="none" stroke="#009444" stroke-width="2" stroke-miterlimit="10" x1="180.39" y1="127.419" x2="203.167" y2="127.418"/>
+		<g>
+			<polygon fill="#009444" points="182.141,133.369 171.779,127.386 182.141,121.402 			"/>
+		</g>
+		<g>
+			<polygon fill="#009444" points="201.417,133.368 211.779,127.386 201.417,121.402 			"/>
+		</g>
+	</g>
+</g>
+</svg>

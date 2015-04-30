@@ -1,3 +1,4 @@
+[docs-root]:                              https://www.playframework.com/documentation/2.3.x/
 [docs-body-parsers]:                      https://www.playframework.com/documentation/2.3.x/ScalaBodyParsers
 [docs-assets]:                            https://www.playframework.com/documentation/2.3.x/Assets
 [docs-build]:                             https://www.playframework.com/documentation/2.3.x/Build
@@ -10,17 +11,30 @@
 [docs-thread-pools]:                      https://www.playframework.com/documentation/2.3.x/ThreadPools
 
 [link-activator-install]:                 http://www.typesafe.com/community/core-tools/activator-and-sbt
+[link-advanced-scala-scalaz]:             http://underscore.io/training/courses/advanced-scala-scalaz/
+[link-doobie]:                            https://github.com/tpolecat/doobie
 [link-error-codes]:                       https://github.com/playframework/playframework/blob/2.3.x/framework/src/play/src/main/resources/messages.default#L21-L51
 [link-exercises]:                         https://github.com/underscoreio/essential-play-code
+[link-fingerprinting]:                    http://guides.rubyonrails.org/asset_pipeline.html#what-is-fingerprinting-and-why-should-i-care-questionmark
 [link-jcip]:                              http://www.amazon.com/Java-Concurrency-Practice-Brian-Goetz/dp/0321349601
 [link-json-spec]:                         http://json.org
 [link-non-blocking]:                      http://en.wikipedia.org/wiki/Non-blocking_algorithm
 [link-paulp-sbt-install]:                 https://github.com/paulp/sbt-extras
 [link-play]:                              http://playframework.com
+[link-play-google-group]:                 https://groups.google.com/forum/#!forum/play-framework
+[link-play-in-action]:                    http://www.manning.com/hilton/
 [link-play-install]:                      https://playframework.com/download
+[link-reactivemongo]:                     http://reactivemongo.org
+[link-sbt]:                               http://www.scala-sbt.org/
+[link-sbt-digest]:                        https://github.com/sbt/sbt-digest
+[link-sbt-gzip]:                          https://github.com/sbt/sbt-gzip
 [link-sbt-install]:                       http://www.scala-sbt.org/0.13/tutorial/Setup.html
+[link-sbt-rjs]:                           https://github.com/sbt/sbt-rjs
 [link-sbt-tutorial]:                      http://www.scala-sbt.org/0.13/tutorial/index.html
+[link-sbt-web]:                           https://github.com/sbt/sbt-web/
 [link-sbteclipse]:                        https://github.com/typesafehub/sbteclipse/
+[link-scalajs]:                           http://www.scala-js.org/
+[link-slick]:                             http://slick.typesafe.com/
 [link-twitter-bootstrap]:                 http://getbootstrap.com
 [link-twitter-jono]:                      http://twitter.com/jonoabroad
 [link-twitter-noel]:                      http://twitter.com/noelwelsh
@@ -28,6 +42,7 @@
 [link-underscore]:                        http://underscore.io
 [link-underscore-gitter]:                 https://gitter.im/underscoreio/scala?utm_source=essential-play-book&utm_medium=link&utm_campaign=essential-play
 [link-using-bootstrap-with-play]:         http://stackoverflow.com/questions/10436815/how-to-use-twitter-bootstrap-2-with-play-framework-2-x
+[link-webjars]:                           http://www.webjars.org/
 
 [`org.joda.time.DateTime`]:               http://www.joda.org/joda-time/apidocs/index.html
 [`play.api.data.Form`]:                   https://www.playframework.com/documentation/2.3.x/api/scala/index.html#play.api.data.Form

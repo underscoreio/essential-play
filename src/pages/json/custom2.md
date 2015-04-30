@@ -18,12 +18,19 @@ implicit val addressReads: Reads[Address] = (
 )(Address.apply)
 ~~~
 
-In a nutshell, this code parses a JSON object by extracting its `"number"` field as an `Int`, its `"street"` field as a `String`, combining them via the `and` method, and feeding them into the `Addres.apply` method.
+In a nutshell, this code parses a JSON object by extracting its `"number"` field as an `Int`, its `"street"` field as a `String`, combining them via the `and` method, and feeding them into `Address.apply`.
 
 We have a lot more flexibility using this syntax than we do with `Json.reads`. We can change the field names for `"number"` and `"street"`, introduce default values for fields, validate that the house number is greater than zero, and so on.
 
 We won't cover all of these options here---the full DSL is described in the [Play documentation][docs-json-combinators]. In the remainder of this section we will dissect the `addressReads` example above and explain how it works.
 
+<div class="callout callout-warning">
+*Applicative Builders*
+
+The technical name for this pattern of defining `Reads`, `Writes`, or `Formats` for each field and passing them to a constructor function is the *"applicative builder pattern"*. *Applicatives* are a powerful general functional programming concept explored in libraries such as Scalaz and the `play.api.libs.functional` package.
+
+A full discussion of applicatives and applicative builders is beyond the scope of this book, although we do cover them (and many similarly useful functional programming concepts) in detail in [Advanced Scala with Scalaz][link-advanced-scala-scalaz].
+</div>
 
 #### Dissecting the DSL
 
@@ -53,17 +60,15 @@ The resulting `Reads` attempt to parse the corresponding fields as the specified
 val numberReads = (JsPath \ "number").read[Int]
 
 numberReads.reads(Json.obj("number" -> 29))
-// => JsSuccess(29)
+// res0: JsResult[Int] = JsSuccess(29)
 
 numberReads.reads(JsNumber(29))
-// => JsError(Seq(
-//   (JsPath \ "number", Seq(ValidationError("error.path.missing")))
-// ))
+// res1: JsResult[Int] = JsError(Seq(
+//   (JsPath \ "number", Seq(ValidationError("error.path.missing")))))
 
 numberReads.reads(Json.obj("number" -> "29"))
-// => JsError(Seq(
-//   (JsPath \ "number", Seq(ValidationError("error.expected.jsnumber")))
-// ))
+// res2: JsResult[Int] = JsError(Seq(
+//   (JsPath \ "number", Seq(ValidationError("error.expected.jsnumber")))))
 ~~~
 
 `JsPath` also contains a `write` method for building `Writes`, and a `format` method for building `Formats`:
@@ -85,7 +90,7 @@ val readsBuilder =
   (JsPath \ "street").read[String]
 ~~~
 
-The result of the combination is a *builder* object that we can use to create larger `Reads`. The builder contains methods that allow us to specify how to aggregate the fields, and return a new `Reads` for the aggregated result type.
+The result of the combination is a *builder* object that we can use to create larger `Reads` objects. The builder contains methods that allow us to specify how to aggregate the fields, and return a new `Reads` for the aggregated result type.
 
 More formally, if we combine a `Reads[A]` and a `Reads[B]` using `and`, we get a *`Reads` builder* of type `CanBuild2[Int, String]`. Builders have the following methods:
 
@@ -109,46 +114,46 @@ Type of `Reads` builder  Method    Parameters      Returns
 `CanBuild4[A,B,C,D]`     etc...    etc...          etc...
 ------------------------------------------------------------------------
 
-The idea of the builder pattern is to use `and` to create progressively larger builders (up to `CanBuild21`), and then `tupled` or `apply` to create a `Reads` for our result type. Let's look at the `tupled` method as an example:
+The idea of the builder pattern is to use the `and` method to create progressively larger builders (up to `CanBuild21`), and then call `tupled` or `apply` to create a `Reads` for our result type. Let's look at `tupled` as an example:
 
 ~~~ scala
-val tupleReads: Reads[(A, B)] = readsBuilder.tupled
+val tupleReads: Reads[(Int, String)] = readsBuilder.tupled
+// tupleReads: Reads[(Int, String)] = ...
 
 tupleReads.reads(Json.obj("number" -> 29, "street" -> "Acacia Road"))
-// => JsSuccess((29, "Acacia Road"))
+// res0: JsResult[(Int, String)] = ↩
+//   JsSuccess((29, "Acacia Road"))
 
 tupleReads.reads(Json.obj("number" -> "29", "street" -> null))
-// => JsError(Seq(
-//   (JsPath \ "number", Seq(ValidationError("error.expected.jsnumber"))),
-//   (JsPath \ "street", Seq(ValidationError("error.expected.jsstring")))
-// ))
+// res1: JsResult[(Int, String)] = ↩
+//   JsError(Seq(
+//     (JsPath \ "number", Seq(ValidationError("error.expected.jsnumber"))),
+//     (JsPath \ "street", Seq(ValidationError("error.expected.jsstring")))))
 ~~~
 
-`tupleReads` is built from the `Reads` for `"number"` and `"street"`. It extracts the each field from the JSON and combines them into a tuple of type `(Int, String)`. In step 4 below we'll see how to use the `apply` method instead of `tupled` to combine the fields into an `Address`.
+`tupleReads` is built from the `Reads` for `"number"` and `"street"`. It extracts thw two fields from the JSON and combines them into a tuple of type `(Int, String)`. If fields are missing or malformed, `tupleReads` accumulates the error messages in the `JsResult`. In step 4 below we'll see how to use the `apply` method instead of `tupled` to combine the fields into an `Address`.
 
 There are equivalent sets of builders for `Writes` and `Formats` types. All we have to do is combine two `Writes` or `Formats` using `and` to create the relevant `CanBuild2` and do from there.
 
 **Step 4. Aggregate the fields into an *Address* **
 
-Instead of using `tupled`, we can call our builder's `apply` method to create a `Reads` that aggregates values in a different way.
-
-As we can see in the table above, the `apply` method of `CanBuild2` accepts a constructor-like function of type `(A, B) => C` and returns a `Reads[C]`:
+Instead of using `tupled`, we can call our builder's `apply` method to create a `Reads` that aggregates values in a different way. As we can see in the table above, the `apply` method of `CanBuild2` accepts a constructor-like function of type `(A, B) => C` and returns a `Reads[C]`:
 
 ~~~ scala
 val constructor = (a: Int, b: String) => Address(a, b)
 
 val addressReads = readsBuilder.apply(constructor)
-// => Reads[Address]
+// addressReads: Reads[Address] = ...
 ~~~
 
-This definition of `addressReads` is equivalent to our original example. If we substitute in some definitions and use some nicer syntax, we end up with an identical definition:
+If we substitute in some definitions and use some nicer syntax, we can see that this definition of `addressReads` is equivalent to our original example:
 
 ~~~ scala
 val addressReads = (
   (JsPath \ "number").read[Int] and
   (JsPath \ "street").read[String]
 )(Address.apply)
-// => Reads[Address]
+// addressReads: Reads[Address] = ...
 ~~~
 
 As we can see from the types in the table, we can combine more than two `Reads` using this approach. There are `CanBuild` types up to `CanBuild21`, each of which has an `apply` method that accepts a constructor with a corresponding number of parameters.
@@ -218,3 +223,33 @@ The general pattern for using the DSL is as follows:
  5. call the builder's `apply` method, passing in constructors and destructors (or hand-written equivalents) as appropriate.
 
 In the next section we'll look at one last common use case: defining `Reads`, `Writes` and `Formats` for hierarchies of types.
+
+### Exercise: A Dash of Colour
+
+The `chapter4-color` directory in the exercises
+contains a constructor and extractor method for
+the most infamous of classes, `java.awt.Color`.
+
+Write a JSON format for `Color` using the format DSL
+and the methods provided.
+
+Ensure your format passes the unit tests provided.
+Don't alter the tests in any way!
+
+<div class="solution">
+The code is similar to the Joda Time example above.
+In our model solution we've used the `~` method,
+which is simply an alias for `and`, to create the builder.
+There's no difference between `~` and `and` other
+than aesthetic preference and the standard precedence rules
+applied by Scala:
+
+~~~ scala
+implicit val ColorFormat = (
+  (JsPath \ "red").format[Int] ~
+  (JsPath \ "green").format[Int] ~
+  (JsPath \ "blue").format[Int] ~
+  (JsPath \ "alpha").format[Int]
+)(createColor, expandColor)
+~~~
+</div>

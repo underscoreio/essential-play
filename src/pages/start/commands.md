@@ -50,13 +50,13 @@ bash$ ./sbt.sh
 [app] $ compile
 # SBT compiles our code and we end up back in SBT...
 
-[app] $
+[app] $ ^D
 # Ctrl+D quits back to the OS command prompt
 
 bash$
 ~~~
 
-We start SBT in batch mode by issuing commands as arguments when starting SBT.
+We start SBT in batch mode by issuing commands as arguments on the OS command line.
 SBT executes the commands immediately and then exits back to the OS.
 The commands---`compile`, `run`, `clean` and so on---are the same
 in both modes:
@@ -68,7 +68,7 @@ bash$ ./sbt.sh compile
 bash$
 ~~~
 
-<div class="callout callout-warning">
+<div class="callout callout-info">
 *The SBT command prompt*
 
 The default SBT command prompt is a single echelon:
@@ -155,7 +155,7 @@ The `compile` and `test:compile` commands compile
 our application and unit tests respectively.
 The `clean` command deletes the generated class files
 in case we want to rebuild from scratch
-(`clean` is not normally used as we shall see below).
+(`clean` is not normally required as we shall see below).
 
 Let's clean the example project from the previous section
 and recompile the code as an example:
@@ -174,7 +174,8 @@ bash$ ./sbt.sh
 [info] Resolving jline#jline;2.12 ...
 [info] Done updating.
 [info] Compiling 3 Scala sources and 1 Java source to ↩
-       /Users/dave/dev/projects/essential-play-code/target/scala-2.11/classes...
+       /Users/dave/dev/projects/essential-play-code/ ↩
+       target/scala-2.11/classes...
 [success] Total time: 7 s, completed 13-Jan-2015 11:15:39
 
 [app] $
@@ -212,7 +213,8 @@ Now re-run the `compile` command:
 ~~~ bash
 [app] $ compile
 [info] Compiling 1 Scala source to ↩
-       /Users/dave/dev/projects/essential-play-code/target/scala-2.11/classes...
+       /Users/dave/dev/projects/essential-play-code/ ↩
+       target/scala-2.11/classes...
 [success] Total time: 1 s, completed 13-Jan-2015 12:26:16
 
 [app] $
@@ -254,7 +256,8 @@ As soon as we save the file we see the following in SBT:
 
 ~~~ bash
 [info] Compiling 1 Scala source to ↩
-       /Users/dave/dev/projects/essential-play-code/target/scala-2.11/classes...
+       /Users/dave/dev/projects/essential-play-code/ ↩
+       target/scala-2.11/classes...
 [error] /Users/dave/dev/projects/essential-play-code/app/ ↩
         controllers/AppController.scala:11: unclosed string literal
 [error]     Ok("Hello Dave!)
@@ -291,19 +294,19 @@ We can use watch mode with *any* SBT command. For example:
     whenever we change a file;
 
  -  `~test` watches our code and reruns the unit tests
-    whenever we change a file;
+    whenever we change a file; and
 
  -  `~dist` watches our code and builds a new
     distributable ZIP archive whenever we change a file.
 
 This behaviour is built into SBT and works
-irrespectively of whether we're using Play.
+irrespective of whether we're using Play.
 </div>
 
 ### Running a Development Web Server
 
-We can use the `run` to run our application in a development environment.
-The command starts a development web server,
+We can use the `run` command to run our application in a development environment.
+This command starts a development web server,
 watches for incoming connections, and recompiles our code
 whenever an incoming request is received.
 
@@ -334,7 +337,8 @@ and runs the application to respond:
 
 ~~~ bash
 [info] Compiling 3 Scala sources and 1 Java source to ↩
-       /Users/dave/dev/projects/essential-play-code/target/scala-2.11/classes...
+       /Users/dave/dev/projects/essential-play-code/ ↩
+       target/scala-2.11/classes...
 [info] play - Application started (Dev)
 ~~~
 
@@ -349,7 +353,7 @@ Play recompiles the application before responding.
 The `run` command is a great way to get instant feedback
 when developing an application. However, we have to send a request
 to the web browser to get Play to recompile the code.
-By contrast, watch mode recompiles the application
+In contrast, watch mode recompiles the application
 as soon as we change a file.
 
 Sometimes using `~compile` or `~test` can be a more efficient way of working.
@@ -377,7 +381,8 @@ Let's use `test` to test our sample application:
 ~~~ bash
 [app] $ test
 [info] Compiling 1 Scala source to ↩
-       /Users/dave/dev/projects/essential-play-code/target/scala-2.10/test-classes...
+       /Users/dave/dev/projects/essential-play-code/ ↩
+       target/scala-2.10/test-classes...
 [info] ApplicationSpec:
 [info] AppController
 [info] - must respond with a friendly message
@@ -402,7 +407,7 @@ checks whether our greeting starts with the word `"Hello"`.
 
 We don't have many tests for our sample application so testing is fast.
 If we had lots of test suites we could focus
-on single suite using the `testOnly` command.
+on a single suite using the `testOnly` command.
 `testOnly` takes the fully qualified class name
 of the desired suite as an argument:
 
@@ -510,7 +515,7 @@ for easy distribution:
 *Packaging non-Play applications*
 
 The `stage` and `dist` commands are specific to the Play plugin.
-SBT contains a built-in `package` command for building use in non-Play projects
+SBT contains a built-in `package` command for building non-Play projects,
 but this functionality is beyond the scope of this book.
 </div>
 
@@ -549,6 +554,6 @@ A full discussion of how to write SBT project configurations
 is beyond the scope of this book.
 For more information we recommend reading the
 [tutorial on the SBT web site](link-sbt-tutorial)
-and the [build documentation on the Play web site](link-play-sbt-docs).
+and the [build documentation on the Play web site](docs-build).
 The sample projects and exercises for this book
 will provide a good starting point for your own projects.

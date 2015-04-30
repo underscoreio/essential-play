@@ -1,7 +1,7 @@
 ## Directory Structure
 
 Play projects use the following directory structure,
-which is slightly different to the standard structure of an SBT project:
+which is quite different to the standard structure of an SBT project:
 
 ~~~ bash
 root/
