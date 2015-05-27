@@ -120,7 +120,7 @@ When we send a request, the library returns a `Future[WSResponse]`. We can use m
 
 ## Exercise: Oh, The Weather Outside is Frightful!
 
-...but this JSON weather data from flyovers of the Interantional Space Station is so delightful!
+...but this JSON weather data from flyovers of the International Space Station is so delightful!
 
 The `chapter5-weather` directory in the exercises
 contains an unfinished application for reporting on weather data from
