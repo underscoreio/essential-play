@@ -186,7 +186,7 @@ we can tweak headers and cookies before returning it.
 
 ### Exercise: Comma Separated Values
 
-The `chapter2-time` directory in the exercises contains
+The `chapter2-csv` directory in the exercises contains
 an unfinished Play application for
 converting various data formats to CSV.
 Complete the application by filling in the missing action
