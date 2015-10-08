@@ -235,7 +235,7 @@ val likes: Seq[JsValue] = json \\ "likes"
 //   ["Scala","Cycling","Barbequeues"])
 ~~~
 
-This begs the question: what happens when we use `\` and `apply` and the specified field *doesn't* exist? We can see from the Scaladoc for [`play.api.libs.json.JsValue`] that each method returns a `JsValue`---how do the methods represent failure?
+This raises the question: what happens when we use `\` and `apply` and the specified field *doesn't* exist? We can see from the Scaladoc for [`play.api.libs.json.JsValue`] that each method returns a `JsValue`---how do the methods represent failure?
 
 We lied earlier about the subtypes of `JsValue`. There is a actually a sixth subtype, `JsUndefined`, that Play uses to represent the failure to find a field:
 
