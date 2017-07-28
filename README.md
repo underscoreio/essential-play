@@ -17,7 +17,7 @@ It's designed to get you productive as quickly as possible, and avoid the dark a
 ## Play 2.3? Whaaat?!
 
 The current version of Essential Play is written for Play 2.3.
-At the time of writing, Pla 2.5 is the current version and Play 2.6 is near release.
+At the time of writing, Play 2.5 is the current version and Play 2.6 is near release.
 The book is designed to be a minimal introduction and most content is still relevant,
 but it needs some additional material to bring it up-to-date:
 
