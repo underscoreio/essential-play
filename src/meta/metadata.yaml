@@ -1,8 +1,9 @@
 ---
 # Used by Pandoc to print covers:
-title: Essential Play
+title: "Essential Play"
 author: "Dave Gurnell and Noel Welsh"
 date: "Version 1.0, April 2015"
+copyright: "2015"
 # Used by Pandoc to generate the PDF cover...
 # see src/css/book.css for HTML/ePub covers:
 coverColor: "A0C556"
@@ -15,69 +16,44 @@ exercises:
 tocDepth: 2
 # Used by Grunt to assemble pandoc command line:
 pages:
-  - src/pages/intro/index.md
-  - src/pages/intro/conventions.md
-  - src/pages/start/index.md
-  - src/pages/start/exercises.md
-  - src/pages/start/install.md
-  - src/pages/start/commands.md
-  - src/pages/basics/index.md
-  - src/pages/basics/structure.md
-  - src/pages/basics/actions.md
-  - src/pages/basics/routes.md
-  - src/pages/basics/requests.md
-  - src/pages/basics/results.md
-  - src/pages/basics/failure.md
-  - src/pages/basics/chat.md
-  - src/pages/html/index.md
-  - src/pages/html/templates.md
-  - src/pages/html/forms.md
-  - src/pages/html/form-templates.md
-  - src/pages/html/static.md
-  - src/pages/html/chat.md
-  - src/pages/json/index.md
-  - src/pages/json/values.md
-  - src/pages/json/writes.md
-  - src/pages/json/reads.md
-  - src/pages/json/formats.md
-  - src/pages/json/custom1.md
-  - src/pages/json/custom2.md
-  - src/pages/json/custom3.md
-  - src/pages/json/failure.md
-  - src/pages/json/chat.md
-  - src/pages/async/index.md
-  - src/pages/async/futures.md
-  - src/pages/async/executioncontexts.md
-  - src/pages/async/actions.md
-  - src/pages/async/ws.md
-  - src/pages/async/failure.md
-  - src/pages/async/chat.md
-  - src/pages/summary/index.md
-  - src/pages/links.md
-  - src/pages/solutions.md
-previewPages:
-  - src/pages/preview/prologue.md
-  - src/pages/intro/index.md
-  - src/pages/intro/conventions.md
-  - src/pages/start/index.md
-  - src/pages/start/exercises.md
-  - src/pages/start/install.md
-  - src/pages/start/commands.md
-  - src/pages/basics/index.md
-  - src/pages/basics/structure.md
-  - src/pages/basics/actions.md
-  - src/pages/basics/routes.md
-  - src/pages/basics/requests.md
-  - src/pages/basics/results.md
-  - src/pages/basics/failure.md
-  - src/pages/basics/chat.md
-  - src/pages/html/index.md
-  - src/pages/html/templates.md
-  - src/pages/html/forms.md
-  - src/pages/html/form-templates.md
-  - src/pages/html/static.md
-  - src/pages/html/chat.md
-  - src/pages/solutions.md
-  - src/pages/preview/epilogue.md
-  - src/pages/links.md
+  - intro/index.md
+  - intro/conventions.md
+  - start/index.md
+  - start/exercises.md
+  - start/install.md
+  - start/commands.md
+  - basics/index.md
+  - basics/structure.md
+  - basics/actions.md
+  - basics/routes.md
+  - basics/requests.md
+  - basics/results.md
+  - basics/failure.md
+  - basics/chat.md
+  - html/index.md
+  - html/templates.md
+  - html/forms.md
+  - html/form-templates.md
+  - html/static.md
+  - html/chat.md
+  - json/index.md
+  - json/values.md
+  - json/writes.md
+  - json/reads.md
+  - json/formats.md
+  - json/custom1.md
+  - json/custom2.md
+  - json/custom3.md
+  - json/failure.md
+  - json/chat.md
+  - async/index.md
+  - async/futures.md
+  - async/executioncontexts.md
+  - async/actions.md
+  - async/ws.md
+  - async/failure.md
+  - async/chat.md
+  - summary/index.md
+  - links.md
+  - solutions.md
 ...
