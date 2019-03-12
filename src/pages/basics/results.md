@@ -278,7 +278,7 @@ We will address each part in turn.
 
 First let's create handlers for each content type.
 We have three types to consider:
-`application/x-www-form-url-encoded`, `text/plain`, and `text/tsv`.
+`text/plain` , `text/tsv` , and `application/x-www-form-url-encoded`.
 Play has built-in body parsers for the first two.
 The methods in `CsvHelpers` do most of the rest of the work:
 

@@ -118,7 +118,8 @@ A minimal `chatroom` template takes a `Seq[Message]` as a parameter and
 renders a `<ul>` of messages:
 
 ~~~ html
-@(messages: Seq[services.ChatServiceMessages.Message], chatForm: Form[controllers.ChatController.ChatRequest])
+@(messages: Seq[services.ChatServiceMessages.Message],
+  chatForm: Form[controllers.ChatController.ChatRequest])
 
 ...
 
